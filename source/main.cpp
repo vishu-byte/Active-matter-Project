@@ -93,6 +93,17 @@ int main() {
   log << "Momentum: "
       << "(" << physics.EnergyMomentum(parsym)[1] << ", "
       << physics.EnergyMomentum(parsym)[2] << ")" << std::endl;
+
+  log << "-------Initial conditions------" << std::endl;
+  for (int i = 0; i << parsym.no_of_particles; ++i) {
+    log << "Particle: " << i << std::endl;
+    log << "V = " << particle[i].vx << ", " << particle[i].vy << std::endl;
+    log << "Omega = " << particle[i].omega << std::endl;
+    log << "V0 = " << particle[i].vx_activity << ", " << particle[1].vy_activity
+        << std::endl;
+    log << "Omega = " << particle[i].omega_activity << std::endl;
+  }
+
   log << "-x-x-x-x-x-Simulation initiated-x-x-x-x-x- " << std::endl;
 
   std::cout << "-x-x-x-x-x-Simulation initiated-x-x-x-x-x- " << std::endl;
