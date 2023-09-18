@@ -35,8 +35,7 @@ int main() {
   physics.force_params[3] = 2;           // radius
   physics.force_params[4] = 0.8;         // mu
   physics.force_params[5] = 0.5;         // gamma
-  physics.force_params[6] = M_PI / 2;    // omega_intrinsic
-  physics.force_params[7] = M_PI / 1000; // omega_tolerance
+  physics.force_params[6] = M_PI / 1000; // omega_tolerance
 
   /*Initial conditions*/
   // particle 1
@@ -49,8 +48,6 @@ int main() {
   particle[0].vx_activity = 1;
   particle[0].vy_activity = 2;
   particle[0].omega_activity = M_PI;
-  
-
 
   // particle 2
   particle[1].x = 5;
@@ -62,7 +59,6 @@ int main() {
   particle[1].vx_activity = 1;
   particle[1].vy_activity = 2;
   particle[1].omega_activity = M_PI;
-  
 
   // 2)Creating a data file for strorage and log-----------
 

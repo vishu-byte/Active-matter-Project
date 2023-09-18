@@ -30,8 +30,7 @@ void ParSim::Physics::Force_PP(ParSim::ParticleSystem &parsym,
   double r = this->force_params[3];
   double mu = this->force_params[4];
   double gamma = this->force_params[5];
-  double omega_intrinsic = this->force_params[6];
-  double omega_tolerance = this->force_params[7];
+  double omega_tolerance = this->force_params[6];
 
   double fx;
   double fy;
