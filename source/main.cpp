@@ -18,7 +18,7 @@ int main() {
   /*Try to stick to S.I units to make sense out of numbers*/
   int Number_of_particles = 2;
   double Time_step = 0.001; // seconds
-  int Number_of_time_steps = 4000;
+  int Number_of_time_steps = 3000;
   int dimension = 500; // meters
 
   ParSim::ParticleSystem parsym(Number_of_particles);
