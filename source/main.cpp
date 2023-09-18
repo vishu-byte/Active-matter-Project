@@ -68,6 +68,19 @@ int main() {
   data_output.open("data1.xyz");
   log.open("log.txt");
 
+
+   log << "-------Initial conditions------" << std::endl;
+  
+  for (int i = 0; i < parsym.no_of_particles; ++i) {
+    log << "Particle: " << i << std::endl;
+    log << "V = " << particle[i].vx << ", " << particle[i].vy << std::endl;
+    log << "Omega = " << particle[i].omega << std::endl;
+    log << "V0 = " << particle[i].vx_activity << ", " << particle[1].vy_activity
+        << std::endl;
+    log << "Omega0 = " << particle[i].omega_activity << std::endl;
+  }
+
+
   log << "-------Parameters and state------" << std::endl;
   log << "Number of particles: " << Number_of_particles << std::endl
       << "Time step: " << Time_step << std::endl
@@ -79,8 +92,7 @@ int main() {
       << "Mass (m): " << physics.force_params[3] << std::endl
       << "mu: " << physics.force_params[4] << std::endl
       << "gamma: " << physics.force_params[5] << std::endl
-      << "Intrinsic omega: " << physics.force_params[6] << std::endl
-      << "Omega_tolerance: " << physics.force_params[7] << std::endl;
+      << "Omega_tolerance: " << physics.force_params[6] << std::endl;
 
   log << "Energy-momentum before the collision: " << std::endl;
   log << "Total Energy: "
@@ -94,16 +106,7 @@ int main() {
       << "(" << physics.EnergyMomentum(parsym)[1] << ", "
       << physics.EnergyMomentum(parsym)[2] << ")" << std::endl;
 
-  log << "-------Initial conditions------" << std::endl;
-  for (int i = 0; i << parsym.no_of_particles; ++i) {
-    log << "Particle: " << i << std::endl;
-    log << "V = " << particle[i].vx << ", " << particle[i].vy << std::endl;
-    log << "Omega = " << particle[i].omega << std::endl;
-    log << "V0 = " << particle[i].vx_activity << ", " << particle[1].vy_activity
-        << std::endl;
-    log << "Omega0 = " << particle[i].omega_activity << std::endl;
-  }
-
+ 
   log << "-x-x-x-x-x-Simulation initiated-x-x-x-x-x- " << std::endl;
 
   std::cout << "-x-x-x-x-x-Simulation initiated-x-x-x-x-x- " << std::endl;
