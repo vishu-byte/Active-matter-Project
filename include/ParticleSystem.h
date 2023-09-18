@@ -24,6 +24,9 @@ public:
   double alpha;
   double omega;
   double radius;
+  double vx_activity;
+  double vy_activity;
+  double omega_activity;
   std:: vector<double> force_radial{0,0};   //radial force: fx and fy
   std:: vector<double> force_tangential{0,0};   //radial force: fx and fy
 
