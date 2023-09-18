@@ -45,8 +45,8 @@ int main() {
   particle[0].vy = 0;
   particle[0].alpha = 0;
   particle[0].omega = +2 * M_PI;
-  particle[0].vx_activity = 1;
-  particle[0].vy_activity = 2;
+  particle[0].vx_activity = 3;
+  particle[0].vy_activity = 0;
   particle[0].omega_activity = M_PI;
 
   // particle 2
@@ -56,8 +56,8 @@ int main() {
   particle[1].vy = 0;
   particle[1].alpha = 0;
   particle[1].omega = 0 * M_PI;
-  particle[1].vx_activity = 1;
-  particle[1].vy_activity = 2;
+  particle[1].vx_activity = -3;
+  particle[1].vy_activity = 0;
   particle[1].omega_activity = M_PI;
 
   // 2)Creating a data file for strorage and log-----------
@@ -101,7 +101,7 @@ int main() {
     log << "Omega = " << particle[i].omega << std::endl;
     log << "V0 = " << particle[i].vx_activity << ", " << particle[1].vy_activity
         << std::endl;
-    log << "Omega = " << particle[i].omega_activity << std::endl;
+    log << "Omega0 = " << particle[i].omega_activity << std::endl;
   }
 
   log << "-x-x-x-x-x-Simulation initiated-x-x-x-x-x- " << std::endl;
