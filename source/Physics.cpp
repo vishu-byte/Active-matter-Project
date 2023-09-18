@@ -30,8 +30,7 @@ void ParSim::Physics::Force_PP(ParSim::ParticleSystem &parsym,
   double r = this->force_params[3];
   double mu = this->force_params[4];
   double gamma = this->force_params[5];
-  double omega_intrinsic = this->force_params[6];
-  double omega_tolerance = this->force_params[7];
+  double omega_tolerance = this->force_params[6];
 
   double fx;
   double fy;
@@ -50,10 +49,13 @@ void ParSim::Physics::Force_PP(ParSim::ParticleSystem &parsym,
     particle[i].force_tangential[1] = 0;
     particle[i].torque = 0;
 
-    // Unary force of damping. Always there.
-    particle[i].force_radial[0] += -gamma * particle[i].vx;
-    particle[i].force_radial[1] += -gamma * particle[i].vy;
-    particle[i].torque += -gamma * particle[i].omega + omega_intrinsic;
+    // Unary force of damping. Always there. Translational and Rotational activities added.
+    particle[i].force_radial[0] +=
+        -gamma * particle[i].vx + particle[i].vx_activity;
+    particle[i].force_radial[1] +=
+        -gamma * particle[i].vy + particle[i].vy_activity;
+    particle[i].torque +=
+        -gamma * particle[i].omega + particle[i].omega_activity;
 
     // Knary force calculation --- Loop2: through all particles
     for (int j = 0; j < parsym.no_of_particles; ++j) {

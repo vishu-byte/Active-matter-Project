@@ -18,7 +18,7 @@ int main() {
   /*Try to stick to S.I units to make sense out of numbers*/
   int Number_of_particles = 2;
   double Time_step = 0.001; // seconds
-  int Number_of_time_steps = 4000;
+  int Number_of_time_steps = 3500;
   int dimension = 500; // meters
 
   ParSim::ParticleSystem parsym(Number_of_particles);
@@ -35,8 +35,7 @@ int main() {
   physics.force_params[3] = 2;           // radius
   physics.force_params[4] = 0.8;         // mu
   physics.force_params[5] = 0.5;         // gamma
-  physics.force_params[6] = M_PI / 2;    // omega_intrinsic
-  physics.force_params[7] = M_PI / 1000; // omega_tolerance
+  physics.force_params[6] = M_PI / 1000; // omega_tolerance
 
   /*Initial conditions*/
   // particle 1
@@ -46,6 +45,9 @@ int main() {
   particle[0].vy = 0;
   particle[0].alpha = 0;
   particle[0].omega = +2 * M_PI;
+  particle[0].vx_activity = 3;
+  particle[0].vy_activity = 0;
+  particle[0].omega_activity = M_PI;
 
   // particle 2
   particle[1].x = 5;
@@ -54,6 +56,9 @@ int main() {
   particle[1].vy = 0;
   particle[1].alpha = 0;
   particle[1].omega = 0 * M_PI;
+  particle[1].vx_activity = -3;
+  particle[1].vy_activity = 0;
+  particle[1].omega_activity = M_PI;
 
   // 2)Creating a data file for strorage and log-----------
 
@@ -88,6 +93,17 @@ int main() {
   log << "Momentum: "
       << "(" << physics.EnergyMomentum(parsym)[1] << ", "
       << physics.EnergyMomentum(parsym)[2] << ")" << std::endl;
+
+  log << "-------Initial conditions------" << std::endl;
+  for (int i = 0; i << parsym.no_of_particles; ++i) {
+    log << "Particle: " << i << std::endl;
+    log << "V = " << particle[i].vx << ", " << particle[i].vy << std::endl;
+    log << "Omega = " << particle[i].omega << std::endl;
+    log << "V0 = " << particle[i].vx_activity << ", " << particle[1].vy_activity
+        << std::endl;
+    log << "Omega0 = " << particle[i].omega_activity << std::endl;
+  }
+
   log << "-x-x-x-x-x-Simulation initiated-x-x-x-x-x- " << std::endl;
 
   std::cout << "-x-x-x-x-x-Simulation initiated-x-x-x-x-x- " << std::endl;
