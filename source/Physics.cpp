@@ -95,8 +95,15 @@ void ParSim::Physics::Force_PP(ParSim::ParticleSystem &parsym,
 
         // torque on particle
 
-        particle[i].torque +=
-            -mu * N * (omega_sum / (abs(omega_sum + epsilon2))) * d;
+        if (omega_sum != 0) {
+          particle[i].torque +=
+              -mu * N * (omega_sum / (abs(omega_sum + epsilon2))) * d;
+        }
+
+        if (omega_sum == 0) {
+          particle[i].torque +=
+              -mu * N * (omega_sum / (abs(omega_sum + epsilon2))) * d;
+        }
 
         log << "i: " << i << "j: " << j << "xi: " << parsym.particle_array[i].x
             << "xj: " << parsym.particle_array[j].x

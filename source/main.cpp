@@ -48,7 +48,7 @@ int main() {
   particle[0].omega = 0;
   particle[0].vx_activity = 3;
   particle[0].vy_activity = 0;
-  particle[0].omega_activity = 0;
+  particle[0].omega_activity = 2*M_PI;
 
   // particle 2
   particle[1].x = 3;
@@ -59,7 +59,7 @@ int main() {
   particle[1].omega = 0;
   particle[1].vx_activity = -3;
   particle[1].vy_activity = 0;
-  particle[1].omega_activity = 0;
+  particle[1].omega_activity = -2*M_PI;
 
   // 2)Creating a data file for strorage and log-----------
 
