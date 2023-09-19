@@ -30,7 +30,8 @@ void ParSim::Physics::Force_PP(ParSim::ParticleSystem &parsym,
   double r = this->force_params[3];
   double mu = this->force_params[4];
   double gamma = this->force_params[5];
-  double omega_tolerance = this->force_params[6];
+  double epsilon1 = this->force_params[6];
+  double epsilon2 = this->force_params[6];
 
   double fx;
   double fy;
@@ -49,7 +50,8 @@ void ParSim::Physics::Force_PP(ParSim::ParticleSystem &parsym,
     particle[i].force_tangential[1] = 0;
     particle[i].torque = 0;
 
-    // Unary force of damping. Always there. Translational and Rotational activities added.
+    // Unary force of damping. Always there. Translational and Rotational
+    // activities added.
     particle[i].force_radial[0] +=
         -gamma * particle[i].vx + particle[i].vx_activity;
     particle[i].force_radial[1] +=
@@ -72,38 +74,29 @@ void ParSim::Physics::Force_PP(ParSim::ParticleSystem &parsym,
         // radial interaction force
         particle[i].force_radial[0] += k * (interaction_radius - d) *
                                        (particle[i].x - particle[j].x) /
-                                       (d + 0.0000001);
-        ;
+                                       (d + epsilon1);
+
         particle[i].force_radial[1] += k * (interaction_radius - d) *
                                        (particle[i].y - particle[j].y) /
-                                       (d + 0.0000001);
+                                       (d + epsilon1);
 
         // tangential friction force
         double N = k * (interaction_radius -
                         d); // magnitude of radial force used as normal reaction
-        double omega = (particle[i].omega + particle[j].omega);
-
-        if (particle[i].omega - particle[j].omega ==
-            omega_tolerance) { // no friction
-          particle[i].force_tangential[0] += 0.0;
-          particle[i].force_tangential[1] += 0.0;
-        }
+        double omega_sum = (particle[i].omega + particle[j].omega);
 
         particle[i].force_tangential[0] +=
-            -mu * N * (omega / (abs(omega))) *
-            ((particle[i].y - particle[j].y) / (d + 0.0000001));
+            -mu * N * (omega_sum / (abs(omega_sum + epsilon2))) *
+            ((particle[i].y - particle[j].y) / (d + epsilon1));
 
         particle[i].force_tangential[1] +=
-            -mu * N * (omega / (abs(omega))) *
-            (-(particle[i].x - particle[j].x) / (d + 0.0000001));
+            -mu * N * (omega_sum / (abs(omega_sum + epsilon2))) *
+            (-(particle[i].x - particle[j].x) / (d + epsilon1));
 
         // torque on particle
-        if (particle[i].omega - particle[j].omega ==
-            omega_tolerance) { // no friction thus no torque
-          particle[i].torque += 0.0;
-        }
 
-        particle[i].torque += -mu * N * (omega / (abs(omega))) * d;
+        particle[i].torque +=
+            -mu * N * (omega_sum / (abs(omega_sum + epsilon2))) * d;
 
         log << "i: " << i << "j: " << j << "xi: " << parsym.particle_array[i].x
             << "xj: " << parsym.particle_array[j].x
