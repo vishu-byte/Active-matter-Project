@@ -28,6 +28,7 @@ public:
   void Force_PP(ParticleSystem &, std::ofstream &); // Main force linker
   void Integrator(ParticleSystem &, double, std::ofstream &); // Main integrator
   void Euler_Integrator(Particle &, double, std::ofstream &);
+  void Vel_Verlet_Integrator(Particle &, double , std:: ofstream &);
   void RK4_Integrator(Particle &, int);
 
   /*Conserved quantities*/

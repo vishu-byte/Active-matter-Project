@@ -43,10 +43,18 @@ void ParSim::Physics::Force_PP(ParSim::ParticleSystem &parsym,
   for (int i = 0; i < parsym.no_of_particles; ++i) {
 
     log << "1st loop -- " << std::endl;
-    particle[i].force_radial[0] = 0; // reset the radial force calculator
+
+    //Store previous step forces
+    particle[i].force_radial_prev[0] = particle[i].force_radial[0];
+    particle[i].force_radial_prev[1] = particle[i].force_radial[1];
+    particle[i].force_tangential_prev[0] = particle[i].force_tangential[0];
+    particle[i].force_tangential_prev[1] = particle[i].force_tangential[1];
+    particle[i].torque_prev = particle[i].torque;
+
+    //Reset the current forces
+    particle[i].force_radial[0] = 0;
     particle[i].force_radial[1] = 0;
-    particle[i].force_tangential[0] =
-        0; // reset the tangential force calculator
+    particle[i].force_tangential[0] = 0;
     particle[i].force_tangential[1] = 0;
     particle[i].torque = 0;
 
@@ -150,6 +158,10 @@ void ParSim::Physics::Euler_Integrator(ParSim::Particle &par, double time_step,
   par.alpha += par.omega * time_step;
   par.omega += dw;
 }
+
+void ParSim::Physics::Vel_Verlet_Integrator(ParSim::Particle &par,
+                                            double time_step,
+                                            std::ofstream &log) {}
 
 void ParSim ::Physics::Integrator(ParSim::ParticleSystem &parsym,
                                   double time_step, std::ofstream &log) {

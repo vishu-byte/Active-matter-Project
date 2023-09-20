@@ -29,8 +29,12 @@ public:
   double omega_activity;
   std:: vector<double> force_radial{0,0};   //radial force: fx and fy
   std:: vector<double> force_tangential{0,0};   //radial force: fx and fy
-
   double torque{0};   //torque
+
+  //For storing forces of one step before
+  std:: vector<double> force_radial_prev{0,0};   //radial force: fx and fy
+  std:: vector<double> force_tangential_prev{0,0};   //radial force: fx and fy
+  double torque_prev{0};   //torque
   // std:: vector <double> IC{0,0,0,0,0};
 
   Particle(); // default constructor
