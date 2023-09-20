@@ -44,14 +44,14 @@ void ParSim::Physics::Force_PP(ParSim::ParticleSystem &parsym,
 
     log << "1st loop -- " << std::endl;
 
-    //Store previous step forces
+    // Store previous step forces
     particle[i].force_radial_prev[0] = particle[i].force_radial[0];
     particle[i].force_radial_prev[1] = particle[i].force_radial[1];
     particle[i].force_tangential_prev[0] = particle[i].force_tangential[0];
     particle[i].force_tangential_prev[1] = particle[i].force_tangential[1];
     particle[i].torque_prev = particle[i].torque;
 
-    //Reset the current forces
+    // Reset the current forces
     particle[i].force_radial[0] = 0;
     particle[i].force_radial[1] = 0;
     particle[i].force_tangential[0] = 0;
@@ -161,17 +161,41 @@ void ParSim::Physics::Euler_Integrator(ParSim::Particle &par, double time_step,
 
 void ParSim::Physics::Vel_Verlet_Integrator(ParSim::Particle &par,
                                             double time_step,
-                                            std::ofstream &log) {}
+                                            std::ofstream &log) {
+
+  double m = this->force_params[2];
+
+  // update the attributes
+
+  par.x += (time_step * par.vx) +
+           (pow(time_step, 2)) *
+               (par.force_radial[0] + par.force_tangential[0]) / (2 * m);
+  par.y += (time_step * par.vy) +
+           (pow(time_step, 2)) *
+               (par.force_radial[1] + par.force_tangential[1]) / (2 * m);
+  par.vx += time_step *
+            ((par.force_radial[0] + par.force_tangential[0]) +
+             (par.force_radial_prev[0] + par.force_tangential_prev[0])) /
+            (2 * m);
+  par.vy += time_step *
+            ((par.force_radial[1] + par.force_tangential[1]) +
+             (par.force_radial_prev[1] + par.force_tangential_prev[1])) /
+            (2 * m);
+
+  log << "vy: " << par.vy << std::endl;
+
+  par.alpha +=
+      (time_step * par.omega) + (pow(time_step, 2)) * (par.torque) / (2 * m);
+  par.omega += time_step * (par.torque + par.torque_prev) / (2 * m);
+}
 
 void ParSim ::Physics::Integrator(ParSim::ParticleSystem &parsym,
                                   double time_step, std::ofstream &log) {
 
-  // parameters
-  double m = this->force_params[2];
   for (int i = 0; i < parsym.no_of_particles; ++i) {
-    Euler_Integrator(parsym.particle_array[i], time_step, log);
-
-    // boundary conditions
+    Vel_Verlet_Integrator(parsym.particle_array[i], time_step, log);
+    // Euler_Integrator(parsym.particle_array[i], time_step, log);
+    //  boundary conditions
 
     // if (parsym.particle_array[i].x < -1000 ||
     //     parsym.particle_array[i].x > 1000 ||
