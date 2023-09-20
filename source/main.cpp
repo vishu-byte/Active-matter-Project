@@ -18,7 +18,7 @@ int main() {
   /*Try to stick to S.I units to make sense out of numbers*/
   int Number_of_particles = 2;
   double Time_step = 0.001; // seconds
-  int Number_of_time_steps = 4500;
+  int Number_of_time_steps = 3500;
   int dimension = 500; // meters
 
   ParSim::ParticleSystem parsym(Number_of_particles);
@@ -29,6 +29,7 @@ int main() {
       parsym.get_particles(); // get access to paticles
 
   /*Setting physics parameters*/
+  physics.force_params[8] = 0.001   ;  //time step
   physics.force_params[0] = 1000;           // k
   physics.force_params[1] = 2;              // interaction_radius r
   physics.force_params[2] = 1;              // mass
@@ -45,7 +46,7 @@ int main() {
   particle[0].vx = 4;
   particle[0].vy = 0;
   particle[0].alpha = 0;
-  particle[0].omega = 0;
+  particle[0].omega = 0*M_PI;
   particle[0].vx_activity = 0;
   particle[0].vy_activity = 0;
   particle[0].omega_activity = 0;
@@ -56,7 +57,7 @@ int main() {
   particle[1].vx = -4;
   particle[1].vy = 0;
   particle[1].alpha = 0;
-  particle[1].omega = 0;
+  particle[1].omega = 0*M_PI;
   particle[1].vx_activity = 0;
   particle[1].vy_activity = 0;
   particle[1].omega_activity = 0;
@@ -120,7 +121,7 @@ int main() {
     // SDL_Delay(10000);
 
     // Manipulate particle positions for next iteration.
-    physics.evolve_system(parsym, Time_step, log);
+    physics.evolve_system(parsym, step, log);
 
     // writing data of this state to file (will be used for rendering the system
     // in ovito)
