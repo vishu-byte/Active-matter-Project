@@ -115,6 +115,11 @@ void ParSim::Physics::Force_PP(ParSim::ParticleSystem &parsym,
 
         log << "i: " << i << "j: " << j << "xi: " << parsym.particle_array[i].x
             << "xj: " << parsym.particle_array[j].x
+            << "frx_p: " << particle[i].force_radial_prev[0]
+            << "fry_p: " << particle[i].force_radial_prev[1]
+            << "ftx_p: " << particle[i].force_tangential_prev[0]
+            << "fty_p: " << particle[i].force_tangential_prev[1]
+            << "tau_p: " << particle[i].torque_prev
             << "frx: " << particle[i].force_radial[0]
             << "fry: " << particle[i].force_radial[1]
             << "ftx: " << particle[i].force_tangential[0]
