@@ -165,7 +165,7 @@ void ParSim::Physics::Euler_Integrator(ParSim::Particle &par, double time_step,
 }
 
 void ParSim::Physics::Vel_Verlet_Integrator(ParSim::Particle &par,
-                                            double time_step,
+                                            double time_step, int index,
                                             std::ofstream &log) {
 
   double m = this->force_params[2];
@@ -178,27 +178,30 @@ void ParSim::Physics::Vel_Verlet_Integrator(ParSim::Particle &par,
   par.y += (time_step * par.vy) +
            (pow(time_step, 2)) *
                (par.force_radial[1] + par.force_tangential[1]) / (2 * m);
-  par.vx += time_step *
-            ((par.force_radial[0] + par.force_tangential[0]) +
-             (par.force_radial_prev[0] + par.force_tangential_prev[0])) /
-            (2 * m);
-  par.vy += time_step *
-            ((par.force_radial[1] + par.force_tangential[1]) +
-             (par.force_radial_prev[1] + par.force_tangential_prev[1])) /
-            (2 * m);
-
-  log << "vy: " << par.vy << std::endl;
 
   par.alpha +=
       (time_step * par.omega) + (pow(time_step, 2)) * (par.torque) / (2 * m);
-  par.omega += time_step * (par.torque + par.torque_prev) / (2 * m);
+
+  if (index != 0) {
+    par.vx += time_step *
+              ((par.force_radial[0] + par.force_tangential[0]) +
+               (par.force_radial_prev[0] + par.force_tangential_prev[0])) /
+              (2 * m);
+    par.vy += time_step *
+              ((par.force_radial[1] + par.force_tangential[1]) +
+               (par.force_radial_prev[1] + par.force_tangential_prev[1])) /
+              (2 * m);
+    par.omega += time_step * (par.torque + par.torque_prev) / (2 * m);
+  }
+
+  log << "vy: " << par.vy << std::endl;
 }
 
 void ParSim ::Physics::Integrator(ParSim::ParticleSystem &parsym,
                                   double time_step, std::ofstream &log) {
 
   for (int i = 0; i < parsym.no_of_particles; ++i) {
-    Vel_Verlet_Integrator(parsym.particle_array[i], time_step, log);
+    Vel_Verlet_Integrator(parsym.particle_array[i], time_step, i, log);
     // Euler_Integrator(parsym.particle_array[i], time_step, log);
     //  boundary conditions
 
