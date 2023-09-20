@@ -18,7 +18,7 @@ int main() {
   /*Try to stick to S.I units to make sense out of numbers*/
   int Number_of_particles = 2;
   double Time_step = 0.001; // seconds
-  int Number_of_time_steps = 3500;
+  int Number_of_time_steps = 2000;
   int dimension = 500; // meters
 
   ParSim::ParticleSystem parsym(Number_of_particles);
@@ -29,14 +29,14 @@ int main() {
       parsym.get_particles(); // get access to paticles
 
   /*Setting physics parameters*/
-  physics.force_params[8] = 0.001   ;  //time step
-  physics.force_params[0] = 1000;           // k
-  physics.force_params[1] = 2;              // interaction_radius r
-  physics.force_params[2] = 1;              // mass
-  physics.force_params[3] = 2;              // radius
-  physics.force_params[4] = 0.8;            // mu
-  physics.force_params[5] = 0;              // gamma
-  physics.force_params[6] = 0.00000001;     // epsilon1  -- softening length
+  physics.force_params[8] = 0.001;           // time step
+  physics.force_params[0] = 1000;            // k
+  physics.force_params[1] = 2;               // interaction_radius r
+  physics.force_params[2] = 1;               // mass
+  physics.force_params[3] = 2;               // radius
+  physics.force_params[4] = 0.8;             // mu
+  physics.force_params[5] = 0;               // gamma
+  physics.force_params[6] = 0.00000001;      // epsilon1  -- softening length
   physics.force_params[7] = M_PI / 10000000; // epsilon2 -- softening omega
 
   /*Initial conditions*/
@@ -46,7 +46,7 @@ int main() {
   particle[0].vx = 4;
   particle[0].vy = 0;
   particle[0].alpha = 0;
-  particle[0].omega = 0*M_PI;
+  particle[0].omega = -2 * M_PI;
   particle[0].vx_activity = 0;
   particle[0].vy_activity = 0;
   particle[0].omega_activity = 0;
@@ -57,7 +57,7 @@ int main() {
   particle[1].vx = -4;
   particle[1].vy = 0;
   particle[1].alpha = 0;
-  particle[1].omega = 0*M_PI;
+  particle[1].omega = 1 * M_PI;
   particle[1].vx_activity = 0;
   particle[1].vy_activity = 0;
   particle[1].omega_activity = 0;
