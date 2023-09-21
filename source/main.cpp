@@ -17,8 +17,7 @@ int main() {
   /*Parameters*/
   /*Try to stick to S.I units to make sense out of numbers*/
   int Number_of_particles = 2;
-  double Time_step = 0.01; // seconds
-  int Number_of_time_steps = 200;
+  int Number_of_time_steps = 4500;
   int dimension = 500; // meters
 
   ParSim::ParticleSystem parsym(Number_of_particles);
@@ -35,7 +34,7 @@ int main() {
   physics.force_params[2] = 1;               // mass
   physics.force_params[3] = 2;               // radius
   physics.force_params[4] = 0.8;             // mu
-  physics.force_params[5] = 0;               // gamma
+  physics.force_params[5] = 2;               // gamma
   physics.force_params[6] = 0.00000001;      // epsilon1  -- softening length
   physics.force_params[7] = M_PI / 10000000; // epsilon2 -- softening omega
 
@@ -43,24 +42,24 @@ int main() {
   // particle 1
   particle[0].x = -3;
   particle[0].y = 0;
-  particle[0].vx = 4;
+  particle[0].vx = 6;
   particle[0].vy = 0;
   particle[0].alpha = 0;
-  particle[0].omega = -2 * M_PI;
-  particle[0].vx_activity = 0;
+  particle[0].omega = 0;
+  particle[0].vx_activity = 3;
   particle[0].vy_activity = 0;
-  particle[0].omega_activity = 0;
+  particle[0].omega_activity = 3 * M_PI;
 
   // particle 2
   particle[1].x = 3;
   particle[1].y = 0;
-  particle[1].vx = -4;
+  particle[1].vx = 0;
   particle[1].vy = 0;
   particle[1].alpha = 0;
-  particle[1].omega = 1 * M_PI;
+  particle[1].omega = 0 ;
   particle[1].vx_activity = 0;
   particle[1].vy_activity = 0;
-  particle[1].omega_activity = 0;
+  particle[1].omega_activity =  1 * M_PI;
 
   // 2)Creating a data file for strorage and log-----------
 
@@ -83,7 +82,7 @@ int main() {
 
   log << "-------Parameters and state------" << std::endl;
   log << "Number of particles: " << Number_of_particles << std::endl
-      << "Time step: " << Time_step << std::endl
+      << "Time step: " << physics.force_params[8] << std::endl
       << "Number of time steps: " << Number_of_time_steps << std::endl
       << "Dimension: " << dimension << std::endl
       << "k: " << physics.force_params[0] << std::endl
