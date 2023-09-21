@@ -37,7 +37,7 @@ int main() {
   physics.parameters[8] = 0.001;           // time step
   physics.parameters[0] = 1000;            // k
   physics.parameters[1] = 2;               // interaction_radius r
-  physics.parameters[2] = 1;               // mass
+  physics.parameters[2] = 0.001;               // mass
   physics.parameters[3] = 2;               // radius
   physics.parameters[4] = 0.8;             // mu
   physics.parameters[5] = 2;               // gamma
@@ -52,7 +52,7 @@ int main() {
   particle[0].vy = 0;
   particle[0].alpha = 0;
   particle[0].omega = -2 * M_PI;
-  particle[0].vx_activity = 0;
+  particle[0].vx_activity = 6;
   particle[0].vy_activity = 0;
   particle[0].omega_activity = 3 * M_PI;
 
@@ -63,7 +63,7 @@ int main() {
   particle[1].vy = 0;
   particle[1].alpha = 0;
   particle[1].omega = 0;
-  particle[1].vx_activity = 0;
+  particle[1].vx_activity = -6;
   particle[1].vy_activity = 0;
   particle[1].omega_activity = 1 * M_PI;
 
