@@ -10,6 +10,12 @@
 #include <stdlib.h>
 #include <time.h>
 
+void state_before_simulation(std::ofstream &log, ParSim::ParticleSystem &parsym,
+                             ParSim ::Physics &physics, int steps,
+                             int dimension);
+void state_after_simulation(std::ofstream &log, ParSim::ParticleSystem &parsym,
+                            ParSim ::Physics &physics);
+
 int main() {
 
   // 1)Creating and initializaing particle system
@@ -45,7 +51,7 @@ int main() {
   particle[0].vx = 6;
   particle[0].vy = 0;
   particle[0].alpha = 0;
-  particle[0].omega = -2*M_PI;
+  particle[0].omega = -2 * M_PI;
   particle[0].vx_activity = 0;
   particle[0].vy_activity = 0;
   particle[0].omega_activity = 3 * M_PI;
@@ -56,10 +62,10 @@ int main() {
   particle[1].vx = 0;
   particle[1].vy = 0;
   particle[1].alpha = 0;
-  particle[1].omega = 0 ;
+  particle[1].omega = 0;
   particle[1].vx_activity = 0;
   particle[1].vy_activity = 0;
-  particle[1].omega_activity =  1 * M_PI;
+  particle[1].omega_activity = 1 * M_PI;
 
   // 2)Creating a data file for strorage and log-----------
 
@@ -69,46 +75,11 @@ int main() {
   data_output.open("data1.xyz");
   log.open("log.txt");
 
-  log << "-------Initial conditions------" << std::endl;
-
-  for (int i = 0; i < parsym.no_of_particles; ++i) {
-    log << "Particle: " << i << std::endl;
-    log << "x, y = " <<  particle[i].x << ", " << particle[i].y << std:: endl;
-    log << "V = " << particle[i].vx << ", " << particle[i].vy << std::endl;
-    log << "Omega = " << particle[i].omega << std::endl;
-    log << "V0 = " << particle[i].vx_activity << ", " << particle[1].vy_activity
-        << std::endl;
-    log << "Omega0 = " << particle[i].omega_activity << std::endl;
-  }
-
-  log << "-------Parameters and state------" << std::endl;
-  log << "Number of particles: " << Number_of_particles << std::endl
-      << "Time step: " << physics.parameters[8] << std::endl
-      << "Number of time steps: " << Number_of_time_steps << std::endl
-      << "Dimension: " << dimension << std::endl
-      << "k: " << physics.parameters[0] << std::endl
-      << "Interaction radius (sigma): " << physics.parameters[1] << std::endl
-      << "Radius (r) : " << physics.parameters[3] << std::endl
-      << "Mass (m): " << physics.parameters[2] << std::endl
-      << "mu: " << physics.parameters[4] << std::endl
-      << "gamma: " << physics.parameters[5] << std::endl
-      << "epsilon1 " << physics.parameters[6] << std::endl
-      << "epsilon2 " << physics.parameters[7] << std::endl;
-
-  log << "Energy-momentum before the collision: " << std::endl;
-  log << "Total Energy: "
-      << physics.EnergyMomentum(parsym)[0] + physics.EnergyMomentum(parsym)[1]
-      << std::endl;
-  log << "Translational K.Energy: " << physics.EnergyMomentum(parsym)[0]
-      << std::endl;
-  log << "Rotational K.Energy: " << physics.EnergyMomentum(parsym)[1]
-      << std::endl;
-  log << "Momentum: "
-      << "(" << physics.EnergyMomentum(parsym)[1] << ", "
-      << physics.EnergyMomentum(parsym)[2] << ")" << std::endl;
+  // Print the state before the simulation in log
+  state_before_simulation(log, parsym, physics, Number_of_time_steps,
+                          dimension);
 
   log << "-x-x-x-x-x-Simulation initiated-x-x-x-x-x- " << std::endl;
-
   std::cout << "-x-x-x-x-x-Simulation initiated-x-x-x-x-x- " << std::endl;
 
   time_t start = time(&start); // for measuring total runtime
@@ -118,7 +89,6 @@ int main() {
 
     // Draw current particle system in the window
     screen.draw_particlesystem(parsym);
-    // SDL_Delay(10000);
 
     // Manipulate particle positions for next iteration.
     physics.evolve_system(parsym, step, log);
@@ -153,6 +123,59 @@ int main() {
 
   /*----------------------------------*/
 
+  // Print the state before the simulation in log
+  state_after_simulation(log, parsym, physics);
+
+  return 0;
+}
+
+void state_before_simulation(std::ofstream &log, ParSim::ParticleSystem &parsym,
+                             ParSim ::Physics &physics, int steps,
+                             int dimension) {
+
+  ParSim::Particle *const particle =
+      parsym.get_particles(); // get access to paticles
+  log << "-------Initial conditions------" << std::endl;
+
+  for (int i = 0; i < parsym.no_of_particles; ++i) {
+    log << "Particle: " << i << std::endl;
+    log << "x, y = " << particle[i].x << ", " << particle[i].y << std::endl;
+    log << "V = " << particle[i].vx << ", " << particle[i].vy << std::endl;
+    log << "Omega = " << particle[i].omega << std::endl;
+    log << "V0 = " << particle[i].vx_activity << ", " << particle[1].vy_activity
+        << std::endl;
+    log << "Omega0 = " << particle[i].omega_activity << std::endl;
+  }
+
+  log << "-------Parameters and state------" << std::endl;
+  log << "Number of particles: " << parsym.no_of_particles << std::endl
+      << "Time step: " << physics.parameters[8] << std::endl
+      << "Number of time steps: " << steps << std::endl
+      << "Dimension: " << dimension << std::endl
+      << "k: " << physics.parameters[0] << std::endl
+      << "Interaction radius (sigma): " << physics.parameters[1] << std::endl
+      << "Radius (r) : " << physics.parameters[3] << std::endl
+      << "Mass (m): " << physics.parameters[2] << std::endl
+      << "mu: " << physics.parameters[4] << std::endl
+      << "gamma: " << physics.parameters[5] << std::endl
+      << "epsilon1 " << physics.parameters[6] << std::endl
+      << "epsilon2 " << physics.parameters[7] << std::endl;
+
+  log << "Energy-momentum before the collision: " << std::endl;
+  log << "Total Energy: "
+      << physics.EnergyMomentum(parsym)[0] + physics.EnergyMomentum(parsym)[1]
+      << std::endl;
+  log << "Translational K.Energy: " << physics.EnergyMomentum(parsym)[0]
+      << std::endl;
+  log << "Rotational K.Energy: " << physics.EnergyMomentum(parsym)[1]
+      << std::endl;
+  log << "Momentum: "
+      << "(" << physics.EnergyMomentum(parsym)[1] << ", "
+      << physics.EnergyMomentum(parsym)[2] << ")" << std::endl;
+};
+
+void state_after_simulation(std::ofstream &log, ParSim::ParticleSystem &parsym,
+                            ParSim ::Physics &physics) {
   log << "Energy-momentum After the collision: " << std::endl;
   log << "Total Energy: "
       << physics.EnergyMomentum(parsym)[0] + physics.EnergyMomentum(parsym)[1]
@@ -164,6 +187,4 @@ int main() {
   log << "Momentum: "
       << "(" << physics.EnergyMomentum(parsym)[1] << ", "
       << physics.EnergyMomentum(parsym)[2] << ")" << std::endl;
-
-  return 0;
 }
