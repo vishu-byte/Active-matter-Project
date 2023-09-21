@@ -24,14 +24,14 @@ void ParSim::Physics::Force_PP(ParSim::ParticleSystem &parsym,
                                std::ofstream &log) {
   // parameters of force
 
-  double k = this->force_params[0];                  // N/m
-  double interaction_radius = this->force_params[1]; // m
-  double m = this->force_params[2];                  // kg
-  double r = this->force_params[3];
-  double mu = this->force_params[4];
-  double gamma = this->force_params[5];
-  double epsilon1 = this->force_params[6];
-  double epsilon2 = this->force_params[6];
+  double k = this->parameters[0];                  // N/m
+  double interaction_radius = this->parameters[1]; // m
+  double m = this->parameters[2];                  // kg
+  double r = this->parameters[3];
+  double mu = this->parameters[4];
+  double gamma = this->parameters[5];
+  double epsilon1 = this->parameters[6];
+  double epsilon2 = this->parameters[6];
 
   double fx;
   double fy;
@@ -133,8 +133,8 @@ void ParSim::Physics::Force_PP(ParSim::ParticleSystem &parsym,
 void ParSim::Physics::Euler_Integrator(ParSim::Particle &par, int step,
                                        std::ofstream &log) {
 
-  double m = this->force_params[2];
-  double time_step = this->force_params[8];
+  double m = this->parameters[2];
+  double time_step = this->parameters[8];
   double Fx;
   double Fy;
   double Tau;
@@ -168,8 +168,8 @@ void ParSim::Physics::Euler_Integrator(ParSim::Particle &par, int step,
 void ParSim::Physics::Vel_Verlet_Integrator(ParSim::Particle &par, int step,
                                             std::ofstream &log) {
 
-  double m = this->force_params[2];
-  double time_step = this->force_params[8];
+  double m = this->parameters[2];
+  double time_step = this->parameters[8];
 
   // update the attributes
 
@@ -228,8 +228,8 @@ void ParSim::Physics::evolve_system(ParticleSystem &parsym, int step,
 
 std::vector<double> ParSim::Physics::EnergyMomentum(ParticleSystem &parsym) {
   std::vector<double> p{0, 0, 0, 0}; // kinetic, rotational, momenta
-  double m = this->force_params[2];
-  double I = 1;
+  double m = this->parameters[2];
+  double I = m;
   for (int i = 0; i < parsym.no_of_particles; ++i) {
     p[0] += 0.5 * m *
             (pow(parsym.particle_array[i].vx, 2) +

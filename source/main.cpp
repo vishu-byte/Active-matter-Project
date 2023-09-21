@@ -28,15 +28,15 @@ int main() {
       parsym.get_particles(); // get access to paticles
 
   /*Setting physics parameters*/
-  physics.force_params[8] = 0.001;           // time step
-  physics.force_params[0] = 1000;            // k
-  physics.force_params[1] = 2;               // interaction_radius r
-  physics.force_params[2] = 1;               // mass
-  physics.force_params[3] = 2;               // radius
-  physics.force_params[4] = 0.8;             // mu
-  physics.force_params[5] = 2;               // gamma
-  physics.force_params[6] = 0.00000001;      // epsilon1  -- softening length
-  physics.force_params[7] = M_PI / 10000000; // epsilon2 -- softening omega
+  physics.parameters[8] = 0.001;           // time step
+  physics.parameters[0] = 1000;            // k
+  physics.parameters[1] = 2;               // interaction_radius r
+  physics.parameters[2] = 1;               // mass
+  physics.parameters[3] = 2;               // radius
+  physics.parameters[4] = 0.8;             // mu
+  physics.parameters[5] = 2;               // gamma
+  physics.parameters[6] = 0.00000001;      // epsilon1  -- softening length
+  physics.parameters[7] = M_PI / 10000000; // epsilon2 -- softening omega
 
   /*Initial conditions*/
   // particle 1
@@ -73,6 +73,7 @@ int main() {
 
   for (int i = 0; i < parsym.no_of_particles; ++i) {
     log << "Particle: " << i << std::endl;
+    log << "x, y = " <<  particle[i].x << ", " << particle[i].y << std:: endl;
     log << "V = " << particle[i].vx << ", " << particle[i].vy << std::endl;
     log << "Omega = " << particle[i].omega << std::endl;
     log << "V0 = " << particle[i].vx_activity << ", " << particle[1].vy_activity
@@ -82,17 +83,17 @@ int main() {
 
   log << "-------Parameters and state------" << std::endl;
   log << "Number of particles: " << Number_of_particles << std::endl
-      << "Time step: " << physics.force_params[8] << std::endl
+      << "Time step: " << physics.parameters[8] << std::endl
       << "Number of time steps: " << Number_of_time_steps << std::endl
       << "Dimension: " << dimension << std::endl
-      << "k: " << physics.force_params[0] << std::endl
-      << "Interaction radius (sigma): " << physics.force_params[1] << std::endl
-      << "Radius (r) : " << physics.force_params[3] << std::endl
-      << "Mass (m): " << physics.force_params[2] << std::endl
-      << "mu: " << physics.force_params[4] << std::endl
-      << "gamma: " << physics.force_params[5] << std::endl
-      << "epsilon1 " << physics.force_params[6] << std::endl
-      << "epsilon2 " << physics.force_params[7] << std::endl;
+      << "k: " << physics.parameters[0] << std::endl
+      << "Interaction radius (sigma): " << physics.parameters[1] << std::endl
+      << "Radius (r) : " << physics.parameters[3] << std::endl
+      << "Mass (m): " << physics.parameters[2] << std::endl
+      << "mu: " << physics.parameters[4] << std::endl
+      << "gamma: " << physics.parameters[5] << std::endl
+      << "epsilon1 " << physics.parameters[6] << std::endl
+      << "epsilon2 " << physics.parameters[7] << std::endl;
 
   log << "Energy-momentum before the collision: " << std::endl;
   log << "Total Energy: "
