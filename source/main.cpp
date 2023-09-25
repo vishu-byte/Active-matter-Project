@@ -40,7 +40,7 @@ int main() {
   physics.parameters[2] = 1;               // mass
   physics.parameters[3] = 1;               // radius
   physics.parameters[4] = 0.8;             // mu
-  physics.parameters[5] = 0.5;             // gamma
+  physics.parameters[5] = 100;             // gamma
   physics.parameters[6] = 0.00000001;      // epsilon1  -- softening length
   physics.parameters[7] = M_PI / 10000000; // epsilon2 -- softening omega
   physics.parameters[9] = 0.5 * physics.parameters[5] /
@@ -94,34 +94,35 @@ int main() {
   // 3) Main simulation loop--------------
   for (int step = 0; step < Number_of_time_steps; step++) {
 
-    // Draw current particle system in the window
-    screen.draw_particlesystem(parsym);
-
-    // Manipulate particle positions for next iteration.
-    physics.evolve_system(parsym, step, log);
-
-    // writing data of this state to file (will be used for rendering the system
-    // in ovito)
-    data_output << Number_of_particles << std::endl;
-    data_output << ' ' << std::endl;
-
+    // first store current configuration
     for (int i = 0; i < parsym.no_of_particles; ++i) {
       data_output << particle[i].x << ' ' << particle[i].y << ' ' << 0 << ' '
                   << cos(particle[i].alpha) << ' ' << sin(particle[i].alpha)
                   << ' ' << 0 << ' ' << particle[i].alpha << ' '
                   << particle[i].vx << ' ' << particle[i].vy << ' '
                   << particle[i].omega << ' ' << std::endl;
-      if (step % 100 == 0 && step == 0) {
+      if (step % 100 == 0 || step == 0) {
         logv << particle[i].vx << std::endl;
         logx << particle[i].x << std::endl;
       }
     }
+
+    // writing data of this state to file (will be used for rendering the system
+    // in ovito)
+    data_output << Number_of_particles << std::endl;
+    data_output << ' ' << std::endl;
 
     if (step % 100 == 0) {
       std ::cout << "----------Step count: " << step << std::endl;
     }
 
     log << "----------Step count: " << step << std::endl;
+
+    // Draw current particle system in the window
+    screen.draw_particlesystem(parsym);
+
+    // Manipulate particle positions for next iteration.
+    physics.evolve_system(parsym, step, log);
   }
 
   time_t end = time(&end);
