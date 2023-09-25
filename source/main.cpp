@@ -22,7 +22,7 @@ int main() {
 
   /*Parameters*/
   /*Try to stick to S.I units to make sense out of numbers*/
-  int Number_of_particles = 2;
+  int Number_of_particles = 1;
   int Number_of_time_steps = 4500;
   int dimension = 500; // meters
 
@@ -43,10 +43,9 @@ int main() {
   physics.parameters[5] = 0.5;             // gamma
   physics.parameters[6] = 0.00000001;      // epsilon1  -- softening length
   physics.parameters[7] = M_PI / 10000000; // epsilon2 -- softening omega
-  physics.parameters[9] =
-      0.5 * pow(physics.parameters[4] /
-                    (physics.parameters[2] * physics.parameters[0]),
-                0.5); // zeta
+  physics.parameters[9] = 0.5 * physics.parameters[5] /
+                          pow((physics.parameters[2] * physics.parameters[0]),
+                              0.5); // zeta
 
   /*Initial conditions*/
   // particle 1
@@ -61,20 +60,22 @@ int main() {
   particle[0].omega_activity = 0 * M_PI;
 
   // particle 2
-  particle[1].x = 3;
-  particle[1].y = 0;
-  particle[1].vx = -6;
-  particle[1].vy = 0;
-  particle[1].alpha = 0;
-  particle[1].omega = 0;
-  particle[1].vx_activity = 0;
-  particle[1].vy_activity = 0;
-  particle[1].omega_activity = 0 * M_PI;
+  //   particle[1].x = 3;
+  //   particle[1].y = 0;
+  //   particle[1].vx = -6;
+  //   particle[1].vy = 0;
+  //   particle[1].alpha = 0;
+  //   particle[1].omega = 0;
+  //   particle[1].vx_activity = 0;
+  //   particle[1].vy_activity = 0;
+  //   particle[1].omega_activity = 0 * M_PI;
 
   // 2)Creating a data file for strorage and log-----------
 
   std::ofstream data_output;
   std::ofstream log;
+  std::ofstream logv;
+  std::ofstream logx;
 
   data_output.open("data1.xyz");
   log.open("log.txt");
@@ -108,6 +109,11 @@ int main() {
                   << ' ' << 0 << ' ' << particle[i].alpha << ' '
                   << particle[i].vx << ' ' << particle[i].vy << ' '
                   << particle[i].omega << ' ' << std::endl;
+      if (step % 100 == 0) {
+        std ::cout << "----------Step count: " << step << std::endl;
+        logv << particle[i].vx << std::endl;
+        logx << particle[i].x << std::endl;
+      }
     }
 
     if (step % 100 == 0) {
@@ -120,6 +126,9 @@ int main() {
   time_t end = time(&end);
 
   data_output.close();
+  log.close();
+  logv.close();
+  logx.close();
 
   std::cout << "-x-x-x-x-x-Simulation ended-x-x-x-x-x-" << std::endl;
   log << "-x-x-x-x-x-Simulation ended-x-x-x-x-x-" << std::endl;
