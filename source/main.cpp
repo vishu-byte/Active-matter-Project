@@ -111,8 +111,7 @@ int main() {
                   << ' ' << 0 << ' ' << particle[i].alpha << ' '
                   << particle[i].vx << ' ' << particle[i].vy << ' '
                   << particle[i].omega << ' ' << std::endl;
-      if (step % 100 == 0) {
-        std ::cout << "----------Step count: " << step << std::endl;
+      if (step % 100 == 0 && step == 0) {
         logv << particle[i].vx << std::endl;
         logx << particle[i].x << std::endl;
       }
