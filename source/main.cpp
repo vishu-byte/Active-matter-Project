@@ -79,6 +79,8 @@ int main() {
 
   data_output.open("data1.xyz");
   log.open("log.txt");
+  logv.open("logv.txt");
+  logx.open("logx.txt");
 
   // Print the state before the simulation in log
   state_before_simulation(log, parsym, physics, Number_of_time_steps,
