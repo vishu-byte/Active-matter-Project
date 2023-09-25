@@ -36,13 +36,17 @@ int main() {
   /*Setting physics parameters*/
   physics.parameters[8] = 0.001;           // time step
   physics.parameters[0] = 1000;            // k
-  physics.parameters[1] = 2;               // interaction_radius r
-  physics.parameters[2] = 0.001;               // mass
-  physics.parameters[3] = 2;               // radius
+  physics.parameters[1] = 1;               // interaction_radius r
+  physics.parameters[2] = 1;               // mass
+  physics.parameters[3] = 1;               // radius
   physics.parameters[4] = 0.8;             // mu
-  physics.parameters[5] = 2;               // gamma
+  physics.parameters[5] = 0.5;             // gamma
   physics.parameters[6] = 0.00000001;      // epsilon1  -- softening length
   physics.parameters[7] = M_PI / 10000000; // epsilon2 -- softening omega
+  physics.parameters[9] =
+      0.5 * pow(physics.parameters[4] /
+                    (physics.parameters[2] * physics.parameters[0]),
+                0.5); // zeta
 
   /*Initial conditions*/
   // particle 1
@@ -51,21 +55,21 @@ int main() {
   particle[0].vx = 6;
   particle[0].vy = 0;
   particle[0].alpha = 0;
-  particle[0].omega = -2 * M_PI;
-  particle[0].vx_activity = 6;
+  particle[0].omega = 0 * M_PI;
+  particle[0].vx_activity = 0;
   particle[0].vy_activity = 0;
-  particle[0].omega_activity = 3 * M_PI;
+  particle[0].omega_activity = 0 * M_PI;
 
   // particle 2
   particle[1].x = 3;
   particle[1].y = 0;
-  particle[1].vx = 0;
+  particle[1].vx = -6;
   particle[1].vy = 0;
   particle[1].alpha = 0;
   particle[1].omega = 0;
-  particle[1].vx_activity = -6;
+  particle[1].vx_activity = 0;
   particle[1].vy_activity = 0;
-  particle[1].omega_activity = 1 * M_PI;
+  particle[1].omega_activity = 0 * M_PI;
 
   // 2)Creating a data file for strorage and log-----------
 
@@ -158,6 +162,7 @@ void state_before_simulation(std::ofstream &log, ParSim::ParticleSystem &parsym,
       << "Mass (m): " << physics.parameters[2] << std::endl
       << "mu: " << physics.parameters[4] << std::endl
       << "gamma: " << physics.parameters[5] << std::endl
+      << "zeta: " << physics.parameters[9] << std::endl
       << "epsilon1 " << physics.parameters[6] << std::endl
       << "epsilon2 " << physics.parameters[7] << std::endl;
 

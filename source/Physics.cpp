@@ -31,8 +31,8 @@ void ParSim::Physics::Force_PP(ParSim::ParticleSystem &parsym,
   double mu = this->parameters[4];
   double gamma = this->parameters[5];
   double epsilon1 = this->parameters[6];
-  double epsilon2 = this->parameters[6];
-
+  double epsilon2 = this->parameters[7];
+  double zeta = this->parameters[9]; // zeta
   double fx;
   double fy;
 
@@ -61,11 +61,11 @@ void ParSim::Physics::Force_PP(ParSim::ParticleSystem &parsym,
     // Unary force of damping. Always there. Translational and Rotational
     // activities added.
     particle[i].force_radial[0] +=
-        -gamma * particle[i].vx + particle[i].vx_activity;
+        -2 * zeta * particle[i].vx + particle[i].vx_activity;
     particle[i].force_radial[1] +=
-        -gamma * particle[i].vy + particle[i].vy_activity;
+        -2 * zeta * particle[i].vy + particle[i].vy_activity;
     particle[i].torque +=
-        -gamma * particle[i].omega + particle[i].omega_activity;
+        -2 * zeta * particle[i].omega + particle[i].omega_activity;
 
     // Knary force calculation --- Loop2: through all particles
     for (int j = 0; j < parsym.no_of_particles; ++j) {
@@ -80,17 +80,17 @@ void ParSim::Physics::Force_PP(ParSim::ParticleSystem &parsym,
 
       if (d <= interaction_radius) {
         // radial interaction force
-        particle[i].force_radial[0] += k * (interaction_radius - d) *
+        particle[i].force_radial[0] += (interaction_radius - d) *
                                        (particle[i].x - particle[j].x) /
                                        (d + epsilon1);
 
-        particle[i].force_radial[1] += k * (interaction_radius - d) *
+        particle[i].force_radial[1] += (interaction_radius - d) *
                                        (particle[i].y - particle[j].y) /
                                        (d + epsilon1);
 
         // tangential friction force
-        double N = k * (interaction_radius -
-                        d); // magnitude of radial force used as normal reaction
+        double N = (interaction_radius -
+                    d); // magnitude of radial force used as normal reaction
         double omega_sum = (particle[i].omega + particle[j].omega);
 
         particle[i].force_tangential[0] +=
@@ -147,10 +147,10 @@ void ParSim::Physics::Euler_Integrator(ParSim::Particle &par, int step,
   log << "Ftangential: " << par.force_tangential[1] << std::endl;
   Tau = par.torque;
 
-  dvx = (Fx / m) * time_step;
-  dvy = (Fy / m) * time_step;
+  dvx = (Fx)*time_step;
+  dvy = (Fy)*time_step;
   log << "dvy: " << dvy << std::endl;
-  dw = (Tau / m) * time_step;
+  dw = (Tau)*time_step;
 
   // update the attributes
 
@@ -202,8 +202,8 @@ void ParSim ::Physics::Integrator(ParSim::ParticleSystem &parsym, int step,
                                   std::ofstream &log) {
 
   for (int i = 0; i < parsym.no_of_particles; ++i) {
-    Vel_Verlet_Integrator(parsym.particle_array[i], step, log);
-    // Euler_Integrator(parsym.particle_array[i], time_step, log);
+    // Vel_Verlet_Integrator(parsym.particle_array[i], step, log);
+    Euler_Integrator(parsym.particle_array[i], step, log);
     //  boundary conditions
 
     // if (parsym.particle_array[i].x < -1000 ||
