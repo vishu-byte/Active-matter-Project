@@ -20,7 +20,8 @@ public:
   // class responsible for handling all physics behind the simulation
   std::vector<double> parameters{0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
-  Physics(); // constructor
+  std::vector<double> ERM_pararms{0, 0, 0}; // e, delta, del t
+  Physics();                                // constructor
 
   virtual ~Physics(){}; // destructor
 public:
@@ -29,6 +30,8 @@ public:
   void Integrator(ParticleSystem &, int, std::ofstream &); // Main integrator
   void Euler_Integrator(Particle &, int, std::ofstream &);
   void Vel_Verlet_Integrator(Particle &, int, std::ofstream &);
+  void ERM_Integrator1(Particle &, int, std::ofstream &);
+  void ERM_Integrator2(Particle &, int, std::ofstream &);
 
   /*Conserved quantities*/
   std::vector<double> EnergyMomentum(ParticleSystem &);
@@ -36,6 +39,8 @@ public:
   void evolve_system(ParticleSystem &, int,
                      std::ofstream &file); // takes a particle system and moves
                                            // it forward in time
+
+  void evolve_system_ERM(ParticleSystem &, int, std::ofstream &file);
 };
 
 } // namespace ParSim

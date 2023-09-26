@@ -122,7 +122,7 @@ int main() {
     screen.draw_particlesystem(parsym);
 
     // Manipulate particle positions for next iteration.
-    physics.evolve_system(parsym, step, log);
+    physics.evolve_system_ERM(parsym, step, log);
   }
 
   time_t end = time(&end);

@@ -44,6 +44,7 @@ public:
   void random_initialize(void); // randomly initializes particle
 
 
+
 };
 
 
