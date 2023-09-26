@@ -41,7 +41,7 @@ int main() {
   physics.parameters[2] = 1;               // mass
   physics.parameters[3] = 1;               // radius
   physics.parameters[4] = 0.8;             // mu
-  physics.parameters[5] = 100;             // gamma
+  physics.parameters[5] = 10;             // gamma
   physics.parameters[6] = 0.00000001;      // epsilon1  -- softening length
   physics.parameters[7] = M_PI / 10000000; // epsilon2 -- softening omega
   physics.parameters[9] = 0.5 * physics.parameters[5] /
