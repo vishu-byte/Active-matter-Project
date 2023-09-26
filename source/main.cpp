@@ -23,7 +23,7 @@ int main() {
   /*Parameters*/
   /*Try to stick to S.I units to make sense out of numbers*/
   int Number_of_particles = 1;
-  int Number_of_time_steps = 4500;
+  int Number_of_time_steps = 2250;
   int dimension = 500; // meters
 
   ParSim::ParticleSystem parsym(Number_of_particles);
@@ -34,13 +34,13 @@ int main() {
       parsym.get_particles(); // get access to paticles
 
   /*Setting physics parameters*/
-  physics.parameters[8] = 0.001;           // time step
+  physics.parameters[8] = 0.002;           // time step
   physics.parameters[0] = 1000;            // k
   physics.parameters[1] = 1;               // interaction_radius r
   physics.parameters[2] = 1;               // mass
   physics.parameters[3] = 1;               // radius
   physics.parameters[4] = 0.8;             // mu
-  physics.parameters[5] = 100;             // gamma
+  physics.parameters[5] = 10;             // gamma
   physics.parameters[6] = 0.00000001;      // epsilon1  -- softening length
   physics.parameters[7] = M_PI / 10000000; // epsilon2 -- softening omega
   physics.parameters[9] = 0.5 * physics.parameters[5] /
@@ -101,7 +101,7 @@ int main() {
                   << ' ' << 0 << ' ' << particle[i].alpha << ' '
                   << particle[i].vx << ' ' << particle[i].vy << ' '
                   << particle[i].omega << ' ' << std::endl;
-      if (step % 100 == 0 || step == 0) {
+      if (step % 50 == 0 || step == 0) {
         logv << particle[i].vx << std::endl;
         logx << particle[i].x << std::endl;
       }
