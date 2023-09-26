@@ -212,7 +212,17 @@ void ParSim::Physics::ERM_Integrator1(ParSim::Particle &par, int step,
   log << "Ftangential: " << par.force_tangential[1] << std::endl;
   Tau = par.torque;
 
-  // update the attributes upto midpoint
+  // Save present attributes
+  par.position_prev[0] = par.x;
+  par.position_prev[1] = par.y;
+
+  par.velocity_prev[0] = par.vx;
+  par.velocity_prev[1] = par.vy;
+
+  par.alpha_prev = par.alpha;
+  par.omega_prev = par.omega;
+
+  // update the attributes upto midpoint (x', v')
 
   par.x += par.vx * time_step / 2; // x'
   par.y += par.vy * time_step / 2;
@@ -222,10 +232,9 @@ void ParSim::Physics::ERM_Integrator1(ParSim::Particle &par, int step,
   par.alpha += par.omega * time_step / 2;
   par.omega += (Tau)*time_step / 2;
 
-  //Error estimation in x and v
-
+  // Error estimation in x and v
+  
 }
-
 
 void ParSim::Physics::ERM_Integrator2(ParSim::Particle &par, int step,
                                       std::ofstream &log) {
@@ -235,23 +244,22 @@ void ParSim::Physics::ERM_Integrator2(ParSim::Particle &par, int step,
   double Fx;
   double Fy;
   double Tau;
-  // Total force and torque on this particle
+  // Total force (F') and torque (Tau') on this particle
   Fx = par.force_radial[0] + par.force_tangential[0];
   Fy = par.force_radial[1] + par.force_tangential[1]; // -g newton, m = 1
   log << "Ftangential: " << par.force_tangential[1] << std::endl;
   Tau = par.torque;
 
-  // update the attributes upto midpoint
+  // update the attributes to next time step (x1,v1)
 
-  par.x += par.vx * time_step; // x'
-  par.y += par.vy * time_step;
-  par.vx += (Fx)*time_step ; // v'
-  par.vy += (Fy)*time_step;
+  par.x = par.position_prev[0] + par.vx * time_step; // x1
+  par.y = par.position_prev[1] + par.vy* time_step;  
+  par.vx = par.velocity_prev[0] + (Fx)*time_step;    //v1
+  par.vy = par.velocity_prev[1] + (Fy)*time_step;
 
-  par.alpha += par.omega * time_step;
-  par.omega += (Tau)*time_step ;
+  par.alpha = par.alpha_prev + par.omega * time_step;
+  par.omega = par.omega_prev + (Tau)*time_step;
 }
-
 
 void ParSim ::Physics::Integrator(ParSim::ParticleSystem &parsym, int step,
                                   std::ofstream &log) {
@@ -286,9 +294,9 @@ void ParSim::Physics::evolve_system_ERM(ParticleSystem &parsym, int step,
 
   // i) Calculate force (F) from positions and velocities (x,v) --
   Force_PP(parsym, log); // links forces on each object
-                                          
+
   // ii) Update x,v to x', v'  ----
-  
+
   for (int i = 0; i < parsym.no_of_particles; ++i) {
     // Vel_Verlet_Integrator(parsym.particle_array[i], step, log);
     ERM_Integrator1(parsym.particle_array[i], step, log);
@@ -320,9 +328,8 @@ void ParSim::Physics::evolve_system_ERM(ParticleSystem &parsym, int step,
     //   parsym.particle_array[i].random_initialize();
   }
 
-  //v)Change delt t
-  //this->parameters[8] = 0.9;
-  
+  // v)Change delt t
+  // this->parameters[8] = 0.9;
 }
 
 std::vector<double> ParSim::Physics::EnergyMomentum(ParticleSystem &parsym) {
