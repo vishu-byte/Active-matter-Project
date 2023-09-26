@@ -233,7 +233,6 @@ void ParSim::Physics::ERM_Integrator1(ParSim::Particle &par, int step,
   par.omega += (Tau)*time_step / 2;
 
   // Error estimation in x and v
-  
 }
 
 void ParSim::Physics::ERM_Integrator2(ParSim::Particle &par, int step,
@@ -253,8 +252,8 @@ void ParSim::Physics::ERM_Integrator2(ParSim::Particle &par, int step,
   // update the attributes to next time step (x1,v1)
 
   par.x = par.position_prev[0] + par.vx * time_step; // x1
-  par.y = par.position_prev[1] + par.vy* time_step;  
-  par.vx = par.velocity_prev[0] + (Fx)*time_step;    //v1
+  par.y = par.position_prev[1] + par.vy * time_step;
+  par.vx = par.velocity_prev[0] + (Fx)*time_step; // v1
   par.vy = par.velocity_prev[1] + (Fy)*time_step;
 
   par.alpha = par.alpha_prev + par.omega * time_step;
@@ -296,28 +295,17 @@ void ParSim::Physics::evolve_system_ERM(ParticleSystem &parsym, int step,
   Force_PP(parsym, log); // links forces on each object
 
   // ii) Update x,v to x', v'  ----
-
   for (int i = 0; i < parsym.no_of_particles; ++i) {
-    // Vel_Verlet_Integrator(parsym.particle_array[i], step, log);
     ERM_Integrator1(parsym.particle_array[i], step, log);
-    //  boundary conditions
-
-    // if (parsym.particle_array[i].x < -1000 ||
-    //     parsym.particle_array[i].x > 1000 ||
-    //     parsym.particle_array[i].y < -800 || parsym.particle_array[i].y >
-    //     800)
-    //   parsym.particle_array[i].random_initialize();
   }
 
   // iii) Again calculate force (F') from x',v' ------
-
   Force_PP(parsym, log);
 
   // error tolerance condition ----
 
   //  iv) Update x',v' to xnew, vnew --------
   for (int i = 0; i < parsym.no_of_particles; ++i) {
-    // Vel_Verlet_Integrator(parsym.particle_array[i], step, log);
     ERM_Integrator2(parsym.particle_array[i], step, log);
     //  boundary conditions
 
