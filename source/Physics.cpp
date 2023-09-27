@@ -61,11 +61,11 @@ void ParSim::Physics::Force_PP(ParSim::ParticleSystem &parsym,
     // Unary force of damping. Always there. Translational and Rotational
     // activities added.
     particle[i].force_radial[0] +=
-        -2 * zeta * particle[i].vx + particle[i].vx_activity;
+        -2 * gamma * particle[i].vx + particle[i].vx_activity;
     particle[i].force_radial[1] +=
-        -2 * zeta * particle[i].vy + particle[i].vy_activity;
+        -2 * gamma * particle[i].vy + particle[i].vy_activity;
     particle[i].torque +=
-        -2 * zeta * particle[i].omega + particle[i].omega_activity;
+        -2 * gamma * particle[i].omega + particle[i].omega_activity;
 
     // Knary force calculation --- Loop2: through all particles
     for (int j = 0; j < parsym.no_of_particles; ++j) {
@@ -80,16 +80,16 @@ void ParSim::Physics::Force_PP(ParSim::ParticleSystem &parsym,
 
       if (d <= interaction_radius) {
         // radial interaction force
-        particle[i].force_radial[0] += (interaction_radius - d) *
+        particle[i].force_radial[0] += k*(interaction_radius - d) *
                                        (particle[i].x - particle[j].x) /
                                        (d + epsilon1);
 
-        particle[i].force_radial[1] += (interaction_radius - d) *
+        particle[i].force_radial[1] += k*(interaction_radius - d) *
                                        (particle[i].y - particle[j].y) /
                                        (d + epsilon1);
 
         // tangential friction force
-        double N = (interaction_radius -
+        double N = k*(interaction_radius -
                     d); // magnitude of radial force used as normal reaction
         double omega_sum = (particle[i].omega + particle[j].omega);
 
@@ -147,8 +147,8 @@ void ParSim::Physics::Euler_Integrator(ParSim::Particle &par, int step,
   log << "Ftangential: " << par.force_tangential[1] << std::endl;
   Tau = par.torque;
 
-  dvx = (Fx)*time_step;
-  dvy = (Fy)*time_step;
+  dvx = (Fx/m)*time_step;
+  dvy = (Fy/m)*time_step;
   log << "dvy: " << dvy << std::endl;
   dw = (Tau)*time_step;
 
@@ -226,11 +226,11 @@ void ParSim::Physics::ERM_Integrator1(ParSim::Particle &par, int step,
 
   par.x += par.vx * time_step / 2; // x'
   par.y += par.vy * time_step / 2;
-  par.vx += (Fx)*time_step / 2; // v'
-  par.vy += (Fy)*time_step / 2;
+  par.vx += (Fx/m)*time_step / 2; // v'
+  par.vy += (Fy/m)*time_step / 2;
 
   par.alpha += par.omega * time_step / 2;
-  par.omega += (Tau)*time_step / 2;
+  par.omega += (Tau/m)*time_step / 2;
 
   // Error estimation in x and v
 }
@@ -253,11 +253,11 @@ void ParSim::Physics::ERM_Integrator2(ParSim::Particle &par, int step,
 
   par.x = par.position_prev[0] + par.vx * time_step; // x1
   par.y = par.position_prev[1] + par.vy * time_step;
-  par.vx = par.velocity_prev[0] + (Fx)*time_step; // v1
-  par.vy = par.velocity_prev[1] + (Fy)*time_step;
+  par.vx = par.velocity_prev[0] + (Fx/m)*time_step; // v1
+  par.vy = par.velocity_prev[1] + (Fy/m)*time_step;
 
   par.alpha = par.alpha_prev + par.omega * time_step;
-  par.omega = par.omega_prev + (Tau)*time_step;
+  par.omega = par.omega_prev + (Tau/m)*time_step;
 }
 
 void ParSim ::Physics::Integrator(ParSim::ParticleSystem &parsym, int step,

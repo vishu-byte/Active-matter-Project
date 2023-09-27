@@ -100,6 +100,8 @@ int main() {
   // 3) Main simulation loop--------------
   for (int step = 0; step < Number_of_time_steps; step++) {
 
+    data_output << Number_of_particles << std::endl;
+    data_output << ' ' << std::endl;
     // first store current configuration
     for (int i = 0; i < parsym.no_of_particles; ++i) {
       data_output << particle[i].x << ' ' << particle[i].y << ' ' << 0 << ' '
@@ -123,8 +125,7 @@ int main() {
 
     // writing data of this state to file (will be used for rendering the system
     // in ovito)
-    data_output << Number_of_particles << std::endl;
-    data_output << ' ' << std::endl;
+    
 
     if (step % 100 == 0) {
       std ::cout << "----------Step count: " << step << std::endl;
