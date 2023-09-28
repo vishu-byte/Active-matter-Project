@@ -24,7 +24,7 @@ int main() {
   /*Parameters*/
   /*Try to stick to S.I units to make sense out of numbers*/
   int Number_of_particles = 2;
-  int Number_of_time_steps = 1000;
+  int Number_of_time_steps = 50;
   int dimension = 500; // meters
 
   ParSim::ParticleSystem parsym(Number_of_particles);
@@ -41,7 +41,7 @@ int main() {
   physics.parameters[2] = 1;               // mass
   physics.parameters[3] = 1;               // radius
   physics.parameters[4] = 0.0;             // mu
-  physics.parameters[5] = 0;              // gamma
+  physics.parameters[5] = 0;               // gamma
   physics.parameters[6] = 0.00000001;      // epsilon1  -- softening length
   physics.parameters[7] = M_PI / 10000000; // epsilon2 -- softening omega
   physics.parameters[9] = 0.5 * physics.parameters[5] /
@@ -50,9 +50,9 @@ int main() {
 
   /*Initial conditions*/
   // particle 1
-  particle[0].x = -3*physics.parameters[1];
+  particle[0].x = -1 * physics.parameters[1] / 2.1;
   particle[0].y = 0;
-  particle[0].vx = 6;
+  particle[0].vx = 3;
   particle[0].vy = 0;
   particle[0].alpha = 0;
   particle[0].omega = 0 * M_PI;
@@ -61,9 +61,9 @@ int main() {
   particle[0].omega_activity = 0 * M_PI;
 
   // particle 2
-  particle[1].x = 3*physics.parameters[1];
+  particle[1].x = 1 * physics.parameters[1] / 2.1;
   particle[1].y = 0;
-  particle[1].vx = -6;
+  particle[1].vx = -3;
   particle[1].vy = 0;
   particle[1].alpha = 0;
   particle[1].omega = 0;
@@ -110,22 +110,21 @@ int main() {
                   << particle[i].vx << ' ' << particle[i].vy << ' '
                   << particle[i].omega << ' ' << std::endl;
       // if (step % 50 == 0 || step == 0) {
-      if (i == 0) {
-        log1v << std::setprecision(15) << particle[i].vx << std::endl;
-        log1x << std::setprecision(15) << particle[i].x << std::endl;
-      }
+        if (i == 0) {
+          log1v << std::setprecision(15) << particle[i].vx << std::endl;
+          log1x << std::setprecision(15) << particle[i].x << std::endl;
+        }
 
-      if (i == 1) {
+        if (i == 1) {
 
-        log2v << std::setprecision(15) << particle[i].vx << std::endl;
-        log2x << std::setprecision(15) << particle[i].x << std::endl;
-      }
+          log2v << std::setprecision(15) << particle[i].vx << std::endl;
+          log2x << std::setprecision(15) << particle[i].x << std::endl;
+        }
       // }
     }
 
     // writing data of this state to file (will be used for rendering the system
     // in ovito)
-    
 
     if (step % 100 == 0) {
       std ::cout << "----------Step count: " << step << std::endl;
