@@ -24,7 +24,7 @@ int main() {
   /*Parameters*/
   /*Try to stick to S.I units to make sense out of numbers*/
   int Number_of_particles = 2;
-  int Number_of_time_steps = 50;
+  int Number_of_time_steps = 100;
   int dimension = 500; // meters
 
   ParSim::ParticleSystem parsym(Number_of_particles);
@@ -35,7 +35,7 @@ int main() {
       parsym.get_particles(); // get access to paticles
 
   /*Setting physics parameters*/
-  physics.parameters[8] = 0.002;           // time step
+  physics.parameters[8] = 0.001;           // time step
   physics.parameters[0] = 1000;            // k
   physics.parameters[1] = 1;               // interaction_radius sigma
   physics.parameters[2] = 1;               // mass
@@ -109,7 +109,7 @@ int main() {
                   << ' ' << 0 << ' ' << particle[i].alpha << ' '
                   << particle[i].vx << ' ' << particle[i].vy << ' '
                   << particle[i].omega << ' ' << std::endl;
-      // if (step % 50 == 0 || step == 0) {
+      if (step % 2 == 0 || step == 0) {
         if (i == 0) {
           log1v << std::setprecision(15) << particle[i].vx << std::endl;
           log1x << std::setprecision(15) << particle[i].x << std::endl;
@@ -120,7 +120,7 @@ int main() {
           log2v << std::setprecision(15) << particle[i].vx << std::endl;
           log2x << std::setprecision(15) << particle[i].x << std::endl;
         }
-      // }
+      }
     }
 
     // writing data of this state to file (will be used for rendering the system
@@ -136,7 +136,7 @@ int main() {
     screen.draw_particlesystem(parsym);
 
     // Manipulate particle positions for next iteration.
-    physics.evolve_system_ERM(parsym, step, log);
+    physics.evolve_system(parsym, step, log);
   }
 
   time_t end = time(&end);
