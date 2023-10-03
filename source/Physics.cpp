@@ -22,19 +22,7 @@ ParSim::Physics::Physics() { int sample = 0; }
 
 void ParSim::Physics::Force_PP(ParSim::ParticleSystem &parsym,
                                std::ofstream &log) {
-  // parameters of force
 
-  double k = this->parameters[0];                  // N/m
-  double interaction_radius = this->parameters[1]; // m
-  double m = this->parameters[2];                  // kg
-  double r = this->parameters[3];
-  double mu = this->parameters[4];
-  double gamma = this->parameters[5];
-  double epsilon1 = this->parameters[6];
-  double epsilon2 = this->parameters[7];
-  double zeta = this->parameters[9]; // zeta
-  double fx;
-  double fy;
 
   // Access the particle array. So that notation becomes easier
   Particle *const particle = parsym.get_particles();
@@ -61,11 +49,11 @@ void ParSim::Physics::Force_PP(ParSim::ParticleSystem &parsym,
     // Unary force of damping. Always there. Translational and Rotational
     // activities added.
     particle[i].force_radial[0] +=
-        -2 * gamma * particle[i].vx + particle[i].vx_activity;
+        -2 * (this->parameters[5]) * particle[i].vx + particle[i].vx_activity;
     particle[i].force_radial[1] +=
-        -2 * gamma * particle[i].vy + particle[i].vy_activity;
+        -2 * (this->parameters[5]) * particle[i].vy + particle[i].vy_activity;
     particle[i].torque +=
-        -2 * gamma * particle[i].omega + particle[i].omega_activity;
+        -2 * (this->parameters[5]) * particle[i].omega + particle[i].omega_activity;
 
     // Knary force calculation --- Loop2: through all particles
     for (int j = 0; j < parsym.no_of_particles; ++j) {
@@ -78,39 +66,39 @@ void ParSim::Physics::Force_PP(ParSim::ParticleSystem &parsym,
 
       // U
 
-      if (d <= interaction_radius) {
+      if (d <= (this->parameters[1])) {
         // radial interaction force
-        particle[i].force_radial[0] += k*(interaction_radius - d) *
+        particle[i].force_radial[0] += (this->parameters[0])*((this->parameters[1]) - d) *
                                        (particle[i].x - particle[j].x) /
-                                       (d + epsilon1);
+                                       (d + (this->parameters[6]));
 
-        particle[i].force_radial[1] += k*(interaction_radius - d) *
+        particle[i].force_radial[1] += (this->parameters[0])*((this->parameters[1]) - d) *
                                        (particle[i].y - particle[j].y) /
-                                       (d + epsilon1);
+                                       (d + (this->parameters[6]));
 
         // tangential friction force
-        double N = k*(interaction_radius -
+        double N = (this->parameters[0])*((this->parameters[1]) -
                     d); // magnitude of radial force used as normal reaction
         double omega_sum = (particle[i].omega + particle[j].omega);
 
         particle[i].force_tangential[0] +=
-            -mu * N * (omega_sum / (abs(omega_sum + epsilon2))) *
-            ((particle[i].y - particle[j].y) / (d + epsilon1));
+            -(this->parameters[4]) * N * (omega_sum / (abs(omega_sum + (this->parameters[7])))) *
+            ((particle[i].y - particle[j].y) / (d + (this->parameters[6])));
 
         particle[i].force_tangential[1] +=
-            -mu * N * (omega_sum / (abs(omega_sum + epsilon2))) *
-            (-(particle[i].x - particle[j].x) / (d + epsilon1));
+            -(this->parameters[4]) * N * (omega_sum / (abs(omega_sum + (this->parameters[7])))) *
+            (-(particle[i].x - particle[j].x) / (d + (this->parameters[6])));
 
         // torque on particle
 
         if (omega_sum != 0) {
           particle[i].torque +=
-              -mu * N * (omega_sum / (abs(omega_sum + epsilon2))) * d;
+              -(this->parameters[4]) * N * (omega_sum / (abs(omega_sum + (this->parameters[7])))) * d;
         }
 
         if (omega_sum == 0) {
           particle[i].torque +=
-              -mu * N * (omega_sum / (abs(omega_sum + epsilon2))) * d;
+              -(this->parameters[4]) * N * (omega_sum / (abs(omega_sum + (this->parameters[7])))) * d;
         }
 
         log << "i: " << i << "j: " << j << "xi: " << parsym.particle_array[i].x

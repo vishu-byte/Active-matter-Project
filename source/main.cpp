@@ -92,6 +92,9 @@ int main() {
   // 3) Main simulation loop--------------
   for (int step = 0; step < Number_of_time_steps; step++) {
 
+     // writing data of this state to file (will be used for rendering the system
+    // in ovito)
+
     data_output << Number_of_particles << std::endl;
     data_output << ' ' << std::endl;
     // first store current configuration
@@ -103,8 +106,7 @@ int main() {
                   << particle[i].omega << ' ' << std::endl;
     }
 
-    // writing data of this state to file (will be used for rendering the system
-    // in ovito)
+   
 
     if (step % 100 == 0) {
       std ::cout << "----------Step count: " << step << std::endl;
