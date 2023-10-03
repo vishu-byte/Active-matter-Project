@@ -74,18 +74,11 @@ int main() {
 
   std::ofstream data_output;
   std::ofstream log;
-  // std::ofstream log1v;
-  // std::ofstream log1x;
-  // std::ofstream log2v;
-  // std::ofstream log2x;
+
 
   data_output.open("data1.xyz");
   log.open("log.txt");
-  // log1v.open("log1v.txt");
-  // log1x.open("log1x.txt");
 
-  // log2v.open("log2v.txt");
-  // log2x.open("log2x.txt");
 
   // Print the state before the simulation in log
   state_before_simulation(log, parsym, physics, Number_of_time_steps,
