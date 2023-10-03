@@ -12,7 +12,7 @@
 
 void state_before_simulation(std::ofstream &log, ParSim::ParticleSystem &parsym,
                              ParSim ::Physics &physics, int steps,
-                             int dimension);
+                             double dimension);
 void state_after_simulation(std::ofstream &log, ParSim::ParticleSystem &parsym,
                             ParSim ::Physics &physics);
 
@@ -22,13 +22,14 @@ int main() {
 
   /*Parameters*/
   /*Try to stick to S.I units to make sense out of numbers*/
-  int Number_of_particles = 2;
+  int Number_of_particles = 20;
   int Number_of_time_steps = 1000;
-  int dimension = 500; // meters
+  double phi = 0.75; // area fraction
+  double L;
+  L = std::sqrt(M_PI * Number_of_particles / phi);
 
   ParSim::ParticleSystem parsym(Number_of_particles);
   ParSim::Physics physics;
-
 
   ParSim::Particle *const particle =
       parsym.get_particles(); // get access to paticles
@@ -75,14 +76,11 @@ int main() {
   std::ofstream data_output;
   std::ofstream log;
 
-
   data_output.open("data1.xyz");
   log.open("log.txt");
 
-
   // Print the state before the simulation in log
-  state_before_simulation(log, parsym, physics, Number_of_time_steps,
-                          dimension);
+  state_before_simulation(log, parsym, physics, Number_of_time_steps, L);
 
   log << "-x-x-x-x-x-Simulation initiated-x-x-x-x-x- " << std::endl;
   std::cout << "-x-x-x-x-x-Simulation initiated-x-x-x-x-x- " << std::endl;
@@ -92,7 +90,7 @@ int main() {
   // 3) Main simulation loop--------------
   for (int step = 0; step < Number_of_time_steps; step++) {
 
-     // writing data of this state to file (will be used for rendering the system
+    // writing data of this state to file (will be used for rendering the system
     // in ovito)
 
     data_output << Number_of_particles << std::endl;
@@ -105,8 +103,6 @@ int main() {
                   << particle[i].vx << ' ' << particle[i].vy << ' '
                   << particle[i].omega << ' ' << std::endl;
     }
-
-   
 
     if (step % 100 == 0) {
       std ::cout << "----------Step count: " << step << std::endl;
@@ -140,21 +136,10 @@ int main() {
 
 void state_before_simulation(std::ofstream &log, ParSim::ParticleSystem &parsym,
                              ParSim ::Physics &physics, int steps,
-                             int dimension) {
+                             double dimension) {
 
   ParSim::Particle *const particle =
       parsym.get_particles(); // get access to paticles
-  log << "-------Initial conditions------" << std::endl;
-
-  for (int i = 0; i < parsym.no_of_particles; ++i) {
-    log << "Particle: " << i << std::endl;
-    log << "x, y = " << particle[i].x << ", " << particle[i].y << std::endl;
-    log << "V = " << particle[i].vx << ", " << particle[i].vy << std::endl;
-    log << "Omega = " << particle[i].omega << std::endl;
-    log << "V0 = " << particle[i].vx_activity << ", " << particle[1].vy_activity
-        << std::endl;
-    log << "Omega0 = " << particle[i].omega_activity << std::endl;
-  }
 
   log << "-------Parameters and state------" << std::endl;
   log << "Number of particles: " << parsym.no_of_particles << std::endl
@@ -170,6 +155,18 @@ void state_before_simulation(std::ofstream &log, ParSim::ParticleSystem &parsym,
       << "zeta: " << physics.parameters[9] << std::endl
       << "epsilon1 " << physics.parameters[6] << std::endl
       << "epsilon2 " << physics.parameters[7] << std::endl;
+
+  log << "-------Initial conditions------" << std::endl;
+
+  for (int i = 0; i < parsym.no_of_particles; ++i) {
+    log << "Particle: " << i << std::endl;
+    log << "x, y = " << particle[i].x << ", " << particle[i].y << std::endl;
+    log << "V = " << particle[i].vx << ", " << particle[i].vy << std::endl;
+    log << "Omega = " << particle[i].omega << std::endl;
+    log << "V0 = " << particle[i].vx_activity << ", " << particle[1].vy_activity
+        << std::endl;
+    log << "Omega0 = " << particle[i].omega_activity << std::endl;
+  }
 
   log << "Energy-momentum before the collision: " << std::endl;
   log << "Total Energy: "
