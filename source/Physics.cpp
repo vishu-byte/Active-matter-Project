@@ -227,7 +227,7 @@ void ParSim::Physics::ERM_Integrator1(ParSim::Particle &par, int step,
 
   par.x += par.vx * (this->parameters[8]) / 2; // x'
   par.y += par.vy * (this->parameters[8]) / 2;
-  par.vx += (Fx / (this->parameters[2])) *(this->parameters[8]) / 2; // v'
+  par.vx += (Fx / (this->parameters[2])) * (this->parameters[8]) / 2; // v'
   par.vy += (Fy / (this->parameters[2])) * (this->parameters[8]) / 2;
 
   par.alpha += par.omega * (this->parameters[8]) / 2;
@@ -252,11 +252,14 @@ void ParSim::Physics::ERM_Integrator2(ParSim::Particle &par, int step,
 
   par.x = par.position_prev[0] + par.vx * (this->parameters[8]); // x1
   par.y = par.position_prev[1] + par.vy * (this->parameters[8]);
-  par.vx = par.velocity_prev[0] + (Fx / (this->parameters[2])) * (this->parameters[8]); // v1
-  par.vy = par.velocity_prev[1] + (Fy / ( this->parameters[2])) * (this->parameters[8]);
+  par.vx = par.velocity_prev[0] +
+           (Fx / (this->parameters[2])) * (this->parameters[8]); // v1
+  par.vy = par.velocity_prev[1] +
+           (Fy / (this->parameters[2])) * (this->parameters[8]);
 
   par.alpha = par.alpha_prev + par.omega * (this->parameters[8]);
-  par.omega = par.omega_prev + (Tau / ( this->parameters[2])) * (this->parameters[8]);
+  par.omega =
+      par.omega_prev + (Tau / (this->parameters[2])) * (this->parameters[8]);
 }
 
 void ParSim ::Physics::Integrator(ParSim::ParticleSystem &parsym, int step,
@@ -317,6 +320,14 @@ void ParSim::Physics::evolve_system_ERM(ParticleSystem &parsym, int step,
 
   // v)Change delt t
   // this->parameters[8] = 0.9;
+
+  // vi) boundary conditions
+
+  // if (parsym.particle_array[i].x < -1000 ||
+  //     parsym.particle_array[i].x > 1000 ||
+  //     parsym.particle_array[i].y < -800 || parsym.particle_array[i].y >
+  //     800)
+  //   parsym.particle_array[i].random_initialize();
 }
 
 std::vector<double> ParSim::Physics::EnergyMomentum(ParticleSystem &parsym) {
