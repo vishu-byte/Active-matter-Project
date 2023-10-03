@@ -20,99 +20,96 @@ ParSim::Physics::Physics() { int sample = 0; }
 
 /*Force linker + integrators-- */
 
-void ParSim::Physics::Force_PP(ParSim::ParticleSystem &parsym,
+void ParSim::Physics::Force_PP(ParSim::ParticleSystem &ps,
                                std::ofstream &log) {
 
 
-  // Access the particle array. So that notation becomes easier
-  Particle *const particle = parsym.get_particles();
-
   // Loop1: through all particles
-  for (int i = 0; i < parsym.no_of_particles; ++i) {
+  for (int i = 0; i < ps.no_of_particles; ++i) {
 
     log << "1st loop -- " << std::endl;
 
     // Store previous step forces
-    particle[i].force_radial_prev[0] = particle[i].force_radial[0];
-    particle[i].force_radial_prev[1] = particle[i].force_radial[1];
-    particle[i].force_tangential_prev[0] = particle[i].force_tangential[0];
-    particle[i].force_tangential_prev[1] = particle[i].force_tangential[1];
-    particle[i].torque_prev = particle[i].torque;
+    ps.particle_array[i].force_radial_prev[0] = ps.particle_array[i].force_radial[0];
+    ps.particle_array[i].force_radial_prev[1] = ps.particle_array[i].force_radial[1];
+    ps.particle_array[i].force_tangential_prev[0] = ps.particle_array[i].force_tangential[0];
+    ps.particle_array[i].force_tangential_prev[1] = ps.particle_array[i].force_tangential[1];
+    ps.particle_array[i].torque_prev = ps.particle_array[i].torque;
 
     // Reset the current forces
-    particle[i].force_radial[0] = 0;
-    particle[i].force_radial[1] = 0;
-    particle[i].force_tangential[0] = 0;
-    particle[i].force_tangential[1] = 0;
-    particle[i].torque = 0;
+    ps.particle_array[i].force_radial[0] = 0;
+    ps.particle_array[i].force_radial[1] = 0;
+    ps.particle_array[i].force_tangential[0] = 0;
+    ps.particle_array[i].force_tangential[1] = 0;
+    ps.particle_array[i].torque = 0;
 
     // Unary force of damping. Always there. Translational and Rotational
     // activities added.
-    particle[i].force_radial[0] +=
-        -2 * (this->parameters[5]) * particle[i].vx + particle[i].vx_activity;
-    particle[i].force_radial[1] +=
-        -2 * (this->parameters[5]) * particle[i].vy + particle[i].vy_activity;
-    particle[i].torque +=
-        -2 * (this->parameters[5]) * particle[i].omega + particle[i].omega_activity;
+    ps.particle_array[i].force_radial[0] +=
+        -2 * (this->parameters[5]) * ps.particle_array[i].vx + ps.particle_array[i].vx_activity;
+    ps.particle_array[i].force_radial[1] +=
+        -2 * (this->parameters[5]) * ps.particle_array[i].vy + ps.particle_array[i].vy_activity;
+    ps.particle_array[i].torque +=
+        -2 * (this->parameters[5]) * ps.particle_array[i].omega + ps.particle_array[i].omega_activity;
 
     // Knary force calculation --- Loop2: through all particles
-    for (int j = 0; j < parsym.no_of_particles; ++j) {
+    for (int j = 0; j < ps.no_of_particles; ++j) {
       if (j == i) { // no self coupling
         continue;
       }
       log << "2nd loop -- " << std::endl;
 
-      double d = parsym.distance(particle[i], particle[j]);
+      double d = ps.distance(ps.particle_array[i], ps.particle_array[j]);
 
       // U
 
       if (d <= (this->parameters[1])) {
         // radial interaction force
-        particle[i].force_radial[0] += (this->parameters[0])*((this->parameters[1]) - d) *
-                                       (particle[i].x - particle[j].x) /
+        ps.particle_array[i].force_radial[0] += (this->parameters[0])*((this->parameters[1]) - d) *
+                                       (ps.particle_array[i].x - ps.particle_array[j].x) /
                                        (d + (this->parameters[6]));
 
-        particle[i].force_radial[1] += (this->parameters[0])*((this->parameters[1]) - d) *
-                                       (particle[i].y - particle[j].y) /
+        ps.particle_array[i].force_radial[1] += (this->parameters[0])*((this->parameters[1]) - d) *
+                                       (ps.particle_array[i].y - ps.particle_array[j].y) /
                                        (d + (this->parameters[6]));
 
         // tangential friction force
         double N = (this->parameters[0])*((this->parameters[1]) -
                     d); // magnitude of radial force used as normal reaction
-        double omega_sum = (particle[i].omega + particle[j].omega);
+        double omega_sum = (ps.particle_array[i].omega + ps.particle_array[j].omega);
 
-        particle[i].force_tangential[0] +=
+        ps.particle_array[i].force_tangential[0] +=
             -(this->parameters[4]) * N * (omega_sum / (abs(omega_sum + (this->parameters[7])))) *
-            ((particle[i].y - particle[j].y) / (d + (this->parameters[6])));
+            ((ps.particle_array[i].y - ps.particle_array[j].y) / (d + (this->parameters[6])));
 
-        particle[i].force_tangential[1] +=
+        ps.particle_array[i].force_tangential[1] +=
             -(this->parameters[4]) * N * (omega_sum / (abs(omega_sum + (this->parameters[7])))) *
-            (-(particle[i].x - particle[j].x) / (d + (this->parameters[6])));
+            (-(ps.particle_array[i].x - ps.particle_array[j].x) / (d + (this->parameters[6])));
 
         // torque on particle
 
         if (omega_sum != 0) {
-          particle[i].torque +=
+          ps.particle_array[i].torque +=
               -(this->parameters[4]) * N * (omega_sum / (abs(omega_sum + (this->parameters[7])))) * d;
         }
 
         if (omega_sum == 0) {
-          particle[i].torque +=
+          ps.particle_array[i].torque +=
               -(this->parameters[4]) * N * (omega_sum / (abs(omega_sum + (this->parameters[7])))) * d;
         }
 
-        log << "i: " << i << "j: " << j << "xi: " << parsym.particle_array[i].x
-            << "xj: " << parsym.particle_array[j].x
-            << "frx_p: " << particle[i].force_radial_prev[0]
-            << "fry_p: " << particle[i].force_radial_prev[1]
-            << "ftx_p: " << particle[i].force_tangential_prev[0]
-            << "fty_p: " << particle[i].force_tangential_prev[1]
-            << "tau_p: " << particle[i].torque_prev
-            << "frx: " << particle[i].force_radial[0]
-            << "fry: " << particle[i].force_radial[1]
-            << "ftx: " << particle[i].force_tangential[0]
-            << "fty: " << particle[i].force_tangential[1]
-            << "tau: " << particle[i].torque << std::endl;
+        log << "i: " << i << "j: " << j << "xi: " << ps.particle_array[i].x
+            << "xj: " << ps.particle_array[j].x
+            << "frx_p: " << ps.particle_array[i].force_radial_prev[0]
+            << "fry_p: " << ps.particle_array[i].force_radial_prev[1]
+            << "ftx_p: " << ps.particle_array[i].force_tangential_prev[0]
+            << "fty_p: " << ps.particle_array[i].force_tangential_prev[1]
+            << "tau_p: " << ps.particle_array[i].torque_prev
+            << "frx: " << ps.particle_array[i].force_radial[0]
+            << "fry: " << ps.particle_array[i].force_radial[1]
+            << "ftx: " << ps.particle_array[i].force_tangential[0]
+            << "fty: " << ps.particle_array[i].force_tangential[1]
+            << "tau: " << ps.particle_array[i].torque << std::endl;
       }
     }
   }
