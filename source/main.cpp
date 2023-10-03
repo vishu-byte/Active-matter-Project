@@ -22,7 +22,7 @@ int main() {
 
   /*Parameters*/
   /*Try to stick to S.I units to make sense out of numbers*/
-  int Number_of_particles = 20;
+  int Number_of_particles = 100;
   int Number_of_time_steps = 1000;
   double phi = 0.75; // area fraction
   double L;
@@ -35,8 +35,8 @@ int main() {
       parsym.get_particles(); // get access to paticles
 
   /*Setting physics parameters*/
-  physics.parameters[8] = 0.002;           // time step
-  physics.parameters[0] = 1000;            // k
+  physics.parameters[8] = 0.0001;           // time step
+  physics.parameters[0] = 10000;            // k
   physics.parameters[1] = 1;               // interaction_radius sigma
   physics.parameters[2] = 1;               // mass
   physics.parameters[3] = 1;               // radius
@@ -156,18 +156,6 @@ void state_before_simulation(std::ofstream &log, ParSim::ParticleSystem &parsym,
       << "epsilon1 " << physics.parameters[6] << std::endl
       << "epsilon2 " << physics.parameters[7] << std::endl;
 
-  log << "-------Initial conditions------" << std::endl;
-
-  for (int i = 0; i < parsym.no_of_particles; ++i) {
-    log << "Particle: " << i << std::endl;
-    log << "x, y = " << particle[i].x << ", " << particle[i].y << std::endl;
-    log << "V = " << particle[i].vx << ", " << particle[i].vy << std::endl;
-    log << "Omega = " << particle[i].omega << std::endl;
-    log << "V0 = " << particle[i].vx_activity << ", " << particle[1].vy_activity
-        << std::endl;
-    log << "Omega0 = " << particle[i].omega_activity << std::endl;
-  }
-
   log << "Energy-momentum before the collision: " << std::endl;
   log << "Total Energy: "
       << physics.EnergyMomentum(parsym)[0] + physics.EnergyMomentum(parsym)[1]
@@ -179,6 +167,18 @@ void state_before_simulation(std::ofstream &log, ParSim::ParticleSystem &parsym,
   log << "Momentum: "
       << "(" << physics.EnergyMomentum(parsym)[1] << ", "
       << physics.EnergyMomentum(parsym)[2] << ")" << std::endl;
+
+  log << "-------Initial conditions------" << std::endl;
+
+  for (int i = 0; i < parsym.no_of_particles; ++i) {
+    log << "Particle: " << i << std::endl;
+    log << "x, y = " << particle[i].x << ", " << particle[i].y << std::endl;
+    log << "V = " << particle[i].vx << ", " << particle[i].vy << std::endl;
+    log << "Omega = " << particle[i].omega << std::endl;
+    log << "V0 = " << particle[i].vx_activity << ", " << particle[1].vy_activity
+        << std::endl;
+    log << "Omega0 = " << particle[i].omega_activity << std::endl;
+  }
 };
 
 void state_after_simulation(std::ofstream &log, ParSim::ParticleSystem &parsym,

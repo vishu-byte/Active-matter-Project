@@ -10,7 +10,8 @@
 /*Class Particle definitions ------------*/
 ParSim::Particle::Particle() { random_initialize(); }
 
-ParSim::Particle::Particle(double x_cor, double y_cor, double v_x, double v_y, double orientation) {
+ParSim::Particle::Particle(double x_cor, double y_cor, double v_x, double v_y,
+                           double orientation) {
   x = x_cor;
   y = y_cor;
   vx = v_x;
@@ -19,29 +20,35 @@ ParSim::Particle::Particle(double x_cor, double y_cor, double v_x, double v_y, d
 }
 
 void ParSim::Particle::random_initialize(void) {
+
+  int Number_of_particles = 20;
+  int Number_of_time_steps = 1000;
+  double phi = 0.75; // area fraction
+  double L;
+  L = std::sqrt(M_PI * Number_of_particles / phi);
   std::random_device rd;
   std::uniform_real_distribution<double> x_coordinate(-1, 1);
   std::uniform_real_distribution<double> y_coordinate(-1, 1);
   std::uniform_real_distribution<double> vx_dist(-1, 1);
-  std::uniform_real_distribution<double> vy_dist(-1,1 );
+  std::uniform_real_distribution<double> vy_dist(-1, 1);
   std::uniform_real_distribution<double> alpha_dist(0, 2 * M_PI);
 
-  x = 200*x_coordinate(rd);
-  y = 200*y_coordinate(rd); // random distribution
+  x = L * x_coordinate(rd);
+  y = L * y_coordinate(rd); // random distribution
 
   // Generate random particle speed. Speed is squared causing
   // particle distribution to be exponential instead of linear.
-  vx = 3*pow(vx_dist(rd) , 2);
-  vy = 3*pow(vy_dist(rd) , 2);
+  vx = 3 * pow(vx_dist(rd), 2);
+  vy = 3 * pow(vy_dist(rd), 2);
 
   // Generate random particle orientation (0 to 2pi)
   alpha = alpha_dist(rd);
 
-  //Generate random V0
-  vx_activity = 3*pow(vx_dist(rd) , 2);
-  vy_activity = 3*pow(vy_dist(rd) , 2);
+  // Generate random V0
+  vx_activity = 3 * pow(vx_dist(rd), 2);
+  vy_activity = 3 * pow(vy_dist(rd), 2);
 
-  //Generatoe random omega
+  // Generatoe random omega
   omega_activity = alpha_dist(rd);
 }
 
