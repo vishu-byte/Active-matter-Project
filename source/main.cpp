@@ -35,7 +35,7 @@ int main() {
       parsym.get_particles(); // get access to paticles
 
   /*Setting physics parameters*/
-  physics.parameters[8] = 0.001;           // time step
+  physics.parameters[8] = 0.002;           // time step
   physics.parameters[0] = 1000;            // k
   physics.parameters[1] = 1;               // interaction_radius sigma
   physics.parameters[2] = 1;               // mass
@@ -71,22 +71,22 @@ int main() {
   particle[1].vy_activity = 0;
   particle[1].omega_activity = 0 * M_PI;
 
-  // 2)Creating a data file for strorage and log-----------
+  // 2)Creating a data file for storage and log-----------
 
   std::ofstream data_output;
   std::ofstream log;
-  std::ofstream log1v;
-  std::ofstream log1x;
-  std::ofstream log2v;
-  std::ofstream log2x;
+  // std::ofstream log1v;
+  // std::ofstream log1x;
+  // std::ofstream log2v;
+  // std::ofstream log2x;
 
   data_output.open("data1.xyz");
   log.open("log.txt");
-  log1v.open("log1v.txt");
-  log1x.open("log1x.txt");
+  // log1v.open("log1v.txt");
+  // log1x.open("log1x.txt");
 
-  log2v.open("log2v.txt");
-  log2x.open("log2x.txt");
+  // log2v.open("log2v.txt");
+  // log2x.open("log2x.txt");
 
   // Print the state before the simulation in log
   state_before_simulation(log, parsym, physics, Number_of_time_steps,
@@ -109,18 +109,18 @@ int main() {
                   << ' ' << 0 << ' ' << particle[i].alpha << ' '
                   << particle[i].vx << ' ' << particle[i].vy << ' '
                   << particle[i].omega << ' ' << std::endl;
-      if (step % 2 == 0 || step == 0) {
-        if (i == 0) {
-          log1v << std::setprecision(15) << particle[i].vx << std::endl;
-          log1x << std::setprecision(15) << particle[i].x << std::endl;
-        }
+      // if (step % 2 == 0 || step == 0) {
+      //   if (i == 0) {
+      //     log1v << std::setprecision(15) << particle[i].vx << std::endl;
+      //     log1x << std::setprecision(15) << particle[i].x << std::endl;
+      //   }
 
-        if (i == 1) {
+      //   if (i == 1) {
 
-          log2v << std::setprecision(15) << particle[i].vx << std::endl;
-          log2x << std::setprecision(15) << particle[i].x << std::endl;
-        }
-      }
+      //     log2v << std::setprecision(15) << particle[i].vx << std::endl;
+      //     log2x << std::setprecision(15) << particle[i].x << std::endl;
+      //   }
+      // }
     }
 
     // writing data of this state to file (will be used for rendering the system
@@ -136,7 +136,7 @@ int main() {
     screen.draw_particlesystem(parsym);
 
     // Manipulate particle positions for next iteration.
-    physics.evolve_system(parsym, step, log);
+    physics.evolve_system_ERM(parsym, step, log);
   }
 
   time_t end = time(&end);
