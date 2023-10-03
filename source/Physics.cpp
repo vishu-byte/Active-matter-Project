@@ -20,9 +20,7 @@ ParSim::Physics::Physics() { int sample = 0; }
 
 /*Force linker + integrators-- */
 
-void ParSim::Physics::Force_PP(ParSim::ParticleSystem &ps,
-                               std::ofstream &log) {
-
+void ParSim::Physics::Force_PP(ParSim::ParticleSystem &ps, std::ofstream &log) {
 
   // Loop1: through all particles
   for (int i = 0; i < ps.no_of_particles; ++i) {
@@ -30,10 +28,14 @@ void ParSim::Physics::Force_PP(ParSim::ParticleSystem &ps,
     log << "1st loop -- " << std::endl;
 
     // Store previous step forces
-    ps.particle_array[i].force_radial_prev[0] = ps.particle_array[i].force_radial[0];
-    ps.particle_array[i].force_radial_prev[1] = ps.particle_array[i].force_radial[1];
-    ps.particle_array[i].force_tangential_prev[0] = ps.particle_array[i].force_tangential[0];
-    ps.particle_array[i].force_tangential_prev[1] = ps.particle_array[i].force_tangential[1];
+    ps.particle_array[i].force_radial_prev[0] =
+        ps.particle_array[i].force_radial[0];
+    ps.particle_array[i].force_radial_prev[1] =
+        ps.particle_array[i].force_radial[1];
+    ps.particle_array[i].force_tangential_prev[0] =
+        ps.particle_array[i].force_tangential[0];
+    ps.particle_array[i].force_tangential_prev[1] =
+        ps.particle_array[i].force_tangential[1];
     ps.particle_array[i].torque_prev = ps.particle_array[i].torque;
 
     // Reset the current forces
@@ -46,11 +48,14 @@ void ParSim::Physics::Force_PP(ParSim::ParticleSystem &ps,
     // Unary force of damping. Always there. Translational and Rotational
     // activities added.
     ps.particle_array[i].force_radial[0] +=
-        -2 * (this->parameters[5]) * ps.particle_array[i].vx + ps.particle_array[i].vx_activity;
+        -2 * (this->parameters[5]) * ps.particle_array[i].vx +
+        ps.particle_array[i].vx_activity;
     ps.particle_array[i].force_radial[1] +=
-        -2 * (this->parameters[5]) * ps.particle_array[i].vy + ps.particle_array[i].vy_activity;
+        -2 * (this->parameters[5]) * ps.particle_array[i].vy +
+        ps.particle_array[i].vy_activity;
     ps.particle_array[i].torque +=
-        -2 * (this->parameters[5]) * ps.particle_array[i].omega + ps.particle_array[i].omega_activity;
+        -2 * (this->parameters[5]) * ps.particle_array[i].omega +
+        ps.particle_array[i].omega_activity;
 
     // Knary force calculation --- Loop2: through all particles
     for (int j = 0; j < ps.no_of_particles; ++j) {
@@ -64,38 +69,51 @@ void ParSim::Physics::Force_PP(ParSim::ParticleSystem &ps,
       // U
 
       if (d <= (this->parameters[1])) {
+        // mag. of radial force
+        double N = (this->parameters[0]) *
+                   ((this->parameters[1]) -
+                    d); // magnitude of radial force used as normal reaction
         // radial interaction force
-        ps.particle_array[i].force_radial[0] += (this->parameters[0])*((this->parameters[1]) - d) *
-                                       (ps.particle_array[i].x - ps.particle_array[j].x) /
-                                       (d + (this->parameters[6]));
+        ps.particle_array[i].force_radial[0] +=
+            N * (ps.particle_array[i].x - ps.particle_array[j].x) /
+            (d + (this->parameters[6]));
 
-        ps.particle_array[i].force_radial[1] += (this->parameters[0])*((this->parameters[1]) - d) *
-                                       (ps.particle_array[i].y - ps.particle_array[j].y) /
-                                       (d + (this->parameters[6]));
+        ps.particle_array[i].force_radial[1] +=
+            N * (ps.particle_array[i].y - ps.particle_array[j].y) /
+            (d + (this->parameters[6]));
 
         // tangential friction force
-        double N = (this->parameters[0])*((this->parameters[1]) -
-                    d); // magnitude of radial force used as normal reaction
-        double omega_sum = (ps.particle_array[i].omega + ps.particle_array[j].omega);
+        double omega_sum =
+            (ps.particle_array[i].omega + ps.particle_array[j].omega);
 
         ps.particle_array[i].force_tangential[0] +=
-            -(this->parameters[4]) * N * (omega_sum / (abs(omega_sum + (this->parameters[7])))) *
-            ((ps.particle_array[i].y - ps.particle_array[j].y) / (d + (this->parameters[6])));
+            -(this->parameters[4]) *
+            ((this->parameters[0]) * ((this->parameters[1]) - d)) *
+            (omega_sum / (abs(omega_sum + (this->parameters[7])))) *
+            ((ps.particle_array[i].y - ps.particle_array[j].y) /
+             (d + (this->parameters[6])));
 
         ps.particle_array[i].force_tangential[1] +=
-            -(this->parameters[4]) * N * (omega_sum / (abs(omega_sum + (this->parameters[7])))) *
-            (-(ps.particle_array[i].x - ps.particle_array[j].x) / (d + (this->parameters[6])));
+            -(this->parameters[4]) *
+            ((this->parameters[0]) * ((this->parameters[1]) - d)) *
+            (omega_sum / (abs(omega_sum + (this->parameters[7])))) *
+            (-(ps.particle_array[i].x - ps.particle_array[j].x) /
+             (d + (this->parameters[6])));
 
         // torque on particle
 
         if (omega_sum != 0) {
           ps.particle_array[i].torque +=
-              -(this->parameters[4]) * N * (omega_sum / (abs(omega_sum + (this->parameters[7])))) * d;
+              -(this->parameters[4]) *
+              ((this->parameters[0]) * ((this->parameters[1]) - d)) *
+              (omega_sum / (abs(omega_sum + (this->parameters[7])))) * d;
         }
 
         if (omega_sum == 0) {
           ps.particle_array[i].torque +=
-              -(this->parameters[4]) * N * (omega_sum / (abs(omega_sum + (this->parameters[7])))) * d;
+              -(this->parameters[4]) *
+              ((this->parameters[0]) * ((this->parameters[1]) - d)) *
+              (omega_sum / (abs(omega_sum + (this->parameters[7])))) * d;
         }
 
         log << "i: " << i << "j: " << j << "xi: " << ps.particle_array[i].x
@@ -132,8 +150,8 @@ void ParSim::Physics::Euler_Integrator(ParSim::Particle &par, int step,
   log << "Ftangential: " << par.force_tangential[1] << std::endl;
   Tau = par.torque;
 
-  dvx = (Fx/m)*time_step;
-  dvy = (Fy/m)*time_step;
+  dvx = (Fx / m) * time_step;
+  dvy = (Fy / m) * time_step;
   log << "dvy: " << dvy << std::endl;
   dw = (Tau)*time_step;
 
@@ -211,11 +229,11 @@ void ParSim::Physics::ERM_Integrator1(ParSim::Particle &par, int step,
 
   par.x += par.vx * time_step / 2; // x'
   par.y += par.vy * time_step / 2;
-  par.vx += (Fx/m)*time_step / 2; // v'
-  par.vy += (Fy/m)*time_step / 2;
+  par.vx += (Fx / m) * time_step / 2; // v'
+  par.vy += (Fy / m) * time_step / 2;
 
   par.alpha += par.omega * time_step / 2;
-  par.omega += (Tau/m)*time_step / 2;
+  par.omega += (Tau / m) * time_step / 2;
 
   // Error estimation in x and v
 }
@@ -238,11 +256,11 @@ void ParSim::Physics::ERM_Integrator2(ParSim::Particle &par, int step,
 
   par.x = par.position_prev[0] + par.vx * time_step; // x1
   par.y = par.position_prev[1] + par.vy * time_step;
-  par.vx = par.velocity_prev[0] + (Fx/m)*time_step; // v1
-  par.vy = par.velocity_prev[1] + (Fy/m)*time_step;
+  par.vx = par.velocity_prev[0] + (Fx / m) * time_step; // v1
+  par.vy = par.velocity_prev[1] + (Fy / m) * time_step;
 
   par.alpha = par.alpha_prev + par.omega * time_step;
-  par.omega = par.omega_prev + (Tau/m)*time_step;
+  par.omega = par.omega_prev + (Tau / m) * time_step;
 }
 
 void ParSim ::Physics::Integrator(ParSim::ParticleSystem &parsym, int step,
