@@ -1,5 +1,4 @@
 #include "../include/Physics.h"
-#include "../include/Screen.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_timer.h>
 #include <bits/types/time_t.h>
@@ -29,7 +28,7 @@ int main() {
 
   ParSim::ParticleSystem parsym(Number_of_particles);
   ParSim::Physics physics;
-  ParSim::Screen screen; // initialize the screen
+
 
   ParSim::Particle *const particle =
       parsym.get_particles(); // get access to paticles
@@ -109,18 +108,6 @@ int main() {
                   << ' ' << 0 << ' ' << particle[i].alpha << ' '
                   << particle[i].vx << ' ' << particle[i].vy << ' '
                   << particle[i].omega << ' ' << std::endl;
-      // if (step % 2 == 0 || step == 0) {
-      //   if (i == 0) {
-      //     log1v << std::setprecision(15) << particle[i].vx << std::endl;
-      //     log1x << std::setprecision(15) << particle[i].x << std::endl;
-      //   }
-
-      //   if (i == 1) {
-
-      //     log2v << std::setprecision(15) << particle[i].vx << std::endl;
-      //     log2x << std::setprecision(15) << particle[i].x << std::endl;
-      //   }
-      // }
     }
 
     // writing data of this state to file (will be used for rendering the system
@@ -131,9 +118,6 @@ int main() {
     }
 
     log << "----------Step count: " << step << std::endl;
-
-    // Draw current particle system in the window
-    screen.draw_particlesystem(parsym);
 
     // Manipulate particle positions for next iteration.
     physics.evolve_system_ERM(parsym, step, log);
