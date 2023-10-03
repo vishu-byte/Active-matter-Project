@@ -23,7 +23,7 @@ int main() {
   /*Parameters*/
   /*Try to stick to S.I units to make sense out of numbers*/
   int Number_of_particles = 2;
-  int Number_of_time_steps = 102;
+  int Number_of_time_steps = 1000;
   int dimension = 500; // meters
 
   ParSim::ParticleSystem parsym(Number_of_particles);
@@ -49,7 +49,7 @@ int main() {
 
   /*Initial conditions*/
   // particle 1
-  particle[0].x = -1 * physics.parameters[1] / 2.1;
+  particle[0].x = -3;
   particle[0].y = 0;
   particle[0].vx = 3;
   particle[0].vy = 0;
@@ -60,7 +60,7 @@ int main() {
   particle[0].omega_activity = 0 * M_PI;
 
   // particle 2
-  particle[1].x = 1 * physics.parameters[1] / 2.1;
+  particle[1].x = 3;
   particle[1].y = 0;
   particle[1].vx = -3;
   particle[1].vy = 0;

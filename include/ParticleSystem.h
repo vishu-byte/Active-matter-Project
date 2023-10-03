@@ -51,6 +51,8 @@ public:
 class ParticleSystem {
 public:
   int no_of_particles;
+  double L;
+  double phi;
   Particle *particle_array{nullptr}; // creating particle array on heap
 
   ParticleSystem(int);             // parameterized constructor

@@ -26,16 +26,23 @@ void ParSim::Particle::random_initialize(void) {
   std::uniform_real_distribution<double> vy_dist(-1,1 );
   std::uniform_real_distribution<double> alpha_dist(0, 2 * M_PI);
 
-  x = 0; //200*x_coordinate(rd);
-  y = 0; //200*y_coordinate(rd); // random distribution
+  x = 200*x_coordinate(rd);
+  y = 200*y_coordinate(rd); // random distribution
 
   // Generate random particle speed. Speed is squared causing
   // particle distribution to be exponential instead of linear.
-  vx = pow(vx_dist(rd) , 2);
-  vy = pow(vy_dist(rd) , 2);
+  vx = 3*pow(vx_dist(rd) , 2);
+  vy = 3*pow(vy_dist(rd) , 2);
 
   // Generate random particle orientation (0 to 2pi)
   alpha = alpha_dist(rd);
+
+  //Generate random V0
+  vx_activity = 3*pow(vx_dist(rd) , 2);
+  vy_activity = 3*pow(vy_dist(rd) , 2);
+
+  //Generatoe random omega
+  omega_activity = alpha_dist(rd);
 }
 
 /*Class Particle System definitions----------------*/
