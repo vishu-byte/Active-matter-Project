@@ -25,7 +25,7 @@ void ParSim::Physics::Force_PP(ParSim::ParticleSystem &ps, std::ofstream &log) {
   // Loop1: through all particles
   for (int i = 0; i < ps.no_of_particles; ++i) {
 
-    log << "1st loop -- " << std::endl;
+    //log << "1st loop -- " << std::endl;
 
     // Store previous step forces
     ps.particle_array[i].force_radial_prev[0] =
@@ -62,7 +62,7 @@ void ParSim::Physics::Force_PP(ParSim::ParticleSystem &ps, std::ofstream &log) {
       if (j == i) { // no self coupling
         continue;
       }
-      log << "2nd loop -- " << std::endl;
+     // log << "2nd loop -- " << std::endl;
 
       double d = ps.distance(ps.particle_array[i], ps.particle_array[j]);
 
@@ -116,18 +116,18 @@ void ParSim::Physics::Force_PP(ParSim::ParticleSystem &ps, std::ofstream &log) {
               (omega_sum / (abs(omega_sum + (this->parameters[7])))) * d;
         }
 
-        log << "i: " << i << "j: " << j << "xi: " << ps.particle_array[i].x
-            << "xj: " << ps.particle_array[j].x
-            << "frx_p: " << ps.particle_array[i].force_radial_prev[0]
-            << "fry_p: " << ps.particle_array[i].force_radial_prev[1]
-            << "ftx_p: " << ps.particle_array[i].force_tangential_prev[0]
-            << "fty_p: " << ps.particle_array[i].force_tangential_prev[1]
-            << "tau_p: " << ps.particle_array[i].torque_prev
-            << "frx: " << ps.particle_array[i].force_radial[0]
-            << "fry: " << ps.particle_array[i].force_radial[1]
-            << "ftx: " << ps.particle_array[i].force_tangential[0]
-            << "fty: " << ps.particle_array[i].force_tangential[1]
-            << "tau: " << ps.particle_array[i].torque << std::endl;
+        // log << "i: " << i << "j: " << j << "xi: " << ps.particle_array[i].x
+        //     << "xj: " << ps.particle_array[j].x
+        //     << "frx_p: " << ps.particle_array[i].force_radial_prev[0]
+        //     << "fry_p: " << ps.particle_array[i].force_radial_prev[1]
+        //     << "ftx_p: " << ps.particle_array[i].force_tangential_prev[0]
+        //     << "fty_p: " << ps.particle_array[i].force_tangential_prev[1]
+        //     << "tau_p: " << ps.particle_array[i].torque_prev
+        //     << "frx: " << ps.particle_array[i].force_radial[0]
+        //     << "fry: " << ps.particle_array[i].force_radial[1]
+        //     << "ftx: " << ps.particle_array[i].force_tangential[0]
+        //     << "fty: " << ps.particle_array[i].force_tangential[1]
+        //     << "tau: " << ps.particle_array[i].torque << std::endl;
       }
     }
   }
@@ -147,12 +147,12 @@ void ParSim::Physics::Euler_Integrator(ParSim::Particle &par, int step,
   // Total force and torque on this particle
   Fx = par.force_radial[0] + par.force_tangential[0];
   Fy = par.force_radial[1] + par.force_tangential[1]; // -g newton, m = 1
-  log << "Ftangential: " << par.force_tangential[1] << std::endl;
+  //log << "Ftangential: " << par.force_tangential[1] << std::endl;
   Tau = par.torque;
 
   dvx = (Fx / m) * time_step;
   dvy = (Fy / m) * time_step;
-  log << "dvy: " << dvy << std::endl;
+  //log << "dvy: " << dvy << std::endl;
   dw = (Tau)*time_step;
 
   // update the attributes
@@ -162,7 +162,7 @@ void ParSim::Physics::Euler_Integrator(ParSim::Particle &par, int step,
   par.vx += dvx;
   par.vy += dvy;
 
-  log << "vy: " << par.vy << std::endl;
+  //log << "vy: " << par.vy << std::endl;
 
   par.alpha += par.omega * time_step;
   par.omega += dw;
@@ -198,7 +198,7 @@ void ParSim::Physics::Vel_Verlet_Integrator(ParSim::Particle &par, int step,
     par.omega += time_step * (par.torque + par.torque_prev) / (2 * m);
   }
 
-  log << "vy: " << par.vy << std::endl;
+  //log << "vy: " << par.vy << std::endl;
 }
 
 void ParSim::Physics::ERM_Integrator1(ParSim::Particle &par, int step,
@@ -210,7 +210,7 @@ void ParSim::Physics::ERM_Integrator1(ParSim::Particle &par, int step,
   // Total force and torque on this particle
   Fx = par.force_radial[0] + par.force_tangential[0];
   Fy = par.force_radial[1] + par.force_tangential[1]; // -g newton, m = 1
-  log << "Ftangential: " << par.force_tangential[1] << std::endl;
+  //log << "Ftangential: " << par.force_tangential[1] << std::endl;
   Tau = par.torque;
 
   // Save present attributes
@@ -245,7 +245,7 @@ void ParSim::Physics::ERM_Integrator2(ParSim::Particle &par, int step,
   // Total force (F') and torque (Tau') on this particle
   Fx = par.force_radial[0] + par.force_tangential[0];
   Fy = par.force_radial[1] + par.force_tangential[1]; // -g newton, m = 1
-  log << "Ftangential: " << par.force_tangential[1] << std::endl;
+ // log << "Ftangential: " << par.force_tangential[1] << std::endl;
   Tau = par.torque;
 
   // update the attributes to next time step (x1,v1)
