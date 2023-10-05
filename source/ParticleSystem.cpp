@@ -24,7 +24,7 @@ void ParSim::Particle::random_initialize(void) {
 
   int Number_of_particles = 20;
   int Number_of_time_steps = 1000;
-  double phi = 0.40; // area fraction
+  double phi = 0.60; // area fraction
   double L;
   L = std::sqrt(M_PI * Number_of_particles / phi);
   std::random_device rd;
