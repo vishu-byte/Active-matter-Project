@@ -47,13 +47,13 @@ void ParSim::Physics::Force_PP(ParSim::ParticleSystem &ps, std::ofstream &log) {
     // Unary force of damping. Always there. Translational and Rotational
     // activities added.
     ps.particle_array[i].force_radial[0] +=
-        -2 * (this->parameters[5]) * ps.particle_array[i].vx +
+        -1 * (this->parameters[5]) * ps.particle_array[i].vx +
         ps.particle_array[i].vx_activity;
     ps.particle_array[i].force_radial[1] +=
-        -2 * (this->parameters[5]) * ps.particle_array[i].vy +
+        -1 * (this->parameters[5]) * ps.particle_array[i].vy +
         ps.particle_array[i].vy_activity;
     ps.particle_array[i].torque +=
-        -2 * (this->parameters[5]) * ps.particle_array[i].omega +
+        -1 * (this->parameters[5]) * ps.particle_array[i].omega +
         ps.particle_array[i].omega_activity;
 
     // Knary force calculation --- Loop2: through all particles
