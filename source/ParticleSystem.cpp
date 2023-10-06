@@ -21,9 +21,9 @@ ParSim::Particle::Particle(double x_cor, double y_cor, double v_x, double v_y,
 
 void ParSim::Particle::random_initialize(void) {
 
-  int Number_of_particles = 40;
+  int Number_of_particles = 100;
   int Number_of_time_steps = 1000;
-  double phi = 0.30; // area fraction
+  double phi = 0.10; // area fraction
   double L;
   L = std::sqrt(M_PI * Number_of_particles / phi);
   std::random_device rd;
@@ -31,7 +31,8 @@ void ParSim::Particle::random_initialize(void) {
   std::uniform_real_distribution<double> y_coordinate(-1, 1);
   std::uniform_real_distribution<double> vx_dist(-1, 1);
   std::uniform_real_distribution<double> vy_dist(-1, 1);
-  std::uniform_real_distribution<double> alpha_dist(0, 1);
+  std::uniform_real_distribution<double> alpha_dist(-1, 1);
+   std::uniform_real_distribution<double> omega_dist(-1, 1);
 
   x = L * x_coordinate(rd);
   y = L * y_coordinate(rd); // random distribution
@@ -45,11 +46,11 @@ void ParSim::Particle::random_initialize(void) {
   alpha = alpha_dist(rd);
 
   // Generate random V0
-  vx_activity = 3 * vx_dist(rd);
-  vy_activity = 3 * vy_dist(rd);
+  vx_activity = 0*3 * vx_dist(rd);
+  vy_activity = 0*3 * vy_dist(rd);
 
   // Generatoe random omega
-  omega_activity = 2*M_PI*vx_dist(rd);
+  omega_activity = 0*2*M_PI*omega_dist(rd);
 }
 
 /*Class Particle System definitions----------------*/

@@ -10,7 +10,7 @@
 
 void state_before_simulation(std::ofstream &log, ParSim::ParticleSystem &parsym,
                              ParSim ::Physics &physics, int steps,
-                             double dimension);
+                             double dimension, double phi);
 void state_after_simulation(std::ofstream &log, ParSim::ParticleSystem &parsym,
                             ParSim ::Physics &physics);
 
@@ -20,9 +20,9 @@ int main() {
 
   /*Parameters*/
   /*Try to stick to S.I units to make sense out of numbers*/
-  int Number_of_particles = 40;
+  int Number_of_particles = 100;
   int Number_of_time_steps = 2000;
-  double phi = 0.30; // area fraction
+  double phi = 0.10; // area fraction
   double L;
   L = std::sqrt(M_PI * Number_of_particles / phi);
 
@@ -38,7 +38,7 @@ int main() {
   physics.parameters[1] = 1;               // interaction_radius sigma
   physics.parameters[2] = 1;               // mass
   physics.parameters[3] = 1;               // radius
-  physics.parameters[4] = 0.8;             // mu
+  physics.parameters[4] = 0.0;             // mu
   physics.parameters[5] = 0.0;             // gamma
   physics.parameters[6] = 0.00000001;      // epsilon1  -- softening length
   physics.parameters[7] = M_PI / 10000000; // epsilon2 -- softening omega
@@ -53,7 +53,7 @@ int main() {
   particle[0].vx = 3;
   particle[0].vy = 0;
   particle[0].alpha = 0;
-  particle[0].omega = 2 * M_PI;
+  particle[0].omega = 0 * M_PI;
   particle[0].vx_activity = 0;
   particle[0].vy_activity = 0;
   particle[0].omega_activity = 0 * M_PI;
@@ -78,7 +78,7 @@ int main() {
   log.open("log.txt");
 
   // Print the state before the simulation in log
-  state_before_simulation(log, parsym, physics, Number_of_time_steps, L);
+  state_before_simulation(log, parsym, physics, Number_of_time_steps, L, phi);
 
   log << "-x-x-x-x-x-Simulation initiated-x-x-x-x-x- " << std::endl;
   std::cout << "-x-x-x-x-x-Simulation initiated-x-x-x-x-x- " << std::endl;
@@ -134,7 +134,7 @@ int main() {
 
 void state_before_simulation(std::ofstream &log, ParSim::ParticleSystem &parsym,
                              ParSim ::Physics &physics, int steps,
-                             double dimension) {
+                             double dimension, double phi) {
 
   ParSim::Particle *const particle =
       parsym.get_particles(); // get access to paticles
@@ -143,6 +143,7 @@ void state_before_simulation(std::ofstream &log, ParSim::ParticleSystem &parsym,
   log << "Number of particles: " << parsym.no_of_particles << std::endl
       << "Time step: " << physics.parameters[8] << std::endl
       << "Number of time steps: " << steps << std::endl
+      << "Phi: " << phi << std::endl
       << "Dimension: " << dimension << std::endl
       << "k: " << physics.parameters[0] << std::endl
       << "Interaction radius (sigma): " << physics.parameters[1] << std::endl
@@ -166,17 +167,17 @@ void state_before_simulation(std::ofstream &log, ParSim::ParticleSystem &parsym,
       << "(" << physics.EnergyMomentum(parsym)[1] << ", "
       << physics.EnergyMomentum(parsym)[2] << ")" << std::endl;
 
-  //   log << "-------Initial conditions------" << std::endl;
+  log << "-------Initial conditions------" << std::endl;
 
-  //   for (int i = 0; i < parsym.no_of_particles; ++i) {
-  //     log << "Particle: " << i << std::endl;
-  //     log << "x, y = " << particle[i].x << ", " << particle[i].y <<
-  //     std::endl; log << "V = " << particle[i].vx << ", " << particle[i].vy <<
-  //     std::endl; log << "Omega = " << particle[i].omega << std::endl; log <<
-  //     "V0 = " << particle[i].vx_activity << ", " << particle[1].vy_activity
-  //         << std::endl;
-  //     log << "Omega0 = " << particle[i].omega_activity << std::endl;
-  //   }
+  for (int i = 0; i < parsym.no_of_particles; ++i) {
+    log << "Particle: " << i << std::endl;
+    log << "x, y = " << particle[i].x << ", " << particle[i].y << std::endl;
+    log << "V = " << particle[i].vx << ", " << particle[i].vy << std::endl;
+    log << "Omega = " << particle[i].omega << std::endl;
+    log << "V0 = " << particle[i].vx_activity << ", " << particle[1].vy_activity
+        << std::endl;
+    log << "Omega0 = " << particle[i].omega_activity << std::endl;
+  }
 };
 
 void state_after_simulation(std::ofstream &log, ParSim::ParticleSystem &parsym,
