@@ -23,7 +23,7 @@ void ParSim::Particle::random_initialize(void) {
 
   int Number_of_particles = 100;
   int Number_of_time_steps = 1000;
-  double phi = 0.10; // area fraction
+  double phi = 0.20; // area fraction
   double L;
   L = std::sqrt(M_PI * Number_of_particles / phi);
   std::random_device rd;
@@ -44,14 +44,14 @@ void ParSim::Particle::random_initialize(void) {
 
   // Generate random particle orientation (0 to 2pi) and omegas
   alpha = alpha_dist(rd);
-  omega = 0;
+  omega = 2*M_PI*omega_dist(rd);
 
   // Generate random V0
-  vx_activity = 0 ; //*3 * vx_dist(rd);
-  vy_activity = 0 ;//*3 * vy_dist(rd);
+  vx_activity = 3 * vx_dist(rd);
+  vy_activity = 3 * vy_dist(rd);
 
   // Generatoe random omega
-  omega_activity = 0; //*2*M_PI*omega_dist(rd);
+  omega_activity = 2*M_PI*omega_dist(rd);
 }
 
 /*Class Particle System definitions----------------*/

@@ -22,7 +22,7 @@ int main() {
   /*Try to stick to S.I units to make sense out of numbers*/
   int Number_of_particles = 100;
   int Number_of_time_steps = 2000;
-  double phi = 0.10; // area fraction
+  double phi = 0.20; // area fraction
   double L;
   L = std::sqrt(M_PI * Number_of_particles / phi);
 
@@ -38,8 +38,8 @@ int main() {
   physics.parameters[1] = 1;               // interaction_radius sigma
   physics.parameters[2] = 1;               // mass
   physics.parameters[3] = 1;               // radius
-  physics.parameters[4] = 0.0;             // mu
-  physics.parameters[5] = 0.0;             // gamma
+  physics.parameters[4] = 0.8;             // mu
+  physics.parameters[5] = 0.5;             // gamma
   physics.parameters[6] = 0.00000001;      // epsilon1  -- softening length
   physics.parameters[7] = M_PI / 10000000; // epsilon2 -- softening omega
   physics.parameters[9] = 0.5 * physics.parameters[5] /
@@ -191,6 +191,6 @@ void state_after_simulation(std::ofstream &log, ParSim::ParticleSystem &parsym,
   log << "Rotational K.Energy: " << physics.EnergyMomentum(parsym)[1]
       << std::endl;
   log << "Momentum: "
-      << "(" << physics.EnergyMomentum(parsym)[1] << ", "
-      << physics.EnergyMomentum(parsym)[2] << ")" << std::endl;
+      << "(" << physics.EnergyMomentum(parsym)[2] << ", "
+      << physics.EnergyMomentum(parsym)[3] << ")" << std::endl;
 }
