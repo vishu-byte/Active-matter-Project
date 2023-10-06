@@ -21,9 +21,9 @@ ParSim::Particle::Particle(double x_cor, double y_cor, double v_x, double v_y,
 
 void ParSim::Particle::random_initialize(void) {
 
-  int Number_of_particles = 20;
+  int Number_of_particles = 40;
   int Number_of_time_steps = 1000;
-  double phi = 0.50; // area fraction
+  double phi = 0.30; // area fraction
   double L;
   L = std::sqrt(M_PI * Number_of_particles / phi);
   std::random_device rd;
@@ -38,18 +38,18 @@ void ParSim::Particle::random_initialize(void) {
 
   // Generate random particle speed. Speed is squared causing
   // particle distribution to be exponential instead of linear.
-  vx = 3 * pow(vx_dist(rd), 2);
-  vy = 3 * pow(vy_dist(rd), 2);
+  vx = 3 *vx_dist(rd);
+  vy = 3 *vy_dist(rd);
 
   // Generate random particle orientation (0 to 2pi)
   alpha = alpha_dist(rd);
 
   // Generate random V0
-  vx_activity = 3 * pow(vx_dist(rd), 2);
-  vy_activity = 3 * pow(vy_dist(rd), 2);
+  vx_activity = 3 * vx_dist(rd);
+  vy_activity = 3 * vy_dist(rd);
 
   // Generatoe random omega
-  omega_activity = 2*M_PI*pow(vx_dist(rd), 2);
+  omega_activity = 2*M_PI*vx_dist(rd);
 }
 
 /*Class Particle System definitions----------------*/
