@@ -53,7 +53,7 @@ int main() {
   particle[0].vx = 3;
   particle[0].vy = 0;
   particle[0].alpha = 0;
-  particle[0].omega = 0 * M_PI;
+  particle[0].omega = 0 ;
   particle[0].vx_activity = 0;
   particle[0].vy_activity = 0;
   particle[0].omega_activity = 0 * M_PI;
@@ -164,8 +164,8 @@ void state_before_simulation(std::ofstream &log, ParSim::ParticleSystem &parsym,
   log << "Rotational K.Energy: " << physics.EnergyMomentum(parsym)[1]
       << std::endl;
   log << "Momentum: "
-      << "(" << physics.EnergyMomentum(parsym)[1] << ", "
-      << physics.EnergyMomentum(parsym)[2] << ")" << std::endl;
+      << "(" << physics.EnergyMomentum(parsym)[2] << ", "
+      << physics.EnergyMomentum(parsym)[3] << ")" << std::endl;
 
   log << "-------Initial conditions------" << std::endl;
 

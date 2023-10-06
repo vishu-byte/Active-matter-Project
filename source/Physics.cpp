@@ -339,8 +339,8 @@ std::vector<double> ParSim::Physics::EnergyMomentum(ParticleSystem &parsym) {
              pow(parsym.particle_array[i].vy, 2)); // KE
     p[1] +=
         0.5 * I * (pow(parsym.particle_array[i].omega, 2)); // Rotational K.E
-    p[1] += m * parsym.particle_array[i].vx;                // px
-    p[2] += m * parsym.particle_array[i].vy;                // py
+    p[2] += m * parsym.particle_array[i].vx;                // px
+    p[3] += m * parsym.particle_array[i].vy;                // py
   }
   return p;
 }

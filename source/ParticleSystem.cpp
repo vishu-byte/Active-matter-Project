@@ -42,15 +42,16 @@ void ParSim::Particle::random_initialize(void) {
   vx = 3 *vx_dist(rd);
   vy = 3 *vy_dist(rd);
 
-  // Generate random particle orientation (0 to 2pi)
+  // Generate random particle orientation (0 to 2pi) and omegas
   alpha = alpha_dist(rd);
+  omega = 0;
 
   // Generate random V0
-  vx_activity = 0*3 * vx_dist(rd);
-  vy_activity = 0*3 * vy_dist(rd);
+  vx_activity = 0 ; //*3 * vx_dist(rd);
+  vy_activity = 0 ;//*3 * vy_dist(rd);
 
   // Generatoe random omega
-  omega_activity = 0*2*M_PI*omega_dist(rd);
+  omega_activity = 0; //*2*M_PI*omega_dist(rd);
 }
 
 /*Class Particle System definitions----------------*/
