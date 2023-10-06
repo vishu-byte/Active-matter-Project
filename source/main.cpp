@@ -1,6 +1,4 @@
 #include "../include/Physics.h"
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_timer.h>
 #include <bits/types/time_t.h>
 #include <cmath>
 #include <fstream>
@@ -24,7 +22,7 @@ int main() {
   /*Try to stick to S.I units to make sense out of numbers*/
   int Number_of_particles = 100;
   int Number_of_time_steps = 2000;
-  double phi = 0.75; // area fraction
+  double phi = 0.50; // area fraction
   double L;
   L = std::sqrt(M_PI * Number_of_particles / phi);
 

@@ -4,7 +4,6 @@
 
 #include "../include/Physics.h"
 #include "../include/ParticleSystem.h"
-#include <SDL2/SDL.h>
 #include <cmath>
 #include <fstream>
 #include <math.h>
