@@ -6,9 +6,16 @@
 #include <cmath>
 #include <random>
 #include <stdlib.h>
+#include <iostream>
 
 /*Class Particle definitions ------------*/
-ParSim::Particle::Particle() { random_initialize(); }
+ParSim::Particle::Particle() {   //default constructor
+x = 0; 
+y = 0;
+
+}
+
+ParSim::Particle::Particle(int N, double phi, double L) { random_initialize(N, phi, L); }
 
 ParSim::Particle::Particle(double x_cor, double y_cor, double v_x, double v_y,
                            double orientation) {
@@ -19,45 +26,46 @@ ParSim::Particle::Particle(double x_cor, double y_cor, double v_x, double v_y,
   alpha = orientation;
 }
 
-void ParSim::Particle::random_initialize(void) {
+void ParSim::Particle::random_initialize(int N, double phi, double L ) {
 
-  int Number_of_particles = 200;
-  int Number_of_time_steps = 1000;
-  double phi = 0.88; // area fraction
-  double L;
-  L = std::sqrt(M_PI * Number_of_particles / phi);
+  // std:: cout << "Random init called with: (N,phi,L)" << N<< " "<<phi <<" " << L << std::endl;
   std::random_device rd;
   std::uniform_real_distribution<double> x_coordinate(-1, 1);
   std::uniform_real_distribution<double> y_coordinate(-1, 1);
   std::uniform_real_distribution<double> vx_dist(-1, 1);
   std::uniform_real_distribution<double> vy_dist(-1, 1);
   std::uniform_real_distribution<double> alpha_dist(-1, 1);
-   std::uniform_real_distribution<double> omega_dist(-1, 1);
+  std::uniform_real_distribution<double> omega_dist(-1, 1);
 
-  x = 0.3*L * x_coordinate(rd);
-  y = 0.3*L * y_coordinate(rd); // random distribution
+  x = 0.3 * L * x_coordinate(rd);
+  y = 0.3 * L * y_coordinate(rd); // random distribution
 
   // Generate random particle speed. Speed is squared causing
   // particle distribution to be exponential instead of linear.
-  vx = 3 *vx_dist(rd);
-  vy = 3 *vy_dist(rd);
+  vx = 3 * vx_dist(rd);
+  vy = 3 * vy_dist(rd);
 
   // Generate random particle orientation (0 to 2pi) and omegas
   alpha = alpha_dist(rd);
-  omega = 2*M_PI*omega_dist(rd);
+  omega = 2 * M_PI * omega_dist(rd);
 
   // Generate random V0
   vx_activity = 6 * vx_dist(rd);
   vy_activity = 6 * vy_dist(rd);
 
   // Generatoe random omega
-  omega_activity = 6*M_PI*omega_dist(rd);
+  omega_activity = 6 * M_PI * omega_dist(rd);
 }
 
 /*Class Particle System definitions----------------*/
-ParSim::ParticleSystem::ParticleSystem(int num_of_particles) {
+ParSim::ParticleSystem::ParticleSystem(int num_of_particles, double phi, double L) {
   this->no_of_particles = num_of_particles;
   this->particle_array = new Particle[no_of_particles];
+
+  for (int i = 0; i < num_of_particles; i++) {
+    Particle temp(num_of_particles, phi, L);
+    particle_array[i] = temp;
+  }
 }
 
 ParSim::ParticleSystem::~ParticleSystem() { delete[] particle_array; }

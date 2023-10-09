@@ -42,10 +42,11 @@ public:
   // std:: vector <double> IC{0,0,0,0,0};
 
   Particle(); // default constructor
+  Particle(int, double, double); // parameterized constructor: int N, double phi
   Particle(double x_cor, double y_cor, double speed, double direction,
            double orientation); // parameterized constructor
   virtual ~Particle(){};        // virtual destructor
-  void random_initialize(void); // randomly initializes particle
+  void random_initialize(int, double, double); // randomly initializes particle
 };
 
 class ParticleSystem {
@@ -55,7 +56,7 @@ public:
   double phi;
   Particle *particle_array{nullptr}; // creating particle array on heap
 
-  ParticleSystem(int);             // parameterized constructor
+  ParticleSystem(int, double, double);             // parameterized constructor
   virtual ~ParticleSystem();       // destructor
   Particle *const get_particles(); // constant pointer, can not change address
                                    // of memory block to which it points
