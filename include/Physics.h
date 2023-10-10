@@ -32,7 +32,7 @@ public:
   void Euler_Integrator(Particle &, int, std::ofstream &);
   void Vel_Verlet_Integrator(Particle &, int, std::ofstream &);
   void ERM_Integrator1(Particle &, int, std::ofstream &);
-  void ERM_Integrator2(Particle &, int, std::ofstream &);
+  void ERM_Integrator2(Particle &, double, int, std::ofstream &);
 
   /*Conserved quantities*/
   std::vector<double> EnergyMomentum(ParticleSystem &);

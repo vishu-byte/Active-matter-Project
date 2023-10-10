@@ -351,7 +351,7 @@ void ParSim::Physics::ERM_Integrator1(ParSim::Particle &par, int step,
   // Error estimation in x and v
 }
 
-void ParSim::Physics::ERM_Integrator2(ParSim::Particle &par, int step,
+void ParSim::Physics::ERM_Integrator2(ParSim::Particle &par, double L, int step,
                                       std::ofstream &log) {
 
   double Fx;
@@ -375,6 +375,20 @@ void ParSim::Physics::ERM_Integrator2(ParSim::Particle &par, int step,
   par.alpha = par.alpha_prev + par.omega * (this->parameters[8]);
   par.omega =
       par.omega_prev + (Tau / (this->parameters[2])) * (this->parameters[8]);
+
+  // Periodic boudary condition
+
+  if (par.x > L / 2) {
+    par.x -= L;
+  } else if (par.x < -L / 2) {
+    par.x += L ;
+  }
+
+  if (par.y > L / 2) {
+    par.y -= L;
+  } else if (par.y < -L / 2) {
+    par.y += L ;
+  }
 }
 
 void ParSim ::Physics::Integrator(ParSim::ParticleSystem &parsym, int step,
@@ -409,7 +423,7 @@ void ParSim::Physics::evolve_system_ERM(ParticleSystem &parsym, int step,
                                         std::ofstream &log) {
 
   // i) Calculate force (F) from positions and velocities (x,v) --
-  Force_PP(parsym, log); // links forces on each object
+  Force_PP_PBC(parsym, log); // links forces on each object
 
   // ii) Update x,v to x', v'  ----
   for (int i = 0; i < parsym.no_of_particles; ++i) {
@@ -417,20 +431,13 @@ void ParSim::Physics::evolve_system_ERM(ParticleSystem &parsym, int step,
   }
 
   // iii) Again calculate force (F') from x',v' ------
-  Force_PP(parsym, log);
+  Force_PP_PBC(parsym, log);
 
   // error tolerance condition ----
 
   //  iv) Update x',v' to xnew, vnew --------
   for (int i = 0; i < parsym.no_of_particles; ++i) {
-    ERM_Integrator2(parsym.particle_array[i], step, log);
-    //  boundary conditions
-
-    // if (parsym.particle_array[i].x < -1000 ||
-    //     parsym.particle_array[i].x > 1000 ||
-    //     parsym.particle_array[i].y < -800 || parsym.particle_array[i].y >
-    //     800)
-    //   parsym.particle_array[i].random_initialize();
+    ERM_Integrator2(parsym.particle_array[i], parsym.L, step, log);
   }
 
   // v)Change delt t

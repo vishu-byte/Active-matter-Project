@@ -21,7 +21,7 @@ int main() {
   /*Parameters*/
   /*Try to stick to S.I units to make sense out of numbers*/
   int Number_of_particles = 2;
-  int Number_of_time_steps = 10;
+  int Number_of_time_steps = 3000;
   double phi = 0.30; // area fraction
   double L;
   L = std::sqrt(M_PI * Number_of_particles / phi);
@@ -40,7 +40,7 @@ int main() {
   physics.parameters[2] = 1;               // mass
   physics.parameters[3] = 1;               // radius
   physics.parameters[4] = 0.8;             // mu
-  physics.parameters[5] = 1.5;             // gamma
+  physics.parameters[5] = 0;             // gamma
   physics.parameters[6] = 0.00000001;      // epsilon1  -- softening length
   physics.parameters[7] = M_PI / 10000000; // epsilon2 -- softening omega
   physics.parameters[9] = 0.5 * physics.parameters[5] /
@@ -49,9 +49,9 @@ int main() {
 
   /*Initial conditions*/
   // particle 1
-  particle[0].x = -2;
-  particle[0].y = 2;
-  particle[0].vx = 0;
+  particle[0].x = -1;
+  particle[0].y = 0;
+  particle[0].vx = 3;
   particle[0].vy = 0;
   particle[0].alpha = 0;
   particle[0].omega = 0;
