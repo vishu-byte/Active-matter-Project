@@ -21,12 +21,13 @@ int main() {
   /*Parameters*/
   /*Try to stick to S.I units to make sense out of numbers*/
   int Number_of_particles = 2;
-  int Number_of_time_steps = 400;
+  int Number_of_time_steps = 10;
   double phi = 0.30; // area fraction
   double L;
   L = std::sqrt(M_PI * Number_of_particles / phi);
+  L = 10;
 
-  ParSim::ParticleSystem parsym(Number_of_particles, phi , L);
+  ParSim::ParticleSystem parsym(Number_of_particles, phi, L);
   ParSim::Physics physics;
 
   ParSim::Particle *const particle =
@@ -48,26 +49,37 @@ int main() {
 
   /*Initial conditions*/
   // particle 1
-  particle[0].x = -3;
-  particle[0].y = 0;
+  particle[0].x = -2;
+  particle[0].y = 2;
   particle[0].vx = 0;
   particle[0].vy = 0;
   particle[0].alpha = 0;
   particle[0].omega = 0;
-  particle[0].vx_activity = 3;
+  particle[0].vx_activity = 0;
   particle[0].vy_activity = 0;
-  particle[0].omega_activity = 2 * M_PI;
+  particle[0].omega_activity = 0 * M_PI;
 
   // particle 2
-  particle[1].x = 3;
-  particle[1].y = 0;
+  particle[1].x = 4;
+  particle[1].y = -4;
   particle[1].vx = 0;
   particle[1].vy = 0;
   particle[1].alpha = 0;
   particle[1].omega = 0;
-  particle[1].vx_activity = -3;
+  particle[1].vx_activity = 0;
   particle[1].vy_activity = 0;
-  particle[1].omega_activity = 2 * M_PI;
+  particle[1].omega_activity = 0 * M_PI;
+
+  std ::cout << "Distance: " << parsym.distance(particle[0], particle[1])
+             << std::endl;
+  std ::cout << "Nearest neighbour distance: "
+             << parsym.nearest_img_dist(particle[0], particle[1]) << std::endl;
+
+  std ::cout << "dx, dy " << particle[0].x - particle[1].x << ", "
+             << particle[0].y - particle[1].y << std::endl;
+  std ::cout << "Nearest image dx "
+             << parsym.min_sep(particle[0].x, particle[1].x) << ", "
+             << parsym.min_sep(particle[0].y, particle[1].y) << std::endl;
 
   // 2)Creating a data file for storage and log-----------
 
