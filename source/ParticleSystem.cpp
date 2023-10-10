@@ -4,18 +4,20 @@
 
 #include "../include/ParticleSystem.h"
 #include <cmath>
+#include <iostream>
+#include <math.h>
 #include <random>
 #include <stdlib.h>
-#include <iostream>
 
 /*Class Particle definitions ------------*/
-ParSim::Particle::Particle() {   //default constructor
-x = 0; 
-y = 0;
-
+ParSim::Particle::Particle() { // default constructor
+  x = 0;
+  y = 0;
 }
 
-ParSim::Particle::Particle(int N, double phi, double L) { random_initialize(N, phi, L); }
+ParSim::Particle::Particle(int N, double phi, double L) {
+  random_initialize(N, phi, L);
+}
 
 ParSim::Particle::Particle(double x_cor, double y_cor, double v_x, double v_y,
                            double orientation) {
@@ -26,9 +28,10 @@ ParSim::Particle::Particle(double x_cor, double y_cor, double v_x, double v_y,
   alpha = orientation;
 }
 
-void ParSim::Particle::random_initialize(int N, double phi, double L ) {
+void ParSim::Particle::random_initialize(int N, double phi, double L) {
 
-  // std:: cout << "Random init called with: (N,phi,L)" << N<< " "<<phi <<" " << L << std::endl;
+  // std:: cout << "Random init called with: (N,phi,L)" << N<< " "<<phi <<" " <<
+  // L << std::endl;
   std::random_device rd;
   std::uniform_real_distribution<double> x_coordinate(-1, 1);
   std::uniform_real_distribution<double> y_coordinate(-1, 1);
@@ -58,9 +61,11 @@ void ParSim::Particle::random_initialize(int N, double phi, double L ) {
 }
 
 /*Class Particle System definitions----------------*/
-ParSim::ParticleSystem::ParticleSystem(int num_of_particles, double phi, double L) {
+ParSim::ParticleSystem::ParticleSystem(int num_of_particles, double phi,
+                                       double dim) {
   this->no_of_particles = num_of_particles;
   this->particle_array = new Particle[no_of_particles];
+  this->L = dim;
 
   for (int i = 0; i < num_of_particles; i++) {
     Particle temp(num_of_particles, phi, L);
@@ -78,4 +83,25 @@ double ParSim::ParticleSystem::distance(Particle par1, Particle par2) {
   double distance =
       pow(pow((par1.x - par2.x), 2) + pow((par1.y - par2.y), 2), 0.5);
   return distance;
+}
+
+double ParSim::ParticleSystem::min_sep(double x1, double x2) {
+  double dx = x1 - x2;
+  if (dx < (-L / 2)) {
+    dx += L;
+  } else if (dx > (L / 2)) {
+    dx -= L;
+  }
+
+  return dx;
+}
+
+double ParSim::ParticleSystem::nearest_img_dist(Particle par1, Particle par2) {
+
+  double dist;
+
+  dist =
+      sqrt(pow(min_sep(par1.x, par2.x), 2) + pow(min_sep(par1.y, par2.y), 2));
+
+  return dist;
 }

@@ -61,6 +61,10 @@ public:
   Particle *const get_particles(); // constant pointer, can not change address
                                    // of memory block to which it points
   double distance(Particle par1, Particle par2);
+
+  double min_sep(double x1, double x2);
+
+  double nearest_img_dist(Particle par1, Particle par2);
 };
 
 } // namespace ParSim
