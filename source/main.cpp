@@ -104,7 +104,7 @@ int main() {
     // in ovito)
 
     data_output << Number_of_particles << std::endl;
-    data_output << ' ' << std::endl;
+    data_output << "Lattice="<<"\"10.0 0.0 0.0 0.0 10.0 0.0 0.0 0.0 0.0\"" << std::endl;
     // first store current configuration
     for (int i = 0; i < parsym.no_of_particles; ++i) {
       data_output << particle[i].x << ' ' << particle[i].y << ' ' << 0 << ' '
