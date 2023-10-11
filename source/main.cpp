@@ -49,9 +49,9 @@ int main() {
 
   /*Initial conditions*/
   // particle 1
-  particle[0].x = -1;
+  particle[0].x = -L/2.1;
   particle[0].y = 0;
-  particle[0].vx = 3;
+  particle[0].vx = 0;
   particle[0].vy = 0;
   particle[0].alpha = 0;
   particle[0].omega = 0;
@@ -60,8 +60,8 @@ int main() {
   particle[0].omega_activity = 0 * M_PI;
 
   // particle 2
-  particle[1].x = 4;
-  particle[1].y = -4;
+  particle[1].x = L/2.1;
+  particle[1].y = 0;
   particle[1].vx = 0;
   particle[1].vy = 0;
   particle[1].alpha = 0;
