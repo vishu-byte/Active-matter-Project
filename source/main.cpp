@@ -69,16 +69,6 @@ int main() {
   particle[1].vy_activity = 0;
   particle[1].omega_activity = 0 * M_PI;
 
-  std ::cout << "Distance: " << parsym.distance(particle[0], particle[1])
-             << std::endl;
-  std ::cout << "Nearest neighbour distance: "
-             << parsym.nearest_img_dist(particle[0], particle[1]) << std::endl;
-
-  std ::cout << "dx, dy " << particle[0].x - particle[1].x << ", "
-             << particle[0].y - particle[1].y << std::endl;
-  std ::cout << "Nearest image dx "
-             << parsym.min_sep(particle[0].x, particle[1].x) << ", "
-             << parsym.min_sep(particle[0].y, particle[1].y) << std::endl;
 
   // 2)Creating a data file for storage and log-----------
 
