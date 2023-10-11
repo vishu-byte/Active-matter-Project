@@ -20,12 +20,11 @@ int main() {
 
   /*Parameters*/
   /*Try to stick to S.I units to make sense out of numbers*/
-  int Number_of_particles = 2;
-  int Number_of_time_steps = 3000;
-  double phi = 0.30; // area fraction
+  int Number_of_particles = 100;
+  int Number_of_time_steps = 2000;
+  double phi = 0.60; // area fraction
   double L;
   L = std::sqrt(M_PI * Number_of_particles / phi);
-  L = 10;
 
   ParSim::ParticleSystem parsym(Number_of_particles, phi, L);
   ParSim::Physics physics;
