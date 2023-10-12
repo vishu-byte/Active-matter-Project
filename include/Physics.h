@@ -18,7 +18,7 @@ namespace ParSim { // for particle simulation
 class Physics {
 public:
   // class responsible for handling all physics behind the simulation
-  std::vector<double> parameters{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+  std::vector<double> parameters{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
   std::vector<double> ERM_pararms{0, 0, 0}; // e, delta, del t
   Physics();                                // constructor

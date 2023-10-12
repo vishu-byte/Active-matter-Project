@@ -39,16 +39,19 @@ int main() {
   physics.parameters[2] = 1;               // mass
   physics.parameters[3] = 1;               // radius
   physics.parameters[4] = 0.8;             // mu
-  physics.parameters[5] = 0;             // gamma
+  physics.parameters[5] = 0;               // gamma
   physics.parameters[6] = 0.00000001;      // epsilon1  -- softening length
   physics.parameters[7] = M_PI / 10000000; // epsilon2 -- softening omega
   physics.parameters[9] = 0.5 * physics.parameters[5] /
                           pow((physics.parameters[2] * physics.parameters[0]),
                               0.5); // zeta
 
+  physics.parameters[10] = 5; // eta
+  physics.parameters[11] = 2; // Diffusion constant
+
   /*Initial conditions*/
   // particle 1
-  particle[0].x = -L/2.1;
+  particle[0].x = -L / 2.1;
   particle[0].y = 0;
   particle[0].vx = 0;
   particle[0].vy = 0;
@@ -59,7 +62,7 @@ int main() {
   particle[0].omega_activity = 0 * M_PI;
 
   // particle 2
-  particle[1].x = L/2.1;
+  particle[1].x = L / 2.1;
   particle[1].y = 0;
   particle[1].vx = 0;
   particle[1].vy = 0;
@@ -68,7 +71,6 @@ int main() {
   particle[1].vx_activity = 0;
   particle[1].vy_activity = 0;
   particle[1].omega_activity = 0 * M_PI;
-
 
   // 2)Creating a data file for storage and log-----------
 
@@ -93,7 +95,8 @@ int main() {
     // in ovito)
 
     data_output << Number_of_particles << std::endl;
-    data_output << "Lattice="<<"\"10.0 0.0 0.0 0.0 10.0 0.0 0.0 0.0 0.0\"" << std::endl;
+    data_output << "Lattice="
+                << "\"10.0 0.0 0.0 0.0 10.0 0.0 0.0 0.0 0.0\"" << std::endl;
     // first store current configuration
     for (int i = 0; i < parsym.no_of_particles; ++i) {
       data_output << particle[i].x << ' ' << particle[i].y << ' ' << 0 << ' '
