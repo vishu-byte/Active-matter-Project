@@ -135,6 +135,8 @@ void ParSim::Physics::Force_PP(ParSim::ParticleSystem &ps, std::ofstream &log) {
 void ParSim::Physics::Force_PP_PBC(ParSim::ParticleSystem &ps,
                                    std::ofstream &log) {
 
+  //For random force
+  std::normal_distribution<double> distribution(0.0, 0.3333);                                
   // Loop1: through all particles
   for (int i = 0; i < ps.no_of_particles; ++i) {
 
@@ -160,12 +162,20 @@ void ParSim::Physics::Force_PP_PBC(ParSim::ParticleSystem &ps,
 
     // Unary force of damping. Always there. Translational and Rotational
     // activities added.
+
+    
     ps.particle_array[i].force_radial[0] +=
         -1 * (this->parameters[5]) * ps.particle_array[i].vx +
-        ps.particle_array[i].vx_activity;
+        ps.particle_array[i].vx_activity +
+        (this->parameters[10] * this->parameters[11])*distribution(this->generator);
+
+
     ps.particle_array[i].force_radial[1] +=
         -1 * (this->parameters[5]) * ps.particle_array[i].vy +
-        ps.particle_array[i].vy_activity;
+        ps.particle_array[i].vy_activity +
+        (this->parameters[10] * this->parameters[11])*distribution(this->generator);
+
+
     ps.particle_array[i].torque +=
         -1 * (this->parameters[5]) * ps.particle_array[i].omega +
         ps.particle_array[i].omega_activity;
@@ -381,13 +391,13 @@ void ParSim::Physics::ERM_Integrator2(ParSim::Particle &par, double L, int step,
   if (par.x > L / 2) {
     par.x -= L;
   } else if (par.x < -L / 2) {
-    par.x += L ;
+    par.x += L;
   }
 
   if (par.y > L / 2) {
     par.y -= L;
   } else if (par.y < -L / 2) {
-    par.y += L ;
+    par.y += L;
   }
 }
 

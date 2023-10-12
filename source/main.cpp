@@ -20,11 +20,13 @@ int main() {
 
   /*Parameters*/
   /*Try to stick to S.I units to make sense out of numbers*/
-  int Number_of_particles = 100;
+  int Number_of_particles = 2;
   int Number_of_time_steps = 2000;
   double phi = 0.60; // area fraction
   double L;
   L = std::sqrt(M_PI * Number_of_particles / phi);
+
+  L = 20;
 
   ParSim::ParticleSystem parsym(Number_of_particles, phi, L);
   ParSim::Physics physics;
@@ -46,13 +48,13 @@ int main() {
                           pow((physics.parameters[2] * physics.parameters[0]),
                               0.5); // zeta
 
-  physics.parameters[10] = 5; // eta
-  physics.parameters[11] = 2; // Diffusion constant
+  physics.parameters[10] = 200; // eta
+  physics.parameters[11] = 2;  // Diffusion constant
 
   /*Initial conditions*/
   // particle 1
-  particle[0].x = -L / 2.1;
-  particle[0].y = 0;
+  particle[0].x = -L / 5;
+  particle[0].y = L / 5;
   particle[0].vx = 0;
   particle[0].vy = 0;
   particle[0].alpha = 0;
@@ -62,7 +64,7 @@ int main() {
   particle[0].omega_activity = 0 * M_PI;
 
   // particle 2
-  particle[1].x = L / 2.1;
+  particle[1].x = L / 5;
   particle[1].y = 0;
   particle[1].vx = 0;
   particle[1].vy = 0;
