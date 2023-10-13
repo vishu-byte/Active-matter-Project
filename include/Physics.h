@@ -20,8 +20,7 @@ public:
   // class responsible for handling all physics behind the simulation
   std::vector<double> parameters{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
-  std::default_random_engine generator;
-
+  std::random_device generator;
 
   std::vector<double> ERM_pararms{0, 0, 0}; // e, delta, del t
   Physics();                                // constructor

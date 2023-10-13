@@ -20,14 +20,11 @@ int main() {
 
   /*Parameters*/
   /*Try to stick to S.I units to make sense out of numbers*/
-  int Number_of_particles = 2;
+  int Number_of_particles = 100;
   int Number_of_time_steps = 2000;
   double phi = 0.60; // area fraction
   double L;
   L = std::sqrt(M_PI * Number_of_particles / phi);
-
-  L = 20;
-
   ParSim::ParticleSystem parsym(Number_of_particles, phi, L);
   ParSim::Physics physics;
 
@@ -41,7 +38,7 @@ int main() {
   physics.parameters[2] = 1;               // mass
   physics.parameters[3] = 1;               // radius
   physics.parameters[4] = 0.8;             // mu
-  physics.parameters[5] = 0;               // gamma
+  physics.parameters[5] = 1.5;             // gamma
   physics.parameters[6] = 0.00000001;      // epsilon1  -- softening length
   physics.parameters[7] = M_PI / 10000000; // epsilon2 -- softening omega
   physics.parameters[9] = 0.5 * physics.parameters[5] /
@@ -49,30 +46,30 @@ int main() {
                               0.5); // zeta
 
   physics.parameters[10] = 200; // eta
-  physics.parameters[11] = 2;  // Diffusion constant
+  physics.parameters[11] = 2;   // Diffusion constant
 
   /*Initial conditions*/
   // particle 1
   particle[0].x = -L / 5;
   particle[0].y = L / 5;
-  particle[0].vx = 0;
-  particle[0].vy = 0;
+  particle[0].vx = 2;
+  particle[0].vy = 2;
   particle[0].alpha = 0;
   particle[0].omega = 0;
   particle[0].vx_activity = 0;
   particle[0].vy_activity = 0;
-  particle[0].omega_activity = 0 * M_PI;
+  particle[0].omega_activity = 2 * M_PI;
 
   // particle 2
   particle[1].x = L / 5;
   particle[1].y = 0;
-  particle[1].vx = 0;
-  particle[1].vy = 0;
+  particle[1].vx = -2;
+  particle[1].vy = 2;
   particle[1].alpha = 0;
   particle[1].omega = 0;
   particle[1].vx_activity = 0;
   particle[1].vy_activity = 0;
-  particle[1].omega_activity = 0 * M_PI;
+  particle[1].omega_activity = -2 * M_PI;
 
   // 2)Creating a data file for storage and log-----------
 
