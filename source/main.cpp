@@ -20,8 +20,8 @@ int main() {
 
   /*Parameters*/
   /*Try to stick to S.I units to make sense out of numbers*/
-  int Number_of_particles = 200;
-  int Number_of_time_steps = 2000;
+  int Number_of_particles = 1000;
+  int Number_of_time_steps = 4000;
   double phi = 0.75; // area fraction
   double L;
   L = std::sqrt(M_PI * Number_of_particles / phi);
@@ -105,7 +105,7 @@ int main() {
                   << particle[i].omega << ' ' << std::endl;
     }
 
-    if (step % 100 == 0) {
+    if (step % 50 == 0) {
       std ::cout << "----------Step count: " << step << std::endl;
     }
 
