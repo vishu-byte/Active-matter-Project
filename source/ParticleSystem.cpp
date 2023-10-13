@@ -40,8 +40,8 @@ void ParSim::Particle::random_initialize(int N, double phi, double L) {
   std::uniform_real_distribution<double> alpha_dist(-1, 1);
   std::uniform_real_distribution<double> omega_dist(-1, 1);
 
-  x = 0.3 * L * x_coordinate(rd);
-  y = 0.3 * L * y_coordinate(rd); // random distribution
+  x = 1 * (L/2) * x_coordinate(rd);
+  y = 1 * (L/2) * y_coordinate(rd); // random distribution
 
   // Generate random particle speed. Speed is squared causing
   // particle distribution to be exponential instead of linear.
@@ -53,8 +53,8 @@ void ParSim::Particle::random_initialize(int N, double phi, double L) {
   omega = 2 * M_PI * omega_dist(rd);
 
   // Generate random V0
-  vx_activity = 6 * vx_dist(rd);
-  vy_activity = 6 * vy_dist(rd);
+  vx_activity = 0 * vx_dist(rd);
+  vy_activity = 0 * vy_dist(rd);
 
   // Generatoe random omega
   omega_activity = 6 * M_PI * omega_dist(rd);
