@@ -25,7 +25,7 @@ int main() {
   double phi = 0.75; // area fraction
   double L;
   L = std::sqrt(M_PI * Number_of_particles / phi);
-  L = 50;
+  L = 70;
   ParSim::ParticleSystem parsym(Number_of_particles, phi, L);
   ParSim::Physics physics;
 
@@ -47,7 +47,7 @@ int main() {
                               0.5); // zeta
 
   physics.parameters[10] = 50; // eta      --increase judiciuosly, it should not overpower k
-  physics.parameters[11] = 20;   // Diffusion constant
+  physics.parameters[11] = 100000;   // Diffusion constant
 
   /*Initial conditions*/
   // particle 1
