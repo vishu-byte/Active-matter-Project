@@ -156,7 +156,8 @@ void state_before_simulation(std::ofstream &log, ParSim::ParticleSystem &parsym,
       << "gamma: " << physics.parameters[5] << std::endl
       << "zeta: " << physics.parameters[9] << std::endl
       << "epsilon1 " << physics.parameters[6] << std::endl
-      << "epsilon2 " << physics.parameters[7] << std::endl;
+      << "epsilon2 " << physics.parameters[7] << std::endl
+      << "seed " << physics.parameters[7] << std::endl;
 
   log << "Energy-momentum before the collision: " << std::endl;
   log << "Total Energy: "
