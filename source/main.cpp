@@ -25,7 +25,7 @@ int main() {
   double phi = 0.75; // area fraction
   double L;
   L = std::sqrt(M_PI * Number_of_particles / phi);
-  L = 100;
+  L = 50;
   ParSim::ParticleSystem parsym(Number_of_particles, phi, L);
   ParSim::Physics physics;
 
@@ -34,7 +34,7 @@ int main() {
 
   /*Setting physics parameters*/
   physics.parameters[8] = 0.001;           // time step
-  physics.parameters[0] = 1000;            // k
+  physics.parameters[0] = 1500;            // k
   physics.parameters[1] = 1;               // interaction_radius sigma
   physics.parameters[2] = 1;               // mass
   physics.parameters[3] = 1;               // radius
@@ -46,7 +46,7 @@ int main() {
                           pow((physics.parameters[2] * physics.parameters[0]),
                               0.5); // zeta
 
-  physics.parameters[10] = 10; // eta
+  physics.parameters[10] = 50; // eta      --increase judiciuosly, it should not overpower k
   physics.parameters[11] = 20;   // Diffusion constant
 
   /*Initial conditions*/
