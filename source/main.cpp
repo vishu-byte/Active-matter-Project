@@ -20,11 +20,12 @@ int main() {
 
   /*Parameters*/
   /*Try to stick to S.I units to make sense out of numbers*/
-  int Number_of_particles = 1000;
-  int Number_of_time_steps = 4000;
+  int Number_of_particles = 100;
+  int Number_of_time_steps = 2000;
   double phi = 0.75; // area fraction
   double L;
   L = std::sqrt(M_PI * Number_of_particles / phi);
+  L = 100;
   ParSim::ParticleSystem parsym(Number_of_particles, phi, L);
   ParSim::Physics physics;
 
@@ -38,15 +39,15 @@ int main() {
   physics.parameters[2] = 1;               // mass
   physics.parameters[3] = 1;               // radius
   physics.parameters[4] = 0.8;             // mu
-  physics.parameters[5] = 10;             // gamma
+  physics.parameters[5] = 0.0;             // gamma
   physics.parameters[6] = 0.00000001;      // epsilon1  -- softening length
   physics.parameters[7] = M_PI / 10000000; // epsilon2 -- softening omega
   physics.parameters[9] = 0.5 * physics.parameters[5] /
                           pow((physics.parameters[2] * physics.parameters[0]),
                               0.5); // zeta
 
-  physics.parameters[10] = 200; // eta
-  physics.parameters[11] = 2;   // Diffusion constant
+  physics.parameters[10] = 10; // eta
+  physics.parameters[11] = 20;   // Diffusion constant
 
   /*Initial conditions*/
   // particle 1
@@ -155,6 +156,8 @@ void state_before_simulation(std::ofstream &log, ParSim::ParticleSystem &parsym,
       << "mu: " << physics.parameters[4] << std::endl
       << "gamma: " << physics.parameters[5] << std::endl
       << "zeta: " << physics.parameters[9] << std::endl
+      << "eta: " << physics.parameters[10] << std::endl
+      << "D: " << physics.parameters[11] << std::endl
       << "epsilon1 " << physics.parameters[6] << std::endl
       << "epsilon2 " << physics.parameters[7] << std::endl
       << "seed " << physics.parameters[7] << std::endl;
