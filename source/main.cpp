@@ -21,7 +21,7 @@ int main() {
   /*Parameters*/
   /*Try to stick to S.I units to make sense out of numbers*/
   int Number_of_particles = 2;
-  int Number_of_time_steps = 2000;
+  int Number_of_time_steps = 100;
   double phi = 0.75; // area fraction
   double L;
   L = std::sqrt(M_PI * Number_of_particles / phi);
@@ -33,8 +33,8 @@ int main() {
       parsym.get_particles(); // get access to paticles
 
   /*Setting physics parameters*/
-  physics.parameters[8] = 0.001;           // time step
-  physics.parameters[0] = 1500;            // k
+  physics.parameters[8] = 0.01;           // time step
+  physics.parameters[0] = 1000;            // k
   physics.parameters[1] = 1;               // interaction_radius sigma
   physics.parameters[2] = 1;               // mass
   physics.parameters[3] = 1;               // radius
@@ -52,26 +52,26 @@ int main() {
 
   /*Initial conditions*/
   // particle 1
-  particle[0].x = -L / 5;
-  particle[0].y = L / 5;
-  particle[0].vx = 2;
-  particle[0].vy = 2;
+  particle[0].x = -physics.parameters[1]/ 2.1;
+  particle[0].y = 0;
+  particle[0].vx = 3;
+  particle[0].vy = 0;
   particle[0].alpha = 0;
   particle[0].omega = 0;
   particle[0].vx_activity = 0;
   particle[0].vy_activity = 0;
-  particle[0].omega_activity = 2 * M_PI;
+  particle[0].omega_activity = 0 * M_PI;
 
   // particle 2
-  particle[1].x = L / 5;
+  particle[1].x = physics.parameters[1]/ 2.1;
   particle[1].y = 0;
-  particle[1].vx = -2;
-  particle[1].vy = 2;
+  particle[1].vx = -3;
+  particle[1].vy = 0;
   particle[1].alpha = 0;
   particle[1].omega = 0;
   particle[1].vx_activity = 0;
   particle[1].vy_activity = 0;
-  particle[1].omega_activity = -2 * M_PI;
+  particle[1].omega_activity = 0 * M_PI;
 
   // 2)Creating a data file for storage and log-----------
 
@@ -82,8 +82,6 @@ int main() {
   std::ofstream log2v;
   std::ofstream log2x;
 
-  data_output.open("data1.xyz");
-  log.open("log.txt");
   log1v.open("log1v.txt");
   log1x.open("log1x.txt");
 
@@ -117,9 +115,21 @@ int main() {
                   << ' ' << 0 << ' ' << particle[i].alpha << ' '
                   << particle[i].vx << ' ' << particle[i].vy << ' '
                   << particle[i].omega << ' ' << std::endl;
+
+        if (i == 0) {
+          log1v << std::setprecision(15) << particle[i].vx << std::endl;
+          log1x << std::setprecision(15) << particle[i].x << std::endl;
+        }
+
+        if (i == 1) {
+
+          log2v << std::setprecision(15) << particle[i].vx << std::endl;
+          log2x << std::setprecision(15) << particle[i].x << std::endl;
+        }
+      
     }
 
-    if (step % 50 == 0) {
+    if (step % 10 == 0) {
       std ::cout << "----------Step count: " << step << std::endl;
     }
 
