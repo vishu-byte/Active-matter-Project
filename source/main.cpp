@@ -20,7 +20,7 @@ int main() {
 
   /*Parameters*/
   /*Try to stick to S.I units to make sense out of numbers*/
-  int Number_of_particles = 100;
+  int Number_of_particles = 2;
   int Number_of_time_steps = 2000;
   double phi = 0.75; // area fraction
   double L;
@@ -47,7 +47,7 @@ int main() {
                               0.5); // zeta
 
   physics.parameters[10] = 50; // eta      --increase judiciuosly, it should not overpower k
-  physics.parameters[11] = 100000;   // Diffusion constant
+  physics.parameters[11] = 0;   // Diffusion constant
 
   /*Initial conditions*/
   // particle 1
