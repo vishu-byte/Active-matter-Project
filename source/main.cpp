@@ -46,8 +46,9 @@ int main() {
                           pow((physics.parameters[2] * physics.parameters[0]),
                               0.5); // zeta
 
-  physics.parameters[10] = 50; // eta      --increase judiciuosly, it should not overpower k
-  physics.parameters[11] = 0;   // Diffusion constant
+  physics.parameters[10] =
+      50; // eta      --increase judiciuosly, it should not overpower k
+  physics.parameters[11] = 0; // Diffusion constant
 
   /*Initial conditions*/
   // particle 1
@@ -76,6 +77,18 @@ int main() {
 
   std::ofstream data_output;
   std::ofstream log;
+  std::ofstream log1v;
+  std::ofstream log1x;
+  std::ofstream log2v;
+  std::ofstream log2x;
+
+  data_output.open("data1.xyz");
+  log.open("log.txt");
+  log1v.open("log1v.txt");
+  log1x.open("log1x.txt");
+
+  log2v.open("log2v.txt");
+  log2x.open("log2x.txt");
 
   data_output.open("data1.xyz");
   log.open("log.txt");
