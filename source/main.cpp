@@ -33,13 +33,13 @@ int main() {
       parsym.get_particles(); // get access to paticles
 
   /*Setting physics parameters*/
-  physics.parameters[8] = 0.01;           // time step
-  physics.parameters[0] = 1000;            // k
+  physics.parameters[8] = 0.002;           // time step
+  physics.parameters[0] = 2000;            // k
   physics.parameters[1] = 1;               // interaction_radius sigma
   physics.parameters[2] = 1;               // mass
   physics.parameters[3] = 1;               // radius
   physics.parameters[4] = 0.8;             // mu
-  physics.parameters[5] = 0.0;             // gamma
+  physics.parameters[5] = 10.0;             // gamma
   physics.parameters[6] = 0.00000001;      // epsilon1  -- softening length
   physics.parameters[7] = M_PI / 10000000; // epsilon2 -- softening omega
   physics.parameters[9] = 0.5 * physics.parameters[5] /
@@ -54,7 +54,7 @@ int main() {
   // particle 1
   particle[0].x = -physics.parameters[1]/ 2.1;
   particle[0].y = 0;
-  particle[0].vx = 3;
+  particle[0].vx = 6;
   particle[0].vy = 0;
   particle[0].alpha = 0;
   particle[0].omega = 0;
@@ -65,7 +65,7 @@ int main() {
   // particle 2
   particle[1].x = physics.parameters[1]/ 2.1;
   particle[1].y = 0;
-  particle[1].vx = -3;
+  particle[1].vx = -6;
   particle[1].vy = 0;
   particle[1].alpha = 0;
   particle[1].omega = 0;
