@@ -21,11 +21,11 @@ int main() {
   /*Parameters*/
   /*Try to stick to S.I units to make sense out of numbers*/
   int Number_of_particles = 2;
-  int Number_of_time_steps = 2000;
+  int Number_of_time_steps = 4000;
   double phi = 0.75; // area fraction
   double L;
   //L = std::sqrt(M_PI * Number_of_particles / phi);
-  L = 30;
+  L = 5;
   ParSim::ParticleSystem parsym(Number_of_particles, phi, L);
   ParSim::Physics physics;
 
@@ -33,7 +33,7 @@ int main() {
       parsym.get_particles(); // get access to paticles
 
   /*Setting physics parameters*/
-  physics.parameters[8] = 0.01;           // time step
+  physics.parameters[8] = 0.001;           // time step
   physics.parameters[0] = 1500;            // k
   physics.parameters[1] = 1;               // interaction_radius sigma
   physics.parameters[2] = 1;               // mass
@@ -62,7 +62,7 @@ int main() {
   particle[0].omega_activity = 0 * M_PI;
 
   // particle 2
-  particle[1].x = 3;
+  particle[1].x = 2;
   particle[1].y = 0;
   particle[1].vx = 0;
   particle[1].vy = 0;
