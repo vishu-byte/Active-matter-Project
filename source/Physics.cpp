@@ -403,11 +403,11 @@ void ParSim::Physics::ERM_Integrator2(ParSim::Particle &par, double L, int step,
     par.x += L;
   }
 
-  if (par.y > L / 2) {
-    par.y -= L;
-  } else if (par.y < -L / 2) {
-    par.y += L;
-  }
+  // if (par.y > L / 2) {
+  //   par.y -= L;
+  // } else if (par.y < -L / 2) {
+  //   par.y += L;
+  // }
 }
 
 void ParSim ::Physics::Integrator(ParSim::ParticleSystem &parsym, int step,
