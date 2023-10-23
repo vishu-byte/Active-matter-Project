@@ -337,9 +337,7 @@ void ParSim::Physics::Force_PP_CRB(ParSim::ParticleSystem &ps,
       }
       // log << "2nd loop -- " << std::endl;
 
-      // distance from nearest image of jth particle
-      double d =
-          ps.nearest_img_dist(ps.particle_array[i], ps.particle_array[j]);
+      double d = ps.distance(ps.particle_array[i], ps.particle_array[j]);
 
       // U
 
@@ -349,15 +347,13 @@ void ParSim::Physics::Force_PP_CRB(ParSim::ParticleSystem &ps,
                    ((this->parameters[1]) -
                     d); // magnitude of radial force used as normal reaction
         // radial interaction force
-
-        double dx = ps.min_sep(ps.particle_array[i].x, ps.particle_array[j].x);
-        double dy = ps.min_sep(ps.particle_array[i].y, ps.particle_array[j].y);
-
         ps.particle_array[i].force_radial[0] +=
-            N * (dx) / (d + (this->parameters[6]));
+            N * (ps.particle_array[i].x - ps.particle_array[j].x) /
+            (d + (this->parameters[6]));
 
         ps.particle_array[i].force_radial[1] +=
-            N * (dy) / (d + (this->parameters[6]));
+            N * (ps.particle_array[i].y - ps.particle_array[j].y) /
+            (d + (this->parameters[6]));
 
         // tangential friction force
         double omega_sum =
@@ -367,13 +363,15 @@ void ParSim::Physics::Force_PP_CRB(ParSim::ParticleSystem &ps,
             -(this->parameters[4]) *
             ((this->parameters[0]) * ((this->parameters[1]) - d)) *
             (omega_sum / (abs(omega_sum + (this->parameters[7])))) *
-            ((dy) / (d + (this->parameters[6])));
+            ((ps.particle_array[i].y - ps.particle_array[j].y) /
+             (d + (this->parameters[6])));
 
         ps.particle_array[i].force_tangential[1] +=
             -(this->parameters[4]) *
             ((this->parameters[0]) * ((this->parameters[1]) - d)) *
             (omega_sum / (abs(omega_sum + (this->parameters[7])))) *
-            (-(dx) / (d + (this->parameters[6])));
+            (-(ps.particle_array[i].x - ps.particle_array[j].x) /
+             (d + (this->parameters[6])));
 
         // torque on particle
 
