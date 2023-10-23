@@ -30,6 +30,7 @@ public:
   /*Force linker + integrators-- */
   void Force_PP(ParticleSystem &, std::ofstream &);        // Main force linker
   void Force_PP_PBC(ParticleSystem &, std::ofstream &);    // Main force linker
+  void Force_PP_CRB(ParticleSystem &, std::ofstream &);    // Main force linker
   void Integrator(ParticleSystem &, int, std::ofstream &); // Main integrator
   void Euler_Integrator(Particle &, int, std::ofstream &);
   void Vel_Verlet_Integrator(Particle &, int, std::ofstream &);
