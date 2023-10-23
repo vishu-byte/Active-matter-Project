@@ -20,12 +20,12 @@ int main() {
 
   /*Parameters*/
   /*Try to stick to S.I units to make sense out of numbers*/
-  int Number_of_particles = 100;
+  int Number_of_particles = 2;
   int Number_of_time_steps = 2000;
   double phi = 0.75; // area fraction
   double L;
-  L = std::sqrt(M_PI * Number_of_particles / phi);
-  L = 70;
+  //L = std::sqrt(M_PI * Number_of_particles / phi);
+  L = 30;
   ParSim::ParticleSystem parsym(Number_of_particles, phi, L);
   ParSim::Physics physics;
 
@@ -33,7 +33,7 @@ int main() {
       parsym.get_particles(); // get access to paticles
 
   /*Setting physics parameters*/
-  physics.parameters[8] = 0.001;           // time step
+  physics.parameters[8] = 0.01;           // time step
   physics.parameters[0] = 1500;            // k
   physics.parameters[1] = 1;               // interaction_radius sigma
   physics.parameters[2] = 1;               // mass
@@ -47,30 +47,30 @@ int main() {
                               0.5); // zeta
 
   physics.parameters[10] = 50; // eta      --increase judiciuosly, it should not overpower k
-  physics.parameters[11] = 100000;   // Diffusion constant
+  physics.parameters[11] = 0;   // Diffusion constant
 
   /*Initial conditions*/
   // particle 1
   particle[0].x = -L / 5;
-  particle[0].y = L / 5;
-  particle[0].vx = 2;
-  particle[0].vy = 2;
+  particle[0].y = 0;
+  particle[0].vx = 0;
+  particle[0].vy = 10;
   particle[0].alpha = 0;
   particle[0].omega = 0;
   particle[0].vx_activity = 0;
   particle[0].vy_activity = 0;
-  particle[0].omega_activity = 2 * M_PI;
+  particle[0].omega_activity = 0 * M_PI;
 
   // particle 2
-  particle[1].x = L / 5;
+  particle[1].x = 3;
   particle[1].y = 0;
-  particle[1].vx = -2;
-  particle[1].vy = 2;
+  particle[1].vx = 0;
+  particle[1].vy = 0;
   particle[1].alpha = 0;
   particle[1].omega = 0;
   particle[1].vx_activity = 0;
   particle[1].vy_activity = 0;
-  particle[1].omega_activity = -2 * M_PI;
+  particle[1].omega_activity = 0 * M_PI;
 
   // 2)Creating a data file for storage and log-----------
 
