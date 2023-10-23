@@ -538,11 +538,11 @@ void ParSim::Physics::ERM_Integrator2(ParSim::Particle &par, double L, int step,
 
   // Periodic boudary condition
 
-  if (par.x > L / 2) {
-    par.x -= L;
-  } else if (par.x < -L / 2) {
-    par.x += L;
-  }
+  // if (par.x > L / 2) {
+  //   par.x -= L;
+  // } else if (par.x < -L / 2) {
+  //   par.x += L;
+  // }
 
   // if (par.y > L / 2) {
   //   par.y -= L;
