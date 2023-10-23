@@ -20,12 +20,12 @@ int main() {
 
   /*Parameters*/
   /*Try to stick to S.I units to make sense out of numbers*/
-  int Number_of_particles = 50;
-  int Number_of_time_steps = 4000;
-  double phi = 0.75; // area fraction
+  int Number_of_particles = 5;
+  int Number_of_time_steps = 2000;
+  double phi = 0.60; // area fraction
   double L;
   L = std::sqrt(M_PI * Number_of_particles / phi);
-  //L = 5;
+  L = 5;
   ParSim::ParticleSystem parsym(Number_of_particles, phi, L);
   ParSim::Physics physics;
 
@@ -47,7 +47,7 @@ int main() {
                               0.5); // zeta
 
   physics.parameters[10] = 50; // eta      --increase judiciuosly, it should not overpower k
-  physics.parameters[11] = 100000;   // Diffusion constant
+  physics.parameters[11] = 0;   // Diffusion constant
 
   /*Initial conditions*/
   // particle 1
