@@ -303,6 +303,7 @@ void ParSim::Physics::Force_PP_CRB(ParSim::ParticleSystem &ps,
 
      // wall forces
     double force_wall_y = 0.0;
+    double force_wall_x = 0.0;
 
     if (abs(ps.particle_array[i].y) > ps.L / 2) {
       force_wall_y = -5000 *
@@ -313,13 +314,22 @@ void ParSim::Physics::Force_PP_CRB(ParSim::ParticleSystem &ps,
       force_wall_y = 0.0;
     }
 
+     if (abs(ps.particle_array[i].x) > ps.L / 2) {
+      force_wall_x = -5000 *
+                     pow((abs(ps.particle_array[i].x) - (ps.L / 2)), 2) *
+                     ps.particle_array[i].x /
+                     (abs(ps.particle_array[i].x) + (this->parameters[6]));
+    } else {
+      force_wall_x = 0.0;
+    }
+
     // Unary force of damping. Always there. Translational and Rotational
     // activities added.
 
     ps.particle_array[i].force_radial[0] +=
         -1 * (this->parameters[5]) * ps.particle_array[i].vx +
         ps.particle_array[i].vx_activity +
-        (sqrt(this->parameters[11])) * distribution(mt);
+        (sqrt(this->parameters[11])) * distribution(mt) + force_wall_x;
 
     ps.particle_array[i].force_radial[1] +=
         -1 * (this->parameters[5]) * ps.particle_array[i].vy +
@@ -581,7 +591,7 @@ void ParSim::Physics::evolve_system_ERM(ParticleSystem &parsym, int step,
                                         std::ofstream &log) {
 
   // i) Calculate force (F) from positions and velocities (x,v) --
-  Force_PP_PBC(parsym, log); // links forces on each object
+  Force_PP_CRB(parsym, log); // links forces on each object
 
   // ii) Update x,v to x', v'  ----
   for (int i = 0; i < parsym.no_of_particles; ++i) {
@@ -589,7 +599,7 @@ void ParSim::Physics::evolve_system_ERM(ParticleSystem &parsym, int step,
   }
 
   // iii) Again calculate force (F') from x',v' ------
-  Force_PP_PBC(parsym, log);
+  Force_PP_CRB(parsym, log);
 
   // error tolerance condition ----
 
