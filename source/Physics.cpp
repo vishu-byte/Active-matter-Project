@@ -44,6 +44,17 @@ void ParSim::Physics::Force_PP(ParSim::ParticleSystem &ps, std::ofstream &log) {
     ps.particle_array[i].force_tangential[1] = 0;
     ps.particle_array[i].torque = 0;
 
+    // wall forces
+    double force_wall_y = 0.0;
+
+    if (abs(ps.particle_array[i].y) > ps.L / 2) {
+      force_wall_y = -5000 *
+                     pow((abs(ps.particle_array[i].y) - (ps.L / 2)), 2) *
+                     ps.particle_array[i].y /
+                     (abs(ps.particle_array[i].y) + (this->parameters[6]));
+    } else {
+      force_wall_y = 0.0;
+    }
     // Unary force of damping. Always there. Translational and Rotational
     // activities added.
     ps.particle_array[i].force_radial[0] +=
@@ -172,7 +183,7 @@ void ParSim::Physics::Force_PP_PBC(ParSim::ParticleSystem &ps,
     ps.particle_array[i].force_radial[1] +=
         -1 * (this->parameters[5]) * ps.particle_array[i].vy +
         ps.particle_array[i].vy_activity +
-        (sqrt( this->parameters[11])) * distribution(mt);
+        (sqrt(this->parameters[11])) * distribution(mt);
 
     ps.particle_array[i].torque +=
         -1 * (this->parameters[5]) * ps.particle_array[i].omega +
