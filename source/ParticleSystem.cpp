@@ -105,3 +105,13 @@ double ParSim::ParticleSystem::nearest_img_dist(Particle par1, Particle par2) {
 
   return dist;
 }
+
+double ParSim::ParticleSystem::nearest_img_dist_wall_y(Particle par1, Particle par2) {
+
+  double dist;
+
+  dist =
+      sqrt(pow(min_sep(par1.x, par2.x), 2) + pow(par1.y - par2.y, 2));
+
+  return dist;
+}

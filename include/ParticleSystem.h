@@ -31,7 +31,7 @@ public:
   double torque{0};                           // torque
 
   // For storing forces of one step before
-  std::vector<double> position_prev{0, 0}; // (x, y) 
+  std::vector<double> position_prev{0, 0}; // (x, y)
   std::vector<double> velocity_prev{0, 0}; // (vx, vy)
   double alpha_prev;
   double omega_prev;
@@ -41,11 +41,11 @@ public:
   double torque_prev{0};                           // torque
   // std:: vector <double> IC{0,0,0,0,0};
 
-  Particle(); // default constructor
+  Particle();                    // default constructor
   Particle(int, double, double); // parameterized constructor: int N, double phi
   Particle(double x_cor, double y_cor, double speed, double direction,
-           double orientation); // parameterized constructor
-  virtual ~Particle(){};        // virtual destructor
+           double orientation);                // parameterized constructor
+  virtual ~Particle(){};                       // virtual destructor
   void random_initialize(int, double, double); // randomly initializes particle
 };
 
@@ -56,8 +56,8 @@ public:
   double phi;
   Particle *particle_array{nullptr}; // creating particle array on heap
 
-  ParticleSystem(int, double, double);             // parameterized constructor
-  virtual ~ParticleSystem();       // destructor
+  ParticleSystem(int, double, double); // parameterized constructor
+  virtual ~ParticleSystem();           // destructor
   Particle *const get_particles(); // constant pointer, can not change address
                                    // of memory block to which it points
   double distance(Particle par1, Particle par2);
@@ -65,6 +65,8 @@ public:
   double min_sep(double x1, double x2);
 
   double nearest_img_dist(Particle par1, Particle par2);
+
+  double nearest_img_dist_wall_y(Particle par1, Particle par2);
 };
 
 } // namespace ParSim

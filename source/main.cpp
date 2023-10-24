@@ -21,7 +21,7 @@ int main() {
   /*Parameters*/
   /*Try to stick to S.I units to make sense out of numbers*/
   int Number_of_particles = 2;
-  int Number_of_time_steps = 4000;
+  int Number_of_time_steps = 100;
   double phi = 0.75; // area fraction
   double L;
   //L = std::sqrt(M_PI * Number_of_particles / phi);

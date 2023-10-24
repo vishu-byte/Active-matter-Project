@@ -201,7 +201,7 @@ void ParSim::Physics::Force_PP_PBC(ParSim::ParticleSystem &ps,
 
       // distance from nearest image of jth particle
       double d =
-          ps.nearest_img_dist(ps.particle_array[i], ps.particle_array[j]);
+          ps.nearest_img_dist_wall_y(ps.particle_array[i], ps.particle_array[j]);
 
       // U
 
@@ -213,7 +213,7 @@ void ParSim::Physics::Force_PP_PBC(ParSim::ParticleSystem &ps,
         // radial interaction force
 
         double dx = ps.min_sep(ps.particle_array[i].x, ps.particle_array[j].x);
-        double dy = ps.min_sep(ps.particle_array[i].y, ps.particle_array[j].y);
+        double dy = ps.particle_array[i].y - ps.particle_array[j].y;
 
         ps.particle_array[i].force_radial[0] +=
             N * (dx) / (d + (this->parameters[6]));
