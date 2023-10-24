@@ -20,12 +20,12 @@ int main() {
 
   /*Parameters*/
   /*Try to stick to S.I units to make sense out of numbers*/
-  int Number_of_particles = 2;
-  int Number_of_time_steps = 100;
+  int Number_of_particles = 400;
+  int Number_of_time_steps = 2000;
   double phi = 0.75; // area fraction
   double L;
-  //L = std::sqrt(M_PI * Number_of_particles / phi);
-  L = 5;
+  L = std::sqrt(M_PI * Number_of_particles / phi);
+  //L = 10;
   ParSim::ParticleSystem parsym(Number_of_particles, phi, L);
   ParSim::Physics physics;
 
@@ -33,12 +33,12 @@ int main() {
       parsym.get_particles(); // get access to paticles
 
   /*Setting physics parameters*/
-  physics.parameters[8] = 0.001;           // time step
+  physics.parameters[8] = 0.01;           // time step
   physics.parameters[0] = 1500;            // k
   physics.parameters[1] = 1;               // interaction_radius sigma
   physics.parameters[2] = 1;               // mass
   physics.parameters[3] = 1;               // radius
-  physics.parameters[4] = 0.8;             // mu
+  physics.parameters[4] = 0.0;             // mu
   physics.parameters[5] = 0.0;             // gamma
   physics.parameters[6] = 0.00000001;      // epsilon1  -- softening length
   physics.parameters[7] = M_PI / 10000000; // epsilon2 -- softening omega
@@ -47,12 +47,12 @@ int main() {
                               0.5); // zeta
 
   physics.parameters[10] = 50; // eta      --increase judiciuosly, it should not overpower k
-  physics.parameters[11] = 0;   // Diffusion constant
+  physics.parameters[11] = 1000;   // Diffusion constant
 
   /*Initial conditions*/
   // particle 1
-  particle[0].x = -L / 5;
-  particle[0].y = 0;
+  particle[0].x = -2;
+  particle[0].y = 2;
   particle[0].vx = 0;
   particle[0].vy = 10;
   particle[0].alpha = 0;
@@ -62,8 +62,8 @@ int main() {
   particle[0].omega_activity = 0 * M_PI;
 
   // particle 2
-  particle[1].x = 2;
-  particle[1].y = 0;
+  particle[1].x = 4;
+  particle[1].y = -4;
   particle[1].vx = 0;
   particle[1].vy = 0;
   particle[1].alpha = 0;
@@ -72,6 +72,14 @@ int main() {
   particle[1].vy_activity = 0;
   particle[1].omega_activity = 0 * M_PI;
 
+
+//   std:: cout << "Natural distance between particles: " << parsym.distance(particle[0], particle[1]) << std:: endl;
+//   std:: cout << "Nearest image distance: " << parsym.nearest_img_dist(particle[0], particle[1]) << std:: endl;
+//   std:: cout << "Nearest image distance with wall along y: " << parsym.nearest_img_dist_wall_y(particle[0], particle[1]) << std:: endl;
+
+//   std:: cout << "(dx, dy)" << parsym.min_sep(particle[0].x, particle[1].x) << " " <<  particle[0].y - particle[1].y  << std:: endl;
+
+  
   // 2)Creating a data file for storage and log-----------
 
   std::ofstream data_output;
