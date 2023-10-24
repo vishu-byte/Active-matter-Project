@@ -20,7 +20,7 @@ int main() {
 
   /*Parameters*/
   /*Try to stick to S.I units to make sense out of numbers*/
-  int Number_of_particles = 4;
+  int Number_of_particles = 50;
   int Number_of_time_steps = 2000;
   double phi = 0.05; // area fraction
   double L;
