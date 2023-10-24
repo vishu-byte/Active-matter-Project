@@ -170,7 +170,7 @@ void ParSim::Physics::Force_PP_PBC(ParSim::ParticleSystem &ps,
       force_wall_y = -5000 *
                      pow((abs(ps.particle_array[i].y) - (ps.L / 2)), 2) *
                      ps.particle_array[i].y /
-                     (abs(ps.particle_array[i].y) + (this->parameters[6]));
+                     (abs(ps.particle_array[i].y));
     } else {
       force_wall_y = 0.0;
     }
