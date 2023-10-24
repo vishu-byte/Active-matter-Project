@@ -33,7 +33,7 @@ int main() {
       parsym.get_particles(); // get access to paticles
 
   /*Setting physics parameters*/
-  physics.parameters[8] = 0.01;           // time step
+  physics.parameters[8] = 0.001;           // time step
   physics.parameters[0] = 1500;            // k
   physics.parameters[1] = 1;               // interaction_radius sigma
   physics.parameters[2] = 1;               // mass
