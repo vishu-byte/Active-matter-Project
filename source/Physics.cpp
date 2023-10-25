@@ -342,13 +342,12 @@ void ParSim::Physics::Force_PP_CRB(ParSim::ParticleSystem &ps,
 
     // wall torque
 
-    double d =
-        ps.L / 2 - rp - this->parameters[1]; // distance between center and wall
+    double d = this->parameters[1]; // distance between center and wall
 
     if (rp > ps.L / 2) {
       torque_wall =
           -(this->parameters[4]) *
-          ((this->parameters[0]) * ((this->parameters[1]) - rp)) *
+          (1500) * (abs((ps.L / 2) - rp)) *
           (ps.particle_array[i].omega /
            (abs(ps.particle_array[i].omega + (this->parameters[7])))) *
           d;

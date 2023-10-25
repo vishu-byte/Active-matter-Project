@@ -57,7 +57,7 @@ int main() {
   particle[0].vx = 20;
   particle[0].vy = 0;
   particle[0].alpha = 0;
-  particle[0].omega = 2 * M_PI;
+  particle[0].omega = 8 * M_PI;
   particle[0].vx_activity = 0;
   particle[0].vy_activity = 0;
   particle[0].omega_activity = 0 * M_PI;
