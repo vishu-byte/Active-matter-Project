@@ -301,23 +301,64 @@ void ParSim::Physics::Force_PP_CRB(ParSim::ParticleSystem &ps,
     double force_wall_x = 0.0;
     double force_wall_y = 0.0;
 
-    double r = 0.0;
+    double force_wall_fric_x = 0.0;
+    double force_wall_fric_y = 0.0;
 
-    r = ps.dist_from_origin(
-        ps.particle_array[i]); // calculates position vector magnitude
+    double torque_wall = 0.0;
 
-    if (r > ps.L / 2) {
-      force_wall_x = 5000 * ((ps.L / 2) - r) * ps.particle_array[i].x /
-                     (r + (this->parameters[6]));
+    double rp = 0.0;
+
+    rp = ps.dist_from_origin(ps.particle_array[i]) +
+         this->parameters[1]; // calculates position vector magnitude + sigma
+
+    if (rp > ps.L / 2) {
+      force_wall_x = 5000 * ((ps.L / 2) - rp) * ps.particle_array[i].x /
+                     (rp + (this->parameters[6]));
+
+      force_wall_fric_x =
+          -(this->parameters[4]) *
+          ((this->parameters[0]) * ((this->parameters[1]) - rp)) *
+          (ps.particle_array[i].omega /
+           (abs(ps.particle_array[i].omega + (this->parameters[7])))) *
+          (-(ps.particle_array[i].y) /
+           (rp - this->parameters[1] + (this->parameters[6])));
+
     } else {
       force_wall_x = 0.0;
+      force_wall_fric_x = 0.0;
     }
 
-    if (r > ps.L / 2) {
-      force_wall_y = 5000 * ((ps.L / 2) - r) * ps.particle_array[i].y /
-                     (r + (this->parameters[6]));
+    if (rp > ps.L / 2) {
+      force_wall_y = 5000 * ((ps.L / 2) - rp) * ps.particle_array[i].y /
+                     (rp + (this->parameters[6]));
+
+      force_wall_fric_y =
+          -(this->parameters[4]) *
+          ((this->parameters[0]) * ((this->parameters[1]) - rp)) *
+          (ps.particle_array[i].omega /
+           (abs(ps.particle_array[i].omega + (this->parameters[7])))) *
+          ((ps.particle_array[i].x) /
+           (rp - this->parameters[1] + (this->parameters[6])));
     } else {
       force_wall_y = 0.0;
+      force_wall_fric_y = 0.0;
+    }
+
+    // wall torque
+
+    double d =
+        ps.L / 2 - rp - this->parameters[1]; // distance between center and wall
+
+    if (rp > ps.L / 2) {
+      torque_wall =
+          -(this->parameters[4]) *
+          ((this->parameters[0]) * ((this->parameters[1]) - rp)) *
+          (ps.particle_array[i].omega /
+           (abs(ps.particle_array[i].omega + (this->parameters[7])))) *
+          d;
+
+    } else {
+      torque_wall = 0.0;
     }
 
     // Unary force of damping. Always there. Translational and Rotational
@@ -326,16 +367,18 @@ void ParSim::Physics::Force_PP_CRB(ParSim::ParticleSystem &ps,
     ps.particle_array[i].force_radial[0] +=
         -1 * (this->parameters[5]) * ps.particle_array[i].vx +
         ps.particle_array[i].vx_activity +
-        (sqrt(this->parameters[11])) * distribution(mt) + force_wall_x;
+        (sqrt(this->parameters[11])) * distribution(mt) + force_wall_x +
+        force_wall_fric_x;
 
     ps.particle_array[i].force_radial[1] +=
         -1 * (this->parameters[5]) * ps.particle_array[i].vy +
         ps.particle_array[i].vy_activity +
-        (sqrt(this->parameters[11])) * distribution(mt) + force_wall_y;
+        (sqrt(this->parameters[11])) * distribution(mt) + force_wall_y +
+        force_wall_fric_y;
 
     ps.particle_array[i].torque +=
         -1 * (this->parameters[5]) * ps.particle_array[i].omega +
-        ps.particle_array[i].omega_activity;
+        ps.particle_array[i].omega_activity + torque_wall;
 
     // Knary force calculation --- Loop2: through all particles
     for (int j = 0; j < ps.no_of_particles; ++j) {
