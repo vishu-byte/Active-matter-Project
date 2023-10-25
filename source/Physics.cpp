@@ -277,7 +277,7 @@ void ParSim::Physics::Force_PP_CRB(ParSim::ParticleSystem &ps,
   // Loop1: through all particles
   for (int i = 0; i < ps.no_of_particles; ++i) {
 
-    log << "1st loop -- " << std::endl;
+    //log << "1st loop -- " << std::endl;
 
     // Store previous step forces
     ps.particle_array[i].force_radial_prev[0] =
