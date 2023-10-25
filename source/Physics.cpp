@@ -277,7 +277,7 @@ void ParSim::Physics::Force_PP_CRB(ParSim::ParticleSystem &ps,
   // Loop1: through all particles
   for (int i = 0; i < ps.no_of_particles; ++i) {
 
-    // log << "1st loop -- " << std::endl;
+    log << "1st loop -- " << std::endl;
 
     // Store previous step forces
     ps.particle_array[i].force_radial_prev[0] =
@@ -312,16 +312,14 @@ void ParSim::Physics::Force_PP_CRB(ParSim::ParticleSystem &ps,
          this->parameters[1]; // calculates position vector magnitude + sigma
 
     if (rp > ps.L / 2) {
-      force_wall_x = 5000 * ((ps.L / 2) - rp) * ps.particle_array[i].x /
-                     (rp + (this->parameters[6]));
+      force_wall_x = 1500 * ((ps.L / 2) - rp) * ps.particle_array[i].x /
+                     (rp - this->parameters[1]);
 
       force_wall_fric_x =
-          -(this->parameters[4]) *
-          ((this->parameters[0]) * ((this->parameters[1]) - rp)) *
+          -(this->parameters[4]) * (1500) * (abs((ps.L / 2) - rp)) *
           (ps.particle_array[i].omega /
            (abs(ps.particle_array[i].omega + (this->parameters[7])))) *
-          (-(ps.particle_array[i].y) /
-           (rp - this->parameters[1] + (this->parameters[6])));
+          (-(ps.particle_array[i].y) / (rp - this->parameters[1]));
 
     } else {
       force_wall_x = 0.0;
@@ -329,16 +327,14 @@ void ParSim::Physics::Force_PP_CRB(ParSim::ParticleSystem &ps,
     }
 
     if (rp > ps.L / 2) {
-      force_wall_y = 5000 * ((ps.L / 2) - rp) * ps.particle_array[i].y /
-                     (rp + (this->parameters[6]));
+      force_wall_y = 1500 * ((ps.L / 2) - rp) * ps.particle_array[i].y /
+                     (rp - this->parameters[1]);
 
       force_wall_fric_y =
-          -(this->parameters[4]) *
-          ((this->parameters[0]) * ((this->parameters[1]) - rp)) *
+          -(this->parameters[4]) * (1500) * (abs((ps.L / 2) - rp)) *
           (ps.particle_array[i].omega /
            (abs(ps.particle_array[i].omega + (this->parameters[7])))) *
-          ((ps.particle_array[i].x) /
-           (rp - this->parameters[1] + (this->parameters[6])));
+          ((ps.particle_array[i].x) / (rp - this->parameters[1]));
     } else {
       force_wall_y = 0.0;
       force_wall_fric_y = 0.0;
@@ -360,6 +356,14 @@ void ParSim::Physics::Force_PP_CRB(ParSim::ParticleSystem &ps,
     } else {
       torque_wall = 0.0;
     }
+
+    log << "Particle :- " << i << std::endl;
+    log << "Fx, Fy :" << force_wall_x << ", " << force_wall_y << std::endl;
+    log << "fx, fy, T:  " << force_wall_fric_x << ", " << force_wall_fric_y
+        << ", " << torque_wall << std::endl;
+    // force_wall_fric_x = 0.0
+    // force_wall_fric_y = 0.0;
+    // torque_wall = 0.0;
 
     // Unary force of damping. Always there. Translational and Rotational
     // activities added.
