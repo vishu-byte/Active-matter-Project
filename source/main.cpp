@@ -20,12 +20,12 @@ int main() {
 
   /*Parameters*/
   /*Try to stick to S.I units to make sense out of numbers*/
-  int Number_of_particles = 2;
+  int Number_of_particles = 5;
   int Number_of_time_steps = 4000;
   double phi = 0.60; // area fraction
   double L;
   L = std::sqrt(M_PI * Number_of_particles / phi);
-  L = 20;
+  L = 12;
   ParSim::ParticleSystem parsym(Number_of_particles, phi, L);
   ParSim::Physics physics;
 
@@ -54,10 +54,10 @@ int main() {
   // particle 1
   particle[0].x = 0;
   particle[0].y = 0;
-  particle[0].vx = 20;
+  particle[0].vx = 2;
   particle[0].vy = 0;
   particle[0].alpha = 0;
-  particle[0].omega = 8 * M_PI;
+  particle[0].omega = 4 * M_PI;
   particle[0].vx_activity = 0;
   particle[0].vy_activity = 0;
   particle[0].omega_activity = 0 * M_PI;
