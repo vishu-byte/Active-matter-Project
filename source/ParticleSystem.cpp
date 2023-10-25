@@ -33,6 +33,8 @@ void ParSim::Particle::random_initialize(int N, double phi, double L) {
   // std:: cout << "Random init called with: (N,phi,L)" << N<< " "<<phi <<" " <<
   // L << std::endl;
   std::random_device rd;
+  std::uniform_real_distribution<double> rho_dist(0, 1);
+  std::uniform_real_distribution<double> theta_dist(-1, 1);
   std::uniform_real_distribution<double> x_coordinate(-1, 1);
   std::uniform_real_distribution<double> y_coordinate(-1, 1);
   std::uniform_real_distribution<double> vx_dist(-1, 1);
@@ -40,8 +42,14 @@ void ParSim::Particle::random_initialize(int N, double phi, double L) {
   std::uniform_real_distribution<double> alpha_dist(-1, 1);
   std::uniform_real_distribution<double> omega_dist(-1, 1);
 
-  x = 1 * (L / 2) * x_coordinate(rd);
-  y = 1 * (L / 2) * y_coordinate(rd); // random distribution
+  // circular initialization
+  double rho, theta;
+
+  rho = (L / 2) * rho_dist(rd);
+  theta = 2 * M_PI * theta_dist(rd);
+
+  x = rho * cos(theta);
+  y = rho * sin(theta); // random distribution
 
   // Generate random particle speed. Speed is squared causing
   // particle distribution to be exponential instead of linear.
@@ -87,7 +95,7 @@ double ParSim::ParticleSystem::distance(Particle par1, Particle par2) {
 
 double ParSim::ParticleSystem::dist_from_origin(Particle par) {
   double distance;
-  distance = sqrt(pow(par.x,2) + pow(par.y,2));
+  distance = sqrt(pow(par.x, 2) + pow(par.y, 2));
   return distance;
 }
 
