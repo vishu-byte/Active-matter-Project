@@ -44,7 +44,6 @@ void ParSim::Physics::Force_PP(ParSim::ParticleSystem &ps, std::ofstream &log) {
     ps.particle_array[i].force_tangential[1] = 0;
     ps.particle_array[i].torque = 0;
 
-   
     // Unary force of damping. Always there. Translational and Rotational
     // activities added.
     ps.particle_array[i].force_radial[0] +=
@@ -162,8 +161,7 @@ void ParSim::Physics::Force_PP_PBC(ParSim::ParticleSystem &ps,
     ps.particle_array[i].force_tangential[1] = 0;
     ps.particle_array[i].torque = 0;
 
-
-     // wall forces
+    // wall forces
     double force_wall_y = 0.0;
 
     if (abs(ps.particle_array[i].y) > ps.L / 2) {
@@ -270,7 +268,6 @@ void ParSim::Physics::Force_PP_PBC(ParSim::ParticleSystem &ps,
   }
 }
 
-
 void ParSim::Physics::Force_PP_CRB(ParSim::ParticleSystem &ps,
                                    std::ofstream &log) {
 
@@ -300,27 +297,27 @@ void ParSim::Physics::Force_PP_CRB(ParSim::ParticleSystem &ps,
     ps.particle_array[i].force_tangential[1] = 0;
     ps.particle_array[i].torque = 0;
 
-
-     // wall forces
-    double force_wall_y = 0.0;
+    // wall forces
     double force_wall_x = 0.0;
+    double force_wall_y = 0.0;
 
-    if (abs(ps.particle_array[i].y) > ps.L / 2) {
-      force_wall_y = -5000 *
-                     pow((abs(ps.particle_array[i].y) - (ps.L / 2)), 2) *
-                     ps.particle_array[i].y /
-                     (abs(ps.particle_array[i].y) + (this->parameters[6]));
-    } else {
-      force_wall_y = 0.0;
-    }
+    double r = 0.0;
 
-     if (abs(ps.particle_array[i].x) > ps.L / 2) {
-      force_wall_x = -5000 *
-                     pow((abs(ps.particle_array[i].x) - (ps.L / 2)), 2) *
-                     ps.particle_array[i].x /
-                     (abs(ps.particle_array[i].x) + (this->parameters[6]));
+    r = ps.dist_from_origin(
+        ps.particle_array[i]); // calculates position vector magnitude
+
+    if (r > ps.L / 2) {
+      force_wall_x = 5000 * ((ps.L / 2) - r) * ps.particle_array[i].x /
+                     (r + (this->parameters[6]));
     } else {
       force_wall_x = 0.0;
+    }
+
+    if (r > ps.L / 2) {
+      force_wall_y = 5000 * ((ps.L / 2) - r) * ps.particle_array[i].y /
+                     (r + (this->parameters[6]));
+    } else {
+      force_wall_y = 0.0;
     }
 
     // Unary force of damping. Always there. Translational and Rotational

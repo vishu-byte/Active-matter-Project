@@ -47,6 +47,7 @@ public:
            double orientation); // parameterized constructor
   virtual ~Particle(){};        // virtual destructor
   void random_initialize(int, double, double); // randomly initializes particle
+
 };
 
 class ParticleSystem {
@@ -61,6 +62,7 @@ public:
   Particle *const get_particles(); // constant pointer, can not change address
                                    // of memory block to which it points
   double distance(Particle par1, Particle par2);
+  double dist_from_origin(Particle par);
 
   double min_sep(double x1, double x2);
 

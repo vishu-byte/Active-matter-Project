@@ -40,8 +40,8 @@ void ParSim::Particle::random_initialize(int N, double phi, double L) {
   std::uniform_real_distribution<double> alpha_dist(-1, 1);
   std::uniform_real_distribution<double> omega_dist(-1, 1);
 
-  x = 1 * (L/2) * x_coordinate(rd);
-  y = 1 * (L/2) * y_coordinate(rd); // random distribution
+  x = 1 * (L / 2) * x_coordinate(rd);
+  y = 1 * (L / 2) * y_coordinate(rd); // random distribution
 
   // Generate random particle speed. Speed is squared causing
   // particle distribution to be exponential instead of linear.
@@ -82,6 +82,12 @@ Particle *const ParticleSystem::get_particles() { return particle_array; }
 double ParSim::ParticleSystem::distance(Particle par1, Particle par2) {
   double distance =
       pow(pow((par1.x - par2.x), 2) + pow((par1.y - par2.y), 2), 0.5);
+  return distance;
+}
+
+double ParSim::ParticleSystem::dist_from_origin(Particle par) {
+  double distance;
+  distance = sqrt(pow(par.x,2) + pow(par.y,2));
   return distance;
 }
 
