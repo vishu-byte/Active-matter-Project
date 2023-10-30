@@ -46,8 +46,9 @@ int main() {
                           pow((physics.parameters[2] * physics.parameters[0]),
                               0.5); // zeta
 
-  physics.parameters[10] = 50; // eta      --increase judiciuosly, it should not overpower k
-  physics.parameters[11] = 0;   // Diffusion constant
+  physics.parameters[10] =
+      50; // eta      --increase judiciuosly, it should not overpower k
+  physics.parameters[11] = 0; // Diffusion constant
 
   /*Initial conditions*/
   // particle 1
@@ -75,31 +76,35 @@ int main() {
   // 2)Creating a data file for storage and log-----------
 
   std::ofstream data_output;
+  std::ofstream init_output;
   std::ofstream log;
+  std::ofstream init_log;
 
   data_output.open("data1.xyz");
+  init_output.open("init_condition.xyz");
   log.open("log.txt");
+  init_log.open("init_log.txt");
 
   // Print the state before the simulation in log
-  state_before_simulation(log, parsym, physics, Number_of_time_steps, L, phi);
+  state_before_simulation(init_log, parsym, physics, Number_of_time_steps, L, phi);
 
   log << "-x-x-x-x-x-Simulation initiated-x-x-x-x-x- " << std::endl;
   std::cout << "-x-x-x-x-x-Simulation initiated-x-x-x-x-x- " << std::endl;
 
   time_t start = time(&start); // for measuring total runtime
 
-  // 3) Main simulation loop--------------
-  for (int step = 0; step < Number_of_time_steps; step++) {
+  //2) Inilialization of system
+
+  for (int step = 0; step < 1000; step++) {
 
     // writing data of this state to file (will be used for rendering the system
-    // in ovito)
+    //     // in ovito)
 
-    data_output << Number_of_particles << std::endl;
-    data_output << "Lattice="
-                << "\"10.0 0.0 0.0 0.0 10.0 0.0 0.0 0.0 0.0\"" << std::endl;
+    init_output << Number_of_particles << std::endl;
+    init_output << " " << std::endl;
     // first store current configuration
     for (int i = 0; i < parsym.no_of_particles; ++i) {
-      data_output << particle[i].x << ' ' << particle[i].y << ' ' << 0 << ' '
+      init_output << particle[i].x << ' ' << particle[i].y << ' ' << 0 << ' '
                   << cos(particle[i].alpha) << ' ' << sin(particle[i].alpha)
                   << ' ' << 0 << ' ' << particle[i].alpha << ' '
                   << particle[i].vx << ' ' << particle[i].vy << ' '
@@ -107,14 +112,43 @@ int main() {
     }
 
     if (step % 50 == 0) {
-      std ::cout << "----------Step count: " << step << std::endl;
+      std ::cout << "----------Init Step count: " << step << std::endl;
     }
 
-    log << "----------Step count: " << step << std::endl;
-
-    // Manipulate particle positions for next iteration.
-    physics.evolve_system_ERM(parsym, step, log);
+    init_log << "----------Init Step count: " << step << std::endl;
   }
+
+  //   // 3) Main simulation loop--------------
+  //   for (int step = 0; step < Number_of_time_steps; step++) {
+
+  //     // writing data of this state to file (will be used for rendering the
+  //     system
+  //     // in ovito)
+
+  //     data_output << Number_of_particles << std::endl;
+  //     data_output << "Lattice="
+  //                 << "\"10.0 0.0 0.0 0.0 10.0 0.0 0.0 0.0 0.0\"" <<
+  //                 std::endl;
+  //     // first store current configuration
+  //     for (int i = 0; i < parsym.no_of_particles; ++i) {
+  //       data_output << particle[i].x << ' ' << particle[i].y << ' ' << 0 << '
+  //       '
+  //                   << cos(particle[i].alpha) << ' ' <<
+  //                   sin(particle[i].alpha)
+  //                   << ' ' << 0 << ' ' << particle[i].alpha << ' '
+  //                   << particle[i].vx << ' ' << particle[i].vy << ' '
+  //                   << particle[i].omega << ' ' << std::endl;
+  //     }
+
+  //     if (step % 50 == 0) {
+  //       std ::cout << "----------Step count: " << step << std::endl;
+  //     }
+
+  //     log << "----------Step count: " << step << std::endl;
+
+  //     // Manipulate particle positions for next iteration.
+  //     physics.evolve_system_ERM(parsym, step, log);
+  //   }
 
   time_t end = time(&end);
 
@@ -127,7 +161,7 @@ int main() {
   /*----------------------------------*/
 
   // Print the state before the simulation in log
-  state_after_simulation(log, parsym, physics);
+  state_after_simulation(init_log, parsym, physics);
 
   // log.close();
   // logv.close();
