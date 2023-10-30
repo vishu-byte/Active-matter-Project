@@ -5,6 +5,7 @@
 #ifndef PARTICLE_SIMULATION_PARTICLE_SYSTEM_H
 #define PARTICLE_SIMULATION_PARTICLE_SYSTEM_H
 
+
 #include <cmath>
 #include <math.h>
 #include <random>
@@ -71,6 +72,16 @@ public:
   double min_sep(double x1, double x2);
 
   double nearest_img_dist(Particle par1, Particle par2);
+};
+
+class Boxresize {
+public:
+  double L;
+  double phi;
+
+public:
+  Boxresize(){};
+
 };
 
 } // namespace ParSim

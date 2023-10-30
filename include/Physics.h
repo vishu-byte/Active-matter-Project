@@ -46,17 +46,6 @@ public:
   void evolve_system_ERM(ParticleSystem &, int, std::ofstream &file);
 };
 
-class Boxresize {
-    //objects will be box
-    public:
-      double L;
-      double density;
-
-    public:
-      Boxresize(); //default constructor
-      Boxresize current_state();   // returns current box state
-
-};
 
 } // namespace ParSim
 

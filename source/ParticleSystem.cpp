@@ -84,8 +84,8 @@ void ParSim::Particle::Lattice_initialize(int n, double spacing, double L) {
   std::cout << x_cor << ' ' << y_cor << std::endl;
 
   // lattice grid distribution
-  x = (spacing)*x_cor - (L / 2);
-  y = (spacing)*y_cor - (L / 2);
+  x = (spacing)*x_cor - 0.5*(L-1);
+  y = (spacing)*y_cor - 0.5*(L-1);
 
   // Generate random particle speed.
   vx = 2 * vx_dist(rd);
