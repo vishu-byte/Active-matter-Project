@@ -14,7 +14,6 @@
 ParSim::Particle::Particle() { // default constructor
   x = 0;
   y = 0;
-  x_cor = 0;
 }
 
 ParSim::Particle::Particle(int n, double phi, double L) {
@@ -68,8 +67,8 @@ void ParSim::Particle::Lattice_initialize(int n, double phi, double L) {
   // L << std::endl;
 
   double spacing = 2.5;
-  L = spacing*n;
-  static double x_cor = 0;
+  L = spacing * n;
+  static double x_cor = 0;    //executed only once
   static double y_cor = 0;
   std::random_device rd;
   std::uniform_real_distribution<double> vx_dist(-1, 1);
@@ -77,20 +76,24 @@ void ParSim::Particle::Lattice_initialize(int n, double phi, double L) {
   std::uniform_real_distribution<double> alpha_dist(-1, 1);
   std::uniform_real_distribution<double> omega_dist(-1, 1);
 
-  //std:: cout << lattice_grid_ << ' ' << lattice_grid[1] << std::endl;
+  // std:: cout << lattice_grid_ << ' ' << lattice_grid[1] << std::endl;
+  if (x_cor > n) {
+    x_cor = 0;
+    y_cor += 1;
+  }
 
-  
+  std::cout << x_cor << ' ' << y_cor << std::endl;
 
   // lattice grid distribution
-  x =  (spacing) * x_cor - (L/2);
-  y =  (spacing) * y_cor - (L/2); 
+  x = (spacing)*x_cor - (L / 2);
+  y = (spacing)*y_cor - (L / 2);
 
   // Generate random particle speed.
   vx = 2 * vx_dist(rd);
   vy = 2 * vy_dist(rd);
 
   // Generate random particle orientation (0 to 2pi) and omegas
-  alpha = 2*M_PI*alpha_dist(rd);
+  alpha = 2 * M_PI * alpha_dist(rd);
   omega = 0 * M_PI * omega_dist(rd);
 
   // Generate random V0
@@ -102,11 +105,10 @@ void ParSim::Particle::Lattice_initialize(int n, double phi, double L) {
 
   x_cor = (x_cor + 1);
 
-  std:: cout << x_cor << ' ' << y_cor << std::endl;
 }
 
 /*Class Particle System definitions----------------*/
-ParSim::ParticleSystem::ParticleSystem(int num_of_particles,int n, double phi,
+ParSim::ParticleSystem::ParticleSystem(int num_of_particles, int n, double phi,
                                        double dim) {
   this->no_of_particles = num_of_particles;
   this->particle_array = new Particle[no_of_particles];

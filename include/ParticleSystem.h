@@ -40,7 +40,6 @@ public:
   std::vector<double> force_tangential_prev{0, 0}; // radial force: fx and fy
   double torque_prev{0};                           // torque
   // std:: vector <double> IC{0,0,0,0,0};
-  static double x_cor ;
 
   Particle();                    // default constructor
   Particle(int, double, double); // parameterized constructor: int N, double phi

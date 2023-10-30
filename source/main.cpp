@@ -27,7 +27,7 @@ int main() {
   double L;
   //L = std::sqrt(M_PI * Number_of_particles / phi);
   L = 70;
-  ParSim::ParticleSystem parsym(Number_of_particles, 10, phi, L);
+  ParSim::ParticleSystem parsym(Number_of_particles, n, phi, L);
   ParSim::Physics physics;
 
   ParSim::Particle *const particle =
