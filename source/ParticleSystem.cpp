@@ -61,14 +61,13 @@ void ParSim::Particle::random_initialize(int N, double phi, double L) {
   omega_activity = 0 * M_PI * omega_dist(rd);
 }
 
-void ParSim::Particle::Lattice_initialize(int n, double phi, double L) {
+void ParSim::Particle::Lattice_initialize(int n, double spacing, double L) {
 
   // std:: cout << "Random init called with: (N,phi,L)" << N<< " "<<phi <<" " <<
   // L << std::endl;
 
-  double spacing = 2.5;
   L = spacing * n;
-  static double x_cor = 0;    //executed only once
+  static double x_cor = 0; // executed only once
   static double y_cor = 0;
   std::random_device rd;
   std::uniform_real_distribution<double> vx_dist(-1, 1);
@@ -77,7 +76,7 @@ void ParSim::Particle::Lattice_initialize(int n, double phi, double L) {
   std::uniform_real_distribution<double> omega_dist(-1, 1);
 
   // std:: cout << lattice_grid_ << ' ' << lattice_grid[1] << std::endl;
-  if (x_cor > n) {
+  if (x_cor > n-1) {
     x_cor = 0;
     y_cor += 1;
   }
@@ -104,18 +103,17 @@ void ParSim::Particle::Lattice_initialize(int n, double phi, double L) {
   omega_activity = 0 * M_PI * omega_dist(rd);
 
   x_cor = (x_cor + 1);
-
 }
 
 /*Class Particle System definitions----------------*/
-ParSim::ParticleSystem::ParticleSystem(int num_of_particles, int n, double phi,
-                                       double dim) {
+ParSim::ParticleSystem::ParticleSystem(int num_of_particles, int n,
+                                       double spacing, double dim) {
   this->no_of_particles = num_of_particles;
   this->particle_array = new Particle[no_of_particles];
   this->L = dim;
 
   for (int i = 0; i < num_of_particles; i++) {
-    Particle temp(n, phi, L);
+    Particle temp(n, spacing, L);
     particle_array[i] = temp;
   }
 }

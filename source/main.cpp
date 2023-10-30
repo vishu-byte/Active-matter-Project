@@ -20,14 +20,15 @@ int main() {
 
   /*Parameters*/
   /*Try to stick to S.I units to make sense out of numbers*/
-  int Number_of_particles = 50;
-  int n = 5;
+  int Number_of_particles = 100;
+  int n = sqrt(Number_of_particles);  //particles per row
   int Number_of_time_steps = 100;
+  double spacing = 4.5;
   double phi = 0.05; // area fraction
   double L;
   //L = std::sqrt(M_PI * Number_of_particles / phi);
   L = 70;
-  ParSim::ParticleSystem parsym(Number_of_particles, n, phi, L);
+  ParSim::ParticleSystem parsym(Number_of_particles, n, spacing, L);
   ParSim::Physics physics;
 
   ParSim::Particle *const particle =
