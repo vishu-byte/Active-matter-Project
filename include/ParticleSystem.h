@@ -63,6 +63,8 @@ public:
   std::vector<double> lattice_grid{0, 0};
   Particle *particle_array{nullptr}; // creating particle array on heap
 
+
+  ParticleSystem(int, double); //constructor
   ParticleSystem(int,int, double, double); // parameterized constructor
   virtual ~ParticleSystem();           // destructor
   Particle *const get_particles(); // constant pointer, can not change address

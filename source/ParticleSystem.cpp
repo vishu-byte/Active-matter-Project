@@ -76,7 +76,7 @@ void ParSim::Particle::Lattice_initialize(int n, double spacing, double L) {
   std::uniform_real_distribution<double> omega_dist(-1, 1);
 
   // std:: cout << lattice_grid_ << ' ' << lattice_grid[1] << std::endl;
-  if (x_cor > n-1) {
+  if (x_cor > n - 1) {
     x_cor = 0;
     y_cor += 1;
   }
@@ -84,8 +84,8 @@ void ParSim::Particle::Lattice_initialize(int n, double spacing, double L) {
   std::cout << x_cor << ' ' << y_cor << std::endl;
 
   // lattice grid distribution
-  x = (spacing)*x_cor - 0.5*(L-1);
-  y = (spacing)*y_cor - 0.5*(L-1);
+  x = (spacing)*x_cor - 0.5 * (L - 1);
+  y = (spacing)*y_cor - 0.5 * (L - 1);
 
   // Generate random particle speed.
   vx = 2 * vx_dist(rd);
@@ -106,6 +106,12 @@ void ParSim::Particle::Lattice_initialize(int n, double spacing, double L) {
 }
 
 /*Class Particle System definitions----------------*/
+ParSim::ParticleSystem::ParticleSystem(int N, double dim) {
+  this->no_of_particles = N;
+  this->particle_array = new Particle[no_of_particles];
+  this->L = dim;
+}
+
 ParSim::ParticleSystem::ParticleSystem(int num_of_particles, int n,
                                        double spacing, double dim) {
   this->no_of_particles = num_of_particles;

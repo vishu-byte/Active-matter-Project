@@ -26,7 +26,8 @@ int main() {
   double spacing = 4.5;
   double L = n * spacing + 1; // length of periodic boundary , replace 1 by
                               // sigma
-  ParSim::ParticleSystem parsym(Number_of_particles, n, spacing, L);
+  ParSim::ParticleSystem parsym(Number_of_particles,
+                                L); // create a simple system
   ParSim::Physics physics;
 
   ParSim::Particle *const particle =
@@ -50,15 +51,14 @@ int main() {
       50; // eta      --increase judiciuosly, it should not overpower k
   physics.parameters[11] = 0; // Diffusion constant
 
-  /* Reading initial conditions*/
+  /* 2)Reading initial state*/
 
-  // 2)Creating a data file for storage and log-----------
+  // 3)Creating a data file for storage and log-----------
 
   std::ofstream data_output;
   std::ofstream log;
 
   data_output.open("data1.xyz");
-
   log.open("log.txt");
 
   // Print the state before the simulation in log
@@ -70,7 +70,7 @@ int main() {
 
   time_t start = time(&start); // for measuring total runtime
 
-  // 3) Main simulation loop--------------
+  // 4) Main simulation loop--------------
   for (int step = 0; step < Number_of_time_steps; step++) {
 
     // writing data of this state to file (will be used for rendering the system
