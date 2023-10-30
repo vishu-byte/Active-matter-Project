@@ -21,13 +21,10 @@ int main() {
   /*Parameters*/
   /*Try to stick to S.I units to make sense out of numbers*/
   int Number_of_particles = 100;
-  int n = sqrt(Number_of_particles);  //particles per row
   int Number_of_time_steps = 100;
+  int n = sqrt(Number_of_particles); // particles per row
   double spacing = 4.5;
-  double phi = 0.05; // area fraction
-  double L;
-  //L = std::sqrt(M_PI * Number_of_particles / phi);
-  L = 70;
+  double L = n * spacing;
   ParSim::ParticleSystem parsym(Number_of_particles, n, spacing, L);
   ParSim::Physics physics;
 
@@ -67,14 +64,15 @@ int main() {
   init_log.open("init_log.txt");
 
   // Print the state before the simulation in log
-  state_before_simulation(init_log, parsym, physics, Number_of_time_steps, L, phi);
+  state_before_simulation(init_log, parsym, physics, Number_of_time_steps, L,
+                          spacing);
 
   init_log << "-x-x-x-x-x-Simulation initiated-x-x-x-x-x- " << std::endl;
   std::cout << "-x-x-x-x-x-Simulation initiated-x-x-x-x-x- " << std::endl;
 
   time_t start = time(&start); // for measuring total runtime
 
-  //2) Inilialization of system
+  // 2) Inilialization of system
 
   for (int step = 0; step < 1000; step++) {
 
@@ -154,7 +152,7 @@ int main() {
 
 void state_before_simulation(std::ofstream &log, ParSim::ParticleSystem &parsym,
                              ParSim ::Physics &physics, int steps,
-                             double dimension, double phi) {
+                             double dimension, double spacing) {
 
   ParSim::Particle *const particle =
       parsym.get_particles(); // get access to paticles
@@ -163,7 +161,7 @@ void state_before_simulation(std::ofstream &log, ParSim::ParticleSystem &parsym,
   log << "Number of particles: " << parsym.no_of_particles << std::endl
       << "Time step: " << physics.parameters[8] << std::endl
       << "Number of time steps: " << steps << std::endl
-      << "Phi: " << phi << std::endl
+      << "spacing: " << spacing << std::endl
       << "Dimension: " << dimension << std::endl
       << "k: " << physics.parameters[0] << std::endl
       << "Interaction radius (sigma): " << physics.parameters[1] << std::endl
