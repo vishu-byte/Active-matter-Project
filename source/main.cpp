@@ -21,12 +21,13 @@ int main() {
   /*Parameters*/
   /*Try to stick to S.I units to make sense out of numbers*/
   int Number_of_particles = 50;
-  int Number_of_time_steps = 2000;
+  int n = 5;
+  int Number_of_time_steps = 100;
   double phi = 0.05; // area fraction
   double L;
-  L = std::sqrt(M_PI * Number_of_particles / phi);
+  //L = std::sqrt(M_PI * Number_of_particles / phi);
   L = 70;
-  ParSim::ParticleSystem parsym(Number_of_particles, phi, L);
+  ParSim::ParticleSystem parsym(Number_of_particles, 10, phi, L);
   ParSim::Physics physics;
 
   ParSim::Particle *const particle =
@@ -51,27 +52,6 @@ int main() {
   physics.parameters[11] = 0; // Diffusion constant
 
   /*Initial conditions*/
-  // particle 1
-  particle[0].x = -L / 5;
-  particle[0].y = L / 5;
-  particle[0].vx = 2;
-  particle[0].vy = 2;
-  particle[0].alpha = 0;
-  particle[0].omega = 0;
-  particle[0].vx_activity = 0;
-  particle[0].vy_activity = 0;
-  particle[0].omega_activity = 0 * M_PI;
-
-  // particle 2
-  particle[1].x = L / 5;
-  particle[1].y = 0;
-  particle[1].vx = -2;
-  particle[1].vy = 2;
-  particle[1].alpha = 0;
-  particle[1].omega = 0;
-  particle[1].vx_activity = 0;
-  particle[1].vy_activity = 0;
-  particle[1].omega_activity = 0 * M_PI;
 
   // 2)Creating a data file for storage and log-----------
 
@@ -88,7 +68,7 @@ int main() {
   // Print the state before the simulation in log
   state_before_simulation(init_log, parsym, physics, Number_of_time_steps, L, phi);
 
-  log << "-x-x-x-x-x-Simulation initiated-x-x-x-x-x- " << std::endl;
+  init_log << "-x-x-x-x-x-Simulation initiated-x-x-x-x-x- " << std::endl;
   std::cout << "-x-x-x-x-x-Simulation initiated-x-x-x-x-x- " << std::endl;
 
   time_t start = time(&start); // for measuring total runtime
@@ -153,10 +133,11 @@ int main() {
   time_t end = time(&end);
 
   data_output.close();
+  init_output.close();
 
   std::cout << "-x-x-x-x-x-Simulation ended-x-x-x-x-x-" << std::endl;
-  log << "-x-x-x-x-x-Simulation ended-x-x-x-x-x-" << std::endl;
-  log << "Runtime: " << end - start << " seconds" << std::endl;
+  init_log << "-x-x-x-x-x-Simulation ended-x-x-x-x-x-" << std::endl;
+  init_log << "Runtime: " << end - start << " seconds" << std::endl;
 
   /*----------------------------------*/
 

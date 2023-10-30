@@ -31,7 +31,7 @@ public:
   double torque{0};                           // torque
 
   // For storing forces of one step before
-  std::vector<double> position_prev{0, 0}; // (x, y) 
+  std::vector<double> position_prev{0, 0}; // (x, y)
   std::vector<double> velocity_prev{0, 0}; // (vx, vy)
   double alpha_prev;
   double omega_prev;
@@ -40,24 +40,31 @@ public:
   std::vector<double> force_tangential_prev{0, 0}; // radial force: fx and fy
   double torque_prev{0};                           // torque
   // std:: vector <double> IC{0,0,0,0,0};
+  static double x_cor ;
 
-  Particle(); // default constructor
+  Particle();                    // default constructor
   Particle(int, double, double); // parameterized constructor: int N, double phi
   Particle(double x_cor, double y_cor, double speed, double direction,
-           double orientation); // parameterized constructor
-  virtual ~Particle(){};        // virtual destructor
-  void random_initialize(int, double, double); // randomly initializes particle
+           double orientation);                 // parameterized constructor
+  virtual ~Particle(){};                        // virtual destructor
+  void random_initialize(int, double, double);  // randomly initializes particle
+  void Lattice_initialize(int, double, double); // randomly initializes particle
+
+
 };
 
 class ParticleSystem {
 public:
   int no_of_particles;
+  int n;    //no. of particles in a row
   double L;
   double phi;
+
+  std::vector<double> lattice_grid{0, 0};
   Particle *particle_array{nullptr}; // creating particle array on heap
 
-  ParticleSystem(int, double, double);             // parameterized constructor
-  virtual ~ParticleSystem();       // destructor
+  ParticleSystem(int,int, double, double); // parameterized constructor
+  virtual ~ParticleSystem();           // destructor
   Particle *const get_particles(); // constant pointer, can not change address
                                    // of memory block to which it points
   double distance(Particle par1, Particle par2);
