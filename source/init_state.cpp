@@ -16,7 +16,7 @@ void state_after_simulation(std::ofstream &log, ParSim::ParticleSystem &parsym,
 
 int main() {
 
-  // 1)Creating and initializaing particle system
+  // 1)Creating and initializaing particle system--------
 
   /*Parameters*/
   /*Try to stick to S.I units to make sense out of numbers*/
@@ -33,7 +33,7 @@ int main() {
 
   /*Setting physics parameters*/
   physics.parameters[8] = 0.001;           // time step
-  physics.parameters[0] = 1500;            // k
+  physics.parameters[0] = 1000;            // k
   physics.parameters[1] = 1;               // interaction_radius sigma
   physics.parameters[2] = 1;               // mass
   physics.parameters[3] = 1;               // radius
@@ -58,15 +58,10 @@ int main() {
   box2.phi = 0.50; // target density
 
   // 2)Creating a data file for storage and log-----------
-
-  std::ofstream data_output;
   std::ofstream init_output;
-  std::ofstream log;
   std::ofstream init_log;
 
-  data_output.open("data1.xyz");
   init_output.open("init_condition.xyz");
-  log.open("log.txt");
   init_log.open("init_log.txt");
 
   // Print the state before the simulation in log
@@ -78,7 +73,7 @@ int main() {
 
   time_t start = time(&start); // for measuring total runtime
 
-  // 2) Inilialization of system
+  // 3) Evolving the system a bit
 
   for (int step = 0; step < 1000; step++) {
 
@@ -103,46 +98,13 @@ int main() {
     init_log << "----------Init Step count: " << step << std::endl;
 
         // Manipulate particle positions for next iteration.
-        physics.evolve_system_ERM(parsym, step, log);
+        physics.evolve_system_ERM(parsym, step, init_log);
 
         //initiate box resize
   }
 
-  //   // 3) Main simulation loop--------------
-  //   for (int step = 0; step < Number_of_time_steps; step++) {
-
-  //     // writing data of this state to file (will be used for rendering the
-  //     system
-  //     // in ovito)
-
-  //     data_output << Number_of_particles << std::endl;
-  //     data_output << "Lattice="
-  //                 << "\"10.0 0.0 0.0 0.0 10.0 0.0 0.0 0.0 0.0\"" <<
-  //                 std::endl;
-  //     // first store current configuration
-  //     for (int i = 0; i < parsym.no_of_particles; ++i) {
-  //       data_output << particle[i].x << ' ' << particle[i].y << ' ' << 0 << '
-  //       '
-  //                   << cos(particle[i].alpha) << ' ' <<
-  //                   sin(particle[i].alpha)
-  //                   << ' ' << 0 << ' ' << particle[i].alpha << ' '
-  //                   << particle[i].vx << ' ' << particle[i].vy << ' '
-  //                   << particle[i].omega << ' ' << std::endl;
-  //     }
-
-  //     if (step % 50 == 0) {
-  //       std ::cout << "----------Step count: " << step << std::endl;
-  //     }
-
-  //     log << "----------Step count: " << step << std::endl;
-
-  //     // Manipulate particle positions for next iteration.
-  //     physics.evolve_system_ERM(parsym, step, log);
-  //   }
-
   time_t end = time(&end);
 
-  data_output.close();
   init_output.close();
 
   std::cout << "-x-x-x-x-x-Simulation ended-x-x-x-x-x-" << std::endl;
@@ -153,10 +115,6 @@ int main() {
 
   // Print the state before the simulation in log
   state_after_simulation(init_log, parsym, physics);
-
-  // log.close();
-  // logv.close();
-  // logx.close();
 
   return 0;
 }
