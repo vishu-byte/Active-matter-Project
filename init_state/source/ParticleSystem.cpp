@@ -51,7 +51,7 @@ void ParSim::Particle::random_initialize(int N, double phi, double L) {
 
   // Generate random particle orientation (0 to 2pi) and omegas
   alpha = alpha_dist(rd);
-  omega = 2* M_PI * omega_dist(rd);
+  omega = 0* M_PI * omega_dist(rd);
 
   // Generate random V0
   vx_activity = 0 * vx_dist(rd);
@@ -93,7 +93,7 @@ void ParSim::Particle::Lattice_initialize(int n, double spacing, double L) {
 
   // Generate random particle orientation (0 to 2pi) and omegas
   alpha = 2 * M_PI * alpha_dist(rd);
-  omega = 0 * M_PI * omega_dist(rd);
+  omega = 2 * M_PI * omega_dist(rd);
 
   // Generate random V0
   vx_activity = 0 * vx_dist(rd);
