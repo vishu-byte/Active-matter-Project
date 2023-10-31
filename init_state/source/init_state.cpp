@@ -24,7 +24,8 @@ int main() {
   int Number_of_time_steps = 100;
   int n = sqrt(Number_of_particles); // particles per row
   double spacing = 4.5;
-  double L = n * spacing + 1;     //length of periodic boundary , replace 1 by sigma
+  double L = n * spacing + 1; // length of periodic boundary , replace 1 by
+                              // sigma
   ParSim::ParticleSystem parsym(Number_of_particles, n, spacing, L);
   ParSim::Physics physics;
 
@@ -60,9 +61,11 @@ int main() {
   // 2)Creating a data file for storage and log-----------
   std::ofstream init_output;
   std::ofstream init_log;
+  std::ofstream init_state;
 
   init_output.open("init_condition.xyz");
   init_log.open("init_log.txt");
+  init_state.open("init_state.txt");
 
   // Print the state before the simulation in log
   state_before_simulation(init_log, parsym, physics, Number_of_time_steps, L,
@@ -97,15 +100,25 @@ int main() {
 
     init_log << "----------Init Step count: " << step << std::endl;
 
-        // Manipulate particle positions for next iteration.
-        physics.evolve_system_ERM(parsym, step, init_log);
+    // Manipulate particle positions for next iteration.
+    physics.evolve_system_ERM(parsym, step, init_log);
 
-        //initiate box resize
+    // initiate box resize
+  }
+
+  // Writing the state to file init_state.txt
+
+  for (int i = 0; i < parsym.no_of_particles; ++i) {
+    init_state << particle[i].x << ' ' << particle[i].y << ' '
+               << particle[i].alpha << ' ' << particle[i].vx << ' '
+               << particle[i].vy << ' ' << particle[i].omega << ' '
+               << std::endl;
   }
 
   time_t end = time(&end);
 
   init_output.close();
+  init_state.close();
 
   std::cout << "-x-x-x-x-x-Simulation ended-x-x-x-x-x-" << std::endl;
   init_log << "-x-x-x-x-x-Simulation ended-x-x-x-x-x-" << std::endl;

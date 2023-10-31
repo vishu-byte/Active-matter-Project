@@ -23,7 +23,7 @@ int main() {
   int Number_of_particles = 36;
   int Number_of_time_steps = 100;
 
-  //temporary geometry variables
+  // temporary geometry variables
   int n = sqrt(Number_of_particles); // particles per row
   double spacing = 4.5;
   double phi = 0.75;
@@ -56,6 +56,30 @@ int main() {
 
   /* 2)Reading initial state*/
 
+  std::ifstream input_state("init_state.txt");
+  int i = 0;
+
+  if (!input_state) { // file couldn't be opened
+    std::cerr << "Error: Init_state file could not be opened" << std::endl;
+    exit(1);
+  }
+
+  while (input_state >> particle[i].x >> particle[i].y >> particle[i].alpha >>
+         particle[i].vx >> particle[i].vy >> particle[i].omega) {
+    i++;
+  }
+
+  std::cout << "Input state read for " << i << " particles ..." << std ::endl;
+
+  input_state.close();
+
+  // checking
+  for (int i = 0; i < parsym.no_of_particles; ++i) {
+    std::cout << particle[i].x << ' ' << particle[i].y << ' '
+              << particle[i].alpha << ' ' << particle[i].vx << ' '
+              << particle[i].vy << ' ' << particle[i].omega << ' ' << std::endl;
+  }
+
   // 3)Creating a data file for storage and log-----------
 
   std::ofstream data_output;
@@ -65,8 +89,7 @@ int main() {
   log.open("log.txt");
 
   // Print the state before the simulation in log
-  state_before_simulation(log, parsym, physics, Number_of_time_steps, L,
-                          phi);
+  state_before_simulation(log, parsym, physics, Number_of_time_steps, L, phi);
 
   log << "-x-x-x-x-x-Simulation initiated-x-x-x-x-x- " << std::endl;
   std::cout << "-x-x-x-x-x-Simulation initiated-x-x-x-x-x- " << std::endl;
@@ -76,10 +99,11 @@ int main() {
   // 4) Main simulation loop--------------
   for (int step = 0; step < Number_of_time_steps; step++) {
 
-    // writing data of this state to file (will be used for rendering the system
-    // in ovito)
+    // writing data of this state to file (will be used for rendering the
+    //system in ovito)
 
-    data_output << Number_of_particles << std::endl;
+            data_output
+        << Number_of_particles << std::endl;
     data_output << "Lattice="
                 << "\"10.0 0.0 0.0 0.0 10.0 0.0 0.0 0.0 0.0\"" << std::endl;
     // first store current configuration
