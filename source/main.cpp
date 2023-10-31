@@ -24,6 +24,7 @@ int main() {
   int Number_of_time_steps = 100;
   int n = sqrt(Number_of_particles); // particles per row
   double spacing = 4.5;
+  double phi = 0.75;
   double L = n * spacing + 1; // length of periodic boundary , replace 1 by
                               // sigma
   ParSim::ParticleSystem parsym(Number_of_particles,
@@ -63,7 +64,7 @@ int main() {
 
   // Print the state before the simulation in log
   state_before_simulation(log, parsym, physics, Number_of_time_steps, L,
-                          spacing);
+                          phi);
 
   log << "-x-x-x-x-x-Simulation initiated-x-x-x-x-x- " << std::endl;
   std::cout << "-x-x-x-x-x-Simulation initiated-x-x-x-x-x- " << std::endl;
@@ -120,7 +121,7 @@ int main() {
 
 void state_before_simulation(std::ofstream &log, ParSim::ParticleSystem &parsym,
                              ParSim ::Physics &physics, int steps,
-                             double dimension, double spacing) {
+                             double dimension, double phi) {
 
   ParSim::Particle *const particle =
       parsym.get_particles(); // get access to paticles
@@ -129,7 +130,7 @@ void state_before_simulation(std::ofstream &log, ParSim::ParticleSystem &parsym,
   log << "Number of particles: " << parsym.no_of_particles << std::endl
       << "Time step: " << physics.parameters[8] << std::endl
       << "Number of time steps: " << steps << std::endl
-      << "spacing: " << spacing << std::endl
+      << "spacing: " << phi << std::endl
       << "Dimension: " << dimension << std::endl
       << "k: " << physics.parameters[0] << std::endl
       << "Interaction radius (sigma): " << physics.parameters[1] << std::endl
