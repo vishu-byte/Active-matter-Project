@@ -22,6 +22,8 @@ int main() {
   /*Try to stick to S.I units to make sense out of numbers*/
   int Number_of_particles = 36;
   int Number_of_time_steps = 100;
+
+  //temporary variables
   int n = sqrt(Number_of_particles); // particles per row
   double spacing = 4.5;
   double phi = 0.75;
