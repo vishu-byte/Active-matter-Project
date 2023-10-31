@@ -23,7 +23,7 @@ int main() {
   int Number_of_particles = 36;
   int Number_of_time_steps = 100;
 
-  //temporary variables
+  //temporary geometry variables
   int n = sqrt(Number_of_particles); // particles per row
   double spacing = 4.5;
   double phi = 0.75;
@@ -61,7 +61,7 @@ int main() {
   std::ofstream data_output;
   std::ofstream log;
 
-  data_output.open("data1.xyz");
+  data_output.open("data.xyz");
   log.open("log.txt");
 
   // Print the state before the simulation in log
