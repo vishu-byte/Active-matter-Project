@@ -93,7 +93,7 @@ void ParSim::Particle::Lattice_initialize(int n, double spacing, double L) {
 
   // Generate random particle orientation (0 to 2pi) and omegas
   alpha = 2 * M_PI * alpha_dist(rd);
-  omega = 2 * M_PI * omega_dist(rd);
+  omega = 0 * M_PI * omega_dist(rd);
 
   // Generate random V0
   vx_activity = 0 * vx_dist(rd);
@@ -112,22 +112,28 @@ ParSim::Box::Box() { // default constructor of this class
   phi = 0;
 }
 
-ParSim::BoxResize::BoxResize::BoxResize(Box initial, Box final, int init_time, double per){
+ParSim::BoxResize::BoxResize::BoxResize(Box initial, Box final, int init_time,
+                                        double per) {
   this->init_box = initial;
-  this->final_box =final;
+  this->final_box = final;
   this->initial = init_time;
   this->period = per;
-
 }
 
 double ParSim::BoxResize::ramp(int initial, int timestep,
                                double period) { // ramp function
+
+  // if (timestep % 1000 == 0) {
+  //   std::cout << (timestep - initial) * (1) / (period) << std::endl;
+  // }
   return (timestep - initial) * (1) / (period);
 }
 
 void ParSim::BoxResize::BoxCompress(ParSim::ParticleSystem &parsym,
                                     int timestep) {
-  parsym.L = ramp(initial, timestep, period); // change parsym box length
+  double ramp_value = ramp(initial, timestep, period);
+  parsym.L = final_box.L * ramp_value +
+             (1 - ramp_value) * init_box.L; // change parsym box length
   parsym.box.L = parsym.L;
 }
 

@@ -26,6 +26,8 @@ int main() {
   double spacing = 4.5;
   double L = n * spacing + 1; // length of periodic boundary , replace 1 by
                               // sigma
+
+  /*Creating parsym and setting params*/
   ParSim::ParticleSystem parsym(Number_of_particles, n, spacing, L);
   ParSim::Physics physics;
 
@@ -56,11 +58,12 @@ int main() {
   ParSim::Box box2;
 
   box1.L = L;
-  box2.phi = 0.60;                                      // target density
+  box1.phi = 0.05;
+  box2.phi = 0.25;                                      // target density
   box2.L = sqrt(M_PI * Number_of_particles / box2.phi); // target size of box
 
-  int initial = 1000;
-  double period = 1000;
+  int initial = 1000;   // time after which compression starts
+  double period = 4000; // time period for compression
 
   ParSim::BoxResize BoxResize(box1, box2, initial,
                               period); // create box resize object
@@ -81,14 +84,15 @@ int main() {
   init_log << "-x-x-x-x-x-Simulation initiated-x-x-x-x-x- " << std::endl;
   std::cout << "-x-x-x-x-x-Simulation initiated-x-x-x-x-x- " << std::endl;
 
-   // checking
+  // checking
   std::cout << "Initial box size: " << parsym.box.L << " and " << parsym.L
-            << std::endl;
+            << std::endl
+            << "Target box size: " << box2.L << std::endl;
   time_t start = time(&start); // for measuring total runtime
 
   // 3) Evolving the system a bit
 
-  for (int step = 0; step < 3 * initial; step++) {
+  for (int step = 0; step < initial + period; step++) {
 
     // writing data of this state to file (will be used for rendering the system
     //     // in ovito)
@@ -111,9 +115,9 @@ int main() {
     init_log << "----------Init Step count: " << step << std::endl;
 
     // Manipulate particle positions for next iteration.
-    if (step < initial) {
+    if (step < initial || step > initial + period) {
       physics.evolve_system_ERM(parsym, step, init_log);
-    } else { // for >= initial
+    } else if (step >= initial && step <= initial + period) {
       physics.evolve_system_ERM_BoxResize(parsym, step, BoxResize, init_log);
     }
   }
