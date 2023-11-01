@@ -44,6 +44,8 @@ public:
                                            // it forward in time
 
   void evolve_system_ERM(ParticleSystem &, int, std::ofstream &file);
+
+  void evolve_system_ERM_BoxResize(ParticleSystem &, int, BoxResize, std::ofstream &file);
 };
 
 

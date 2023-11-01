@@ -172,7 +172,7 @@ void ParSim::Physics::Force_PP_PBC(ParSim::ParticleSystem &ps,
     ps.particle_array[i].force_radial[1] +=
         -1 * (this->parameters[5]) * ps.particle_array[i].vy +
         ps.particle_array[i].vy_activity +
-        (sqrt( this->parameters[11])) * distribution(mt);
+        (sqrt(this->parameters[11])) * distribution(mt);
 
     ps.particle_array[i].torque +=
         -1 * (this->parameters[5]) * ps.particle_array[i].omega +
@@ -386,8 +386,6 @@ void ParSim::Physics::ERM_Integrator2(ParSim::Particle &par, double L, int step,
 
   // Periodic boudary condition
 
-  
-
   if (par.x > L / 2) {
     par.x -= L;
   } else if (par.x < -L / 2) {
@@ -448,8 +446,9 @@ void ParSim::Physics::evolve_system_ERM(ParticleSystem &parsym, int step,
   //  iv) Update x',v' to xnew, vnew --------
   for (int i = 0; i < parsym.no_of_particles; ++i) {
     ERM_Integrator2(parsym.particle_array[i], parsym.L, step, log);
-  }
 
+    // Now change L?
+  }
   // v)Change delt t
   // this->parameters[8] = 0.9;
 
@@ -460,6 +459,34 @@ void ParSim::Physics::evolve_system_ERM(ParticleSystem &parsym, int step,
   //     parsym.particle_array[i].y < -800 || parsym.particle_array[i].y >
   //     800)
   //   parsym.particle_array[i].random_initialize();
+}
+
+void ParSim::Physics::evolve_system_ERM_BoxResize(ParticleSystem &parsym,
+                                                  int step, BoxResize BoxResize,
+                                                  std::ofstream &log) {
+
+  // i) Calculate force (F) from positions and velocities (x,v) --
+  Force_PP_PBC(parsym, log); // links forces on each object
+
+  // ii) Update x,v to x', v'  ----
+  for (int i = 0; i < parsym.no_of_particles; ++i) {
+    ERM_Integrator1(parsym.particle_array[i], step, log);
+  }
+
+  // iii) Again calculate force (F') from x',v' ------
+  Force_PP_PBC(parsym, log);
+
+  // error tolerance condition ----
+
+  //  iv) Update x',v' to xnew, vnew --------
+  for (int i = 0; i < parsym.no_of_particles; ++i) {
+    ERM_Integrator2(parsym.particle_array[i], parsym.L, step, log);
+
+  // v) Now change L?
+
+  BoxResize.BoxCompress(parsym, step);
+    
+  }
 }
 
 std::vector<double> ParSim::Physics::EnergyMomentum(ParticleSystem &parsym) {

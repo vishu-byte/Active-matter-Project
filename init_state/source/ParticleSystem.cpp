@@ -51,7 +51,7 @@ void ParSim::Particle::random_initialize(int N, double phi, double L) {
 
   // Generate random particle orientation (0 to 2pi) and omegas
   alpha = alpha_dist(rd);
-  omega = 0* M_PI * omega_dist(rd);
+  omega = 0 * M_PI * omega_dist(rd);
 
   // Generate random V0
   vx_activity = 0 * vx_dist(rd);
@@ -105,11 +105,39 @@ void ParSim::Particle::Lattice_initialize(int n, double spacing, double L) {
   x_cor = (x_cor + 1);
 }
 
+/*Class Box and BoxResize definitions------------------------------*/
+
+ParSim::Box::Box() { // default constructor of this class
+  L = 0;
+  phi = 0;
+}
+
+ParSim::BoxResize::BoxResize::BoxResize(Box initial, Box final, int init_time, double per){
+  this->init_box = initial;
+  this->final_box =final;
+  this->initial = init_time;
+  this->period = per;
+
+}
+
+double ParSim::BoxResize::ramp(int initial, int timestep,
+                               double period) { // ramp function
+  return (timestep - initial) * (1) / (period);
+}
+
+void ParSim::BoxResize::BoxCompress(ParSim::ParticleSystem &parsym,
+                                    int timestep) {
+  parsym.L = ramp(initial, timestep, period); // change parsym box length
+  parsym.box.L = parsym.L;
+}
+
 /*Class Particle System definitions----------------*/
 ParSim::ParticleSystem::ParticleSystem(int N, double dim) {
   this->no_of_particles = N;
   this->particle_array = new Particle[no_of_particles];
   this->L = dim;
+  this->box.L = dim;
+  this->box.phi = phi;
 }
 
 ParSim::ParticleSystem::ParticleSystem(int num_of_particles, int n,
@@ -155,4 +183,9 @@ double ParSim::ParticleSystem::nearest_img_dist(Particle par1, Particle par2) {
       sqrt(pow(min_sep(par1.x, par2.x), 2) + pow(min_sep(par1.y, par2.y), 2));
 
   return dist;
+}
+
+ParSim::Box
+ParSim::ParticleSystem::current_box(ParSim::ParticleSystem &parsym) {
+  return parsym.box;
 }

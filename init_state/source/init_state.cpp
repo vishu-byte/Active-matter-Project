@@ -52,11 +52,18 @@ int main() {
 
   /*Initial conditions*/
 
-  ParSim::Boxresize box1;
-  ParSim::Boxresize box2;
+  ParSim::Box box1;
+  ParSim::Box box2;
 
   box1.L = L;
-  box2.phi = 0.50; // target density
+  box2.phi = 0.60;                                      // target density
+  box2.L = sqrt(M_PI * Number_of_particles / box2.phi); // target size of box
+
+  int initial = 1000;
+  double period = 1000;
+
+  ParSim::BoxResize BoxResize(box1, box2, initial,
+                              period); // create box resize object
 
   // 2)Creating a data file for storage and log-----------
   std::ofstream init_output;
@@ -74,11 +81,14 @@ int main() {
   init_log << "-x-x-x-x-x-Simulation initiated-x-x-x-x-x- " << std::endl;
   std::cout << "-x-x-x-x-x-Simulation initiated-x-x-x-x-x- " << std::endl;
 
+   // checking
+  std::cout << "Initial box size: " << parsym.box.L << " and " << parsym.L
+            << std::endl;
   time_t start = time(&start); // for measuring total runtime
 
   // 3) Evolving the system a bit
 
-  for (int step = 0; step < 1000; step++) {
+  for (int step = 0; step < 3 * initial; step++) {
 
     // writing data of this state to file (will be used for rendering the system
     //     // in ovito)
@@ -101,10 +111,16 @@ int main() {
     init_log << "----------Init Step count: " << step << std::endl;
 
     // Manipulate particle positions for next iteration.
-    physics.evolve_system_ERM(parsym, step, init_log);
-
-    // initiate box resize
+    if (step < initial) {
+      physics.evolve_system_ERM(parsym, step, init_log);
+    } else { // for >= initial
+      physics.evolve_system_ERM_BoxResize(parsym, step, BoxResize, init_log);
+    }
   }
+
+  // checking
+  std::cout << "Final box size: " << parsym.box.L << " and " << parsym.L
+            << std::endl;
 
   // Writing the state to file init_state.txt
 
@@ -138,6 +154,9 @@ void state_before_simulation(std::ofstream &log, ParSim::ParticleSystem &parsym,
 
   ParSim::Particle *const particle =
       parsym.get_particles(); // get access to paticles
+
+  log << "------Inital Box ------------" << std::endl;
+  log << "L: " << parsym.L << std::endl << "phi: " << parsym.phi << std::endl;
 
   log << "-------Parameters and state------" << std::endl;
   log << "Number of particles: " << parsym.no_of_particles << std::endl
@@ -185,7 +204,10 @@ void state_before_simulation(std::ofstream &log, ParSim::ParticleSystem &parsym,
 
 void state_after_simulation(std::ofstream &log, ParSim::ParticleSystem &parsym,
                             ParSim ::Physics &physics) {
-  log << "Energy-momentum After the collision: " << std::endl;
+
+  log << "--------Final Box ------------" << std::endl;
+  log << "L: " << parsym.L << std::endl << "phi: " << parsym.phi << std::endl;
+  log << "----Energy-momentum After the collision---- " << std::endl;
   log << "Total Energy: "
       << physics.EnergyMomentum(parsym)[0] + physics.EnergyMomentum(parsym)[1]
       << std::endl;

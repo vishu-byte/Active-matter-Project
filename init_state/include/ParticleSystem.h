@@ -5,7 +5,6 @@
 #ifndef PARTICLE_SIMULATION_PARTICLE_SYSTEM_H
 #define PARTICLE_SIMULATION_PARTICLE_SYSTEM_H
 
-
 #include <cmath>
 #include <math.h>
 #include <random>
@@ -49,24 +48,31 @@ public:
   virtual ~Particle(){};                        // virtual destructor
   void random_initialize(int, double, double);  // randomly initializes particle
   void Lattice_initialize(int, double, double); // randomly initializes particle
+};
 
+class Box {
+public:
+  double L;
+  double phi;
 
+public:
+  Box(); // default constructor
 };
 
 class ParticleSystem {
 public:
   int no_of_particles;
-  int n;    //no. of particles in a row
+  int n; // no. of particles in a row
   double L;
   double phi;
+  Box box;
 
   std::vector<double> lattice_grid{0, 0};
   Particle *particle_array{nullptr}; // creating particle array on heap
 
-
-  ParticleSystem(int, double); //constructor
-  ParticleSystem(int,int, double, double); // parameterized constructor
-  virtual ~ParticleSystem();           // destructor
+  ParticleSystem(int, double);              // constructor
+  ParticleSystem(int, int, double, double); // parameterized constructor
+  virtual ~ParticleSystem();                // destructor
   Particle *const get_particles(); // constant pointer, can not change address
                                    // of memory block to which it points
   double distance(Particle par1, Particle par2);
@@ -74,16 +80,20 @@ public:
   double min_sep(double x1, double x2);
 
   double nearest_img_dist(Particle par1, Particle par2);
+
+  Box current_box(ParticleSystem &); // method to return current state box of a
+                                     // particle system
 };
 
-class Boxresize {
+class BoxResize {
 public:
-  double L;
-  double phi;
+  Box init_box, final_box;
+  int initial;
+  double period;
+  double ramp(int initial, int timestep, double period); // ramp function
 
-public:
-  Boxresize(){};
-
+  BoxResize(Box , Box, int, double);
+  void BoxCompress(ParticleSystem &, int );
 };
 
 } // namespace ParSim
