@@ -61,9 +61,9 @@ int main() {
     std::cerr << "Error: Init_state file could not be opened" << std::endl;
     exit(1);
   }
-  double temp;
+  
   while (input_state >> particle[i].x >> particle[i].y >> particle[i].alpha >>
-         particle[i].vx >> particle[i].vy >> temp) {
+         particle[i].vx >> particle[i].vy) {
     i++;
   }
 
