@@ -63,7 +63,7 @@ int main() {
   }
 
   while (input_state >> particle[i].x >> particle[i].y >> particle[i].alpha >>
-         particle[i].vx >> particle[i].vy >> particle[i].omega) {
+         particle[i].vx >> particle[i].vy) {
     i++;
   }
 

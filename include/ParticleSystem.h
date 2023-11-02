@@ -48,7 +48,6 @@ public:
            double orientation);                 // parameterized constructor
   virtual ~Particle(){};                        // virtual destructor
   void random_initialize(int, double, double);  // randomly initializes particle
-  void Lattice_initialize(int, double, double); // randomly initializes particle
 
 
 };
@@ -65,7 +64,6 @@ public:
 
 
   ParticleSystem(int, double); //constructor
-  ParticleSystem(int,int, double, double); // parameterized constructor
   virtual ~ParticleSystem();           // destructor
   Particle *const get_particles(); // constant pointer, can not change address
                                    // of memory block to which it points

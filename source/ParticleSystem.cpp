@@ -16,8 +16,8 @@ ParSim::Particle::Particle() { // default constructor
   y = 0;
 }
 
-ParSim::Particle::Particle(int n, double phi, double L) {
-  Lattice_initialize(n, phi, L);
+ParSim::Particle::Particle(int N, double phi, double L) {
+ random_initialize(N, phi, L);
 }
 
 ParSim::Particle::Particle(double x_cor, double y_cor, double v_x, double v_y,
@@ -51,7 +51,7 @@ void ParSim::Particle::random_initialize(int N, double phi, double L) {
 
   // Generate random particle orientation (0 to 2pi) and omegas
   alpha = alpha_dist(rd);
-  omega = 0 * M_PI * omega_dist(rd);
+  omega = 2 * M_PI * omega_dist(rd);
 
   // Generate random V0
   vx_activity = 0 * vx_dist(rd);
@@ -61,68 +61,19 @@ void ParSim::Particle::random_initialize(int N, double phi, double L) {
   omega_activity = 0 * M_PI * omega_dist(rd);
 }
 
-void ParSim::Particle::Lattice_initialize(int n, double spacing, double L) {
-
-  // std:: cout << "Random init called with: (N,phi,L)" << N<< " "<<phi <<" " <<
-  // L << std::endl;
-
-  L = spacing * n;
-  static double x_cor = 0; // executed only once
-  static double y_cor = 0;
-  std::random_device rd;
-  std::uniform_real_distribution<double> vx_dist(-1, 1);
-  std::uniform_real_distribution<double> vy_dist(-1, 1);
-  std::uniform_real_distribution<double> alpha_dist(-1, 1);
-  std::uniform_real_distribution<double> omega_dist(-1, 1);
-
-  // std:: cout << lattice_grid_ << ' ' << lattice_grid[1] << std::endl;
-  if (x_cor > n - 1) {
-    x_cor = 0;
-    y_cor += 1;
-  }
-
-  std::cout << x_cor << ' ' << y_cor << std::endl;
-
-  // lattice grid distribution
-  x = (spacing)*x_cor - 0.5 * (L - 1);
-  y = (spacing)*y_cor - 0.5 * (L - 1);
-
-  // Generate random particle speed.
-  vx = 2 * vx_dist(rd);
-  vy = 2 * vy_dist(rd);
-
-  // Generate random particle orientation (0 to 2pi) and omegas
-  alpha = 2 * M_PI * alpha_dist(rd);
-  omega = 0 * M_PI * omega_dist(rd);
-
-  // Generate random V0
-  vx_activity = 0 * vx_dist(rd);
-  vy_activity = 0 * vy_dist(rd);
-
-  // Generatoe random omega0
-  omega_activity = 0 * M_PI * omega_dist(rd);
-
-  x_cor = (x_cor + 1);
-}
-
 /*Class Particle System definitions----------------*/
 ParSim::ParticleSystem::ParticleSystem(int N, double dim) {
   this->no_of_particles = N;
   this->particle_array = new Particle[no_of_particles];
   this->L = dim;
-}
 
-ParSim::ParticleSystem::ParticleSystem(int num_of_particles, int n,
-                                       double spacing, double dim) {
-  this->no_of_particles = num_of_particles;
-  this->particle_array = new Particle[no_of_particles];
-  this->L = dim;
-
-  for (int i = 0; i < num_of_particles; i++) {
-    Particle temp(n, spacing, L);
+  for (int i = 0; i < N; i++) {
+    Particle temp(N, 0, L);
     particle_array[i] = temp;
   }
 }
+
+
 
 ParSim::ParticleSystem::~ParticleSystem() { delete[] particle_array; }
 
