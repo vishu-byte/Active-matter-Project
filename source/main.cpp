@@ -21,13 +21,11 @@ int main() {
   /*Parameters*/
   /*Try to stick to S.I units to make sense out of numbers*/
   int Number_of_particles = 36;
-  int Number_of_time_steps = 100;
+  int Number_of_time_steps = 4000;
 
   // temporary geometry variables
-  int n = sqrt(Number_of_particles); // particles per row
-  double spacing = 4.5;
-  double phi = 0.75;
-  double L = n * spacing + 1; // length of periodic boundary , replace 1 by
+  double phi = 0.90;
+  double L =  11.2101; // length of periodic boundary , replace 1 by
                               // sigma
   ParSim::ParticleSystem parsym(Number_of_particles,
                                 L); // create a simple system
@@ -38,7 +36,7 @@ int main() {
 
   /*Setting physics parameters*/
   physics.parameters[8] = 0.001;           // time step
-  physics.parameters[0] = 1500;            // k
+  physics.parameters[0] = 1000;            // k
   physics.parameters[1] = 1;               // interaction_radius sigma
   physics.parameters[2] = 1;               // mass
   physics.parameters[3] = 1;               // radius
@@ -74,11 +72,11 @@ int main() {
   input_state.close();
 
   // checking
-  for (int i = 0; i < parsym.no_of_particles; ++i) {
-    std::cout << particle[i].x << ' ' << particle[i].y << ' '
-              << particle[i].alpha << ' ' << particle[i].vx << ' '
-              << particle[i].vy << ' ' << particle[i].omega << ' ' << std::endl;
-  }
+  // for (int i = 0; i < parsym.no_of_particles; ++i) {
+  //   std::cout << particle[i].x << ' ' << particle[i].y << ' '
+  //             << particle[i].alpha << ' ' << particle[i].vx << ' '
+  //             << particle[i].vy << ' ' << particle[i].omega << ' ' << std::endl;
+  // }
 
   // 3)Creating a data file for storage and log-----------
 
