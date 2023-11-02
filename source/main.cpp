@@ -25,8 +25,8 @@ int main() {
 
   // temporary geometry variables
   double phi = 0.90;
-  double L =  11.2104; // length of periodic boundary , replace 1 by
-                              // sigma
+  double L = 11.2104; // length of periodic boundary , replace 1 by
+                      // sigma
   ParSim::ParticleSystem parsym(Number_of_particles,
                                 L); // create a simple system
   ParSim::Physics physics;
@@ -61,9 +61,9 @@ int main() {
     std::cerr << "Error: Init_state file could not be opened" << std::endl;
     exit(1);
   }
-
+  double temp;
   while (input_state >> particle[i].x >> particle[i].y >> particle[i].alpha >>
-         particle[i].vx >> particle[i].vy) {
+         particle[i].vx >> particle[i].vy >> temp) {
     i++;
   }
 
@@ -71,12 +71,13 @@ int main() {
 
   input_state.close();
 
-  // checking
-  // for (int i = 0; i < parsym.no_of_particles; ++i) {
-  //   std::cout << particle[i].x << ' ' << particle[i].y << ' '
-  //             << particle[i].alpha << ' ' << particle[i].vx << ' '
-  //             << particle[i].vy << ' ' << particle[i].omega << ' ' << std::endl;
-  // }
+  //   checking
+  //   for (int i = 0; i < parsym.no_of_particles; ++i) {
+  //     std::cout << particle[i].x << ' ' << particle[i].y << ' '
+  //               << particle[i].alpha << ' ' << particle[i].vx << ' '
+  //               << particle[i].vy << ' ' << particle[i].omega << ' ' <<
+  //               std::endl;
+  //   }
 
   // 3)Creating a data file for storage and log-----------
 
@@ -98,10 +99,9 @@ int main() {
   for (int step = 0; step < Number_of_time_steps; step++) {
 
     // writing data of this state to file (will be used for rendering the
-    //system in ovito)
+    // system in ovito)
 
-            data_output
-        << Number_of_particles << std::endl;
+    data_output << Number_of_particles << std::endl;
     data_output << "Lattice="
                 << "\"10.0 0.0 0.0 0.0 10.0 0.0 0.0 0.0 0.0\"" << std::endl;
     // first store current configuration
@@ -135,10 +135,6 @@ int main() {
 
   // Print the state before the simulation in log
   state_after_simulation(log, parsym, physics);
-
-  // log.close();
-  // logv.close();
-  // logx.close();
 
   return 0;
 }

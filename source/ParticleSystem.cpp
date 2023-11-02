@@ -73,8 +73,6 @@ ParSim::ParticleSystem::ParticleSystem(int N, double dim) {
   }
 }
 
-
-
 ParSim::ParticleSystem::~ParticleSystem() { delete[] particle_array; }
 
 namespace ParSim {
