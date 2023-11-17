@@ -25,8 +25,7 @@ int main() {
 
   // temporary geometry variables
   double phi = 0.90;
-  double L = 11.2104; // length of periodic boundary , replace 1 by
-                      // sigma
+  double L = 11.2104; // length of periodic boundary
   ParSim::ParticleSystem parsym(Number_of_particles,
                                 L); // create a simple system
   ParSim::Physics physics;
@@ -34,7 +33,7 @@ int main() {
   ParSim::Particle *const particle =
       parsym.get_particles(); // get access to paticles
 
-  /*Setting physics parameters*/
+  /*Setting physics parameters -- all game to be played here */
   physics.parameters[8] = 0.001;           // time step
   physics.parameters[0] = 1000;            // k
   physics.parameters[1] = 1;               // interaction_radius sigma
@@ -61,7 +60,7 @@ int main() {
     std::cerr << "Error: Init_state file could not be opened" << std::endl;
     exit(1);
   }
-  
+
   while (input_state >> particle[i].x >> particle[i].y >> particle[i].alpha >>
          particle[i].vx >> particle[i].vy) {
     i++;
@@ -99,18 +98,20 @@ int main() {
   for (int step = 0; step < Number_of_time_steps; step++) {
 
     // writing data of this state to file (will be used for rendering the
-    // system in ovito)
+    // system in ovito), write every nth state
 
-    data_output << Number_of_particles << std::endl;
-    data_output << "Lattice="
-                << "\"10.0 0.0 0.0 0.0 10.0 0.0 0.0 0.0 0.0\"" << std::endl;
-    // first store current configuration
-    for (int i = 0; i < parsym.no_of_particles; ++i) {
-      data_output << particle[i].x << ' ' << particle[i].y << ' ' << 0 << ' '
-                  << cos(particle[i].alpha) << ' ' << sin(particle[i].alpha)
-                  << ' ' << 0 << ' ' << particle[i].alpha << ' '
-                  << particle[i].vx << ' ' << particle[i].vy << ' '
-                  << particle[i].omega << ' ' << std::endl;
+    if (step % 100 == 0) {
+      data_output << Number_of_particles << std::endl;
+      data_output << "Lattice="
+                  << "\"10.0 0.0 0.0 0.0 10.0 0.0 0.0 0.0 0.0\"" << std::endl;
+      // first store current configuration
+      for (int i = 0; i < parsym.no_of_particles; ++i) {
+        data_output << particle[i].x << ' ' << particle[i].y << ' ' << 0 << ' '
+                    << cos(particle[i].alpha) << ' ' << sin(particle[i].alpha)
+                    << ' ' << 0 << ' ' << particle[i].alpha << ' '
+                    << particle[i].vx << ' ' << particle[i].vy << ' '
+                    << particle[i].omega << ' ' << std::endl;
+      }
     }
 
     if (step % 50 == 0) {
